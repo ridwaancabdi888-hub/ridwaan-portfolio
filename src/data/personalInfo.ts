@@ -24,7 +24,7 @@ export const personalInfo = {
   linkedinUsername: "ridwancabdi-9a7770341",
   linkedinUrl: "https://www.linkedin.com/in/ridwancabdi-9a7770341/",
   avatarUrl: "https://avatars.githubusercontent.com/u/284196008?v=4",
-  siteUrl: "https://ridwaancabdi888-hub.github.io/my-protofolia/",
+  siteUrl: "https://ridwaancabdi888-hub.github.io/ridwaan-portfolio/",
   resumePdfPath: "/resume/Ridwaan-Apdirahman-Mohamed-CV.pdf",
 
   availabilityShort:
