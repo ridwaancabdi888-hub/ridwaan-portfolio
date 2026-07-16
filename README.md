@@ -125,7 +125,7 @@ Every submission (via Formspree or the `mailto:` fallback) can also fire a best-
 
 1. Add `+34 644 91 07 79` as a WhatsApp contact and message it exactly: `I allow callmebot to send me messages`.
 2. It replies with an `APIKey`. If nothing arrives within ~2 minutes, CallMeBot's own guidance is to wait 24h before trying again rather than resending immediately.
-3. In `.env`, set `VITE_CALLMEBOT_PHONE` (your number **with** the `+` and country code, e.g. `+252634199277`) and `VITE_CALLMEBOT_APIKEY`.
+3. In `.env`, set `VITE_CALLMEBOT_PHONE` and `VITE_CALLMEBOT_APIKEY`. The activation reply includes a ready-to-use example URL — copy the exact `phone=` value from it rather than assuming a format, since CallMeBot has been inconsistent about whether it expects a leading `+` (e.g. `VITE_CALLMEBOT_PHONE=252634199277`, no `+`).
 
 Because this is a static site with no backend, these values are visible in browser dev tools — that's inherent to CallMeBot's design (it only ever notifies your own number), but treat the API key as something to rotate if it's ever abused, not as a real secret.
 
