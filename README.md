@@ -108,7 +108,7 @@ The on-page Resume section also has a **Print CV** button that opens the browser
 
 ## Contact form
 
-The Contact form validates all fields client-side. By default (no backend configured) it opens the visitor's email client via a `mailto:` link pre-filled with their message — this avoids showing a fake "message sent" confirmation when there is no backend.
+The Contact form validates all fields client-side (name, email, subject, message required; phone/WhatsApp number optional). By default (no backend configured) it opens the visitor's email client via a `mailto:` link pre-filled with their message — this avoids showing a fake "message sent" confirmation when there is no backend.
 
 To connect a real backend:
 
@@ -119,6 +119,16 @@ To connect a real backend:
    ```
 3. Restart the dev server. The form will now `POST` there and show a real success/error state instead of using `mailto:`.
 
+### WhatsApp notifications
+
+Every submission (via Formspree or the `mailto:` fallback) can also fire a best-effort WhatsApp notification through [CallMeBot](https://www.callmebot.com) — a free "notify me" webhook (not a general-purpose WhatsApp API).
+
+1. Add `+34 644 59 71 30` as a WhatsApp contact and message it exactly: `I allow callmebot to send me messages`.
+2. It replies with an `APIKey`.
+3. In `.env`, set `VITE_CALLMEBOT_PHONE` (your number, international format, no `+`) and `VITE_CALLMEBOT_APIKEY`.
+
+Because this is a static site with no backend, these values are visible in browser dev tools — that's inherent to CallMeBot's design (it only ever notifies your own number), but treat the API key as something to rotate if it's ever abused, not as a real secret.
+
 ## Deployment
 
 ### Deploy to Vercel
@@ -126,7 +136,7 @@ To connect a real backend:
 1. Push this project to a GitHub repository.
 2. Go to [vercel.com/new](https://vercel.com/new) and import the repository.
 3. Framework preset: **Vite**. Build command: `npm run build`. Output directory: `dist`.
-4. (Optional) Add `VITE_FORMSPREE_ENDPOINT` under Project Settings → Environment Variables.
+4. (Optional) Add `VITE_FORMSPREE_ENDPOINT`, `VITE_CALLMEBOT_PHONE` and `VITE_CALLMEBOT_APIKEY` under Project Settings → Environment Variables.
 5. Deploy. Update `og:url`, `canonical`, and `sitemap.xml` in `index.html` / `public/sitemap.xml` with the real Vercel URL afterwards.
 
 Or from the CLI:

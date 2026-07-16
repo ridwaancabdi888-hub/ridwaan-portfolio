@@ -15,6 +15,7 @@ import SectionHeading from "./SectionHeading";
 type FormValues = {
   name: string;
   email: string;
+  phone: string;
   subject: string;
   message: string;
 };
@@ -29,9 +30,12 @@ type SubmitStatus =
   | { state: "error"; message: string };
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_REGEX = /^[0-9+\-\s()]{7,20}$/;
 const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT;
+const CALLMEBOT_PHONE = import.meta.env.VITE_CALLMEBOT_PHONE;
+const CALLMEBOT_APIKEY = import.meta.env.VITE_CALLMEBOT_APIKEY;
 
-const initialValues: FormValues = { name: "", email: "", subject: "", message: "" };
+const initialValues: FormValues = { name: "", email: "", phone: "", subject: "", message: "" };
 
 function validate(values: FormValues): FormErrors {
   const errors: FormErrors = {};
@@ -41,6 +45,9 @@ function validate(values: FormValues): FormErrors {
   if (!values.email.trim() || !EMAIL_REGEX.test(values.email.trim())) {
     errors.email = "Please enter a valid email address.";
   }
+  if (values.phone.trim() && !PHONE_REGEX.test(values.phone.trim())) {
+    errors.phone = "Please enter a valid phone number.";
+  }
   if (!values.subject.trim() || values.subject.trim().length < 3) {
     errors.subject = "Please enter a subject.";
   }
@@ -48,6 +55,36 @@ function validate(values: FormValues): FormErrors {
     errors.message = "Message should be at least 10 characters.";
   }
   return errors;
+}
+
+/**
+ * Best-effort WhatsApp notification via CallMeBot (https://www.callmebot.com).
+ * This is a static site with no backend, so the API key is necessarily
+ * visible client-side — CallMeBot is designed for exactly this use case
+ * (a personal "notify me" webhook), not for sending to arbitrary numbers.
+ * Fired in "no-cors" mode: the request goes out but the response can't be
+ * read, so failures here never block the primary Formspree/mailto delivery.
+ */
+function notifyWhatsApp(values: FormValues) {
+  if (!CALLMEBOT_PHONE || !CALLMEBOT_APIKEY) return;
+
+  const summary = [
+    `New portfolio contact form message`,
+    `From: ${values.name} (${values.email})`,
+    values.phone.trim() ? `Phone: ${values.phone.trim()}` : null,
+    `Subject: ${values.subject}`,
+    `Message: ${values.message.slice(0, 300)}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  const url = `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(
+    CALLMEBOT_PHONE,
+  )}&apikey=${encodeURIComponent(CALLMEBOT_APIKEY)}&text=${encodeURIComponent(summary)}`;
+
+  fetch(url, { mode: "no-cors" }).catch(() => {
+    // Best-effort only — Formspree/mailto already carries the message.
+  });
 }
 
 const contactMethods = [
@@ -88,6 +125,7 @@ export default function Contact() {
           body: JSON.stringify(values),
         });
         if (!response.ok) throw new Error("The form service rejected the message.");
+        notifyWhatsApp(values);
         setStatus({ state: "success" });
         setValues(initialValues);
       } catch (error) {
@@ -107,6 +145,7 @@ export default function Contact() {
       values.subject,
     )}&body=${encodeURIComponent(body)}`;
     window.location.href = mailtoUrl;
+    notifyWhatsApp(values);
     setStatus({ state: "mailto-opened" });
   };
 
@@ -189,6 +228,25 @@ export default function Contact() {
               />
               {errors.email ? (
                 <p id="email-error" className="mt-1 text-xs text-red-400">{errors.email}</p>
+              ) : null}
+            </div>
+
+            <div>
+              <label htmlFor="phone" className="mb-1.5 block text-sm font-medium text-[var(--color-text-primary)]">
+                Phone / WhatsApp number <span className="text-[var(--color-text-muted)]">(optional)</span>
+              </label>
+              <input
+                id="phone"
+                type="tel"
+                value={values.phone}
+                onChange={handleChange("phone")}
+                aria-invalid={Boolean(errors.phone)}
+                aria-describedby={errors.phone ? "phone-error" : undefined}
+                className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent)]"
+                placeholder="+252 6X XXX XXXX"
+              />
+              {errors.phone ? (
+                <p id="phone-error" className="mt-1 text-xs text-red-400">{errors.phone}</p>
               ) : null}
             </div>
 
