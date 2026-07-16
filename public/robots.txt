@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ridwaancabdi888-hub.github.io/ridwaan-portfolio/sitemap.xml
+Sitemap: https://ridwaan-portfolio.vercel.app/sitemap.xml
