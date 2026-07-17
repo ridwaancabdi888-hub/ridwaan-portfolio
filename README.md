@@ -79,6 +79,19 @@ https://api.github.com/users/ridwaancabdi888-hub/repos?sort=updated&per_page=100
 - A repo is only treated as a real project if it has a description or a non-trivial size — otherwise it's placed under the "Work in Progress" filter instead of being invented as a finished project.
 - If the GitHub API is unreachable, the section falls back to the local project data in `projects.ts` and shows an inline notice — it never shows a blank section or fake data.
 
+## Updating the hero photo
+
+The Hero section shows a background-removed cutout (`src/assets/images/profile-cutout.png`) with a neon-green glow, generated from `src/assets/images/avatar-original.png` by `scripts/remove-avatar-background.mjs`. It works by chroma-keying a solid-color backdrop, so it works best with a photo shot against a flat, even background (a passport/ID-style photo, for example).
+
+To swap in a new photo:
+
+1. Replace `src/assets/images/avatar-original.png` with the new photo.
+2. Run:
+   ```bash
+   npm run process:avatar
+   ```
+3. Check the regenerated `profile-cutout.png` — if the edges pick up background color, adjust `INNER_THRESHOLD` / `OUTER_THRESHOLD` at the top of the script and re-run.
+
 ## Replacing project images
 
 No project screenshots have been confirmed yet, so `ProjectCard` renders a generated abstract thumbnail (clearly labeled "Generated thumbnail — no screenshot yet") for every project.

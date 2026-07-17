@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { personalInfo } from "../data/personalInfo";
 import { GithubIcon, LinkedinIcon } from "./icons/BrandIcons";
+import profileCutout from "../assets/images/profile-cutout.png";
 
 const ROTATE_INTERVAL_MS = 2600;
 
@@ -141,28 +142,28 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="relative mx-auto flex justify-center"
+          className="relative mx-auto flex justify-center lg:justify-end"
         >
           <div className="relative">
             <div
-              className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-[var(--color-accent)]/30 to-[var(--color-accent-cyan)]/20 blur-2xl"
+              className="absolute left-1/2 top-1/2 -z-10 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-400/25 blur-[70px] sm:h-80 sm:w-80 lg:h-[26rem] lg:w-[26rem]"
               aria-hidden="true"
             />
             <img
-              src={personalInfo.avatarUrl}
+              src={profileCutout}
               alt={`Portrait of ${personalInfo.fullName}`}
-              width={288}
-              height={288}
+              width={460}
+              height={460}
               loading="eager"
               fetchPriority="high"
-              className="h-56 w-56 rounded-full border-4 border-[var(--color-accent)]/60 object-cover shadow-2xl shadow-black/30 sm:h-64 sm:w-64 lg:h-72 lg:w-72"
+              className="h-80 w-auto object-contain sm:h-[22rem] lg:h-[27rem]"
+              style={{
+                filter:
+                  "drop-shadow(0 0 10px rgba(74,222,128,0.85)) drop-shadow(0 0 28px rgba(34,197,94,0.6)) drop-shadow(0 0 64px rgba(34,197,94,0.35))",
+                maskImage: "linear-gradient(to bottom, black 76%, transparent 97%)",
+                WebkitMaskImage: "linear-gradient(to bottom, black 76%, transparent 97%)",
+              }}
             />
-            <span
-              className="absolute bottom-4 right-4 flex h-6 w-6 items-center justify-center rounded-full border-2 border-[var(--color-bg)] bg-emerald-400 sm:h-7 sm:w-7"
-              title="Available"
-            >
-              <span className="sr-only">Available for work</span>
-            </span>
           </div>
         </motion.div>
       </div>
