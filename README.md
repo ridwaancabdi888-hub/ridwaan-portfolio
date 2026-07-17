@@ -68,7 +68,7 @@ src/
   components/       UI sections and shared components
   data/             Editable content: personalInfo, skills, projects, services, education
   hooks/            useGitHubProjects, useTheme, useActiveSection
-  assets/           Local images/icons (currently unused — avatar comes from GitHub)
+  assets/           Hero profile photo (source + background-removed cutout)
   App.tsx           Composes every section
   main.tsx          React entry point
   index.css         Tailwind import, design tokens (colors, fonts), base styles
