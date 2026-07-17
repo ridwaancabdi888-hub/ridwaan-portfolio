@@ -10,14 +10,46 @@ A production-ready personal portfolio built with React, TypeScript, Vite and Tai
 - **Lucide React** for icons
 - **PDFKit** (build-time only) to generate the downloadable CV
 
-## Getting started
+## Live demo
+
+Visit the deployed portfolio: **[ridwaan-portfolio.vercel.app](https://ridwaan-portfolio.vercel.app/)**
+
+## Local setup
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) 20 or newer
+- npm (included with Node.js)
+- Git
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ridwaancabdi888-hub/ridwaan-portfolio.git
+   ```
+2. Move into the project directory:
+   ```bash
+   cd ridwaan-portfolio
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+5. Open the local URL printed in the terminal (typically [http://localhost:5173](http://localhost:5173)).
+
+Environment variables are optional. The site works without them by using the contact form's `mailto:` fallback. To enable Formspree or CallMeBot, copy `.env.example` to `.env`, add the relevant values described in the [Contact form](#contact-form) section, and restart the development server.
+
+To verify a production build locally:
 
 ```bash
-npm install
-npm run dev
+npm run build
+npm run preview
 ```
-
-The dev server prints a local URL (typically `http://localhost:5173`).
 
 ## Available scripts
 

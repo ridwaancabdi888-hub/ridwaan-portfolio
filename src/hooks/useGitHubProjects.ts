@@ -225,10 +225,15 @@ export function useGitHubProjects() {
 
         const repos = (await response.json()) as GitHubRepo[];
 
-        window.localStorage.setItem(
-          CACHE_KEY,
-          JSON.stringify({ timestamp: Date.now(), repos }),
-        );
+        try {
+          window.localStorage.setItem(
+            CACHE_KEY,
+            JSON.stringify({ timestamp: Date.now(), repos }),
+          );
+        } catch {
+          // storage unavailable (private mode / quota) — caching is optional,
+          // so a failed write must not discard the successfully fetched data
+        }
 
         if (isMounted) {
           setState({
