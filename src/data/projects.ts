@@ -17,15 +17,16 @@ export type LocalProject = {
   status: "Major project" | "Work in progress";
   featured: boolean;
   /**
-   * No confirmed real screenshots exist for these repositories yet.
-   * These paths are placeholders for real screenshots and are NOT
-   * guaranteed to exist on disk. `ProjectCard` treats a missing image
-   * as "no screenshot available" and renders a generated abstract
-   * thumbnail instead — it never fakes a screenshot.
+   * No confirmed real screenshots exist for these repositories yet, so
+   * these currently point at generated "concept cover" art (see
+   * scripts/generate-project-covers.mjs) — each one says so directly on
+   * the image, and `ProjectCard`'s alt text calls it "cover art", never
+   * "screenshot". `ProjectCard` treats a missing/failed image load as
+   * "no cover available" and falls back to an inline icon instead.
    *
-   * To add a real screenshot later: save an actual image at the exact
-   * path below (e.g. `public/project-images/hargeisa-tax-system.webp`)
-   * and it will automatically replace the generated thumbnail.
+   * To replace with a real screenshot: overwrite the file at the same
+   * path (e.g. `public/project-images/hargeisa-tax-system.webp`) with
+   * an actual product screenshot — no code changes needed.
    */
   image?: string;
 };

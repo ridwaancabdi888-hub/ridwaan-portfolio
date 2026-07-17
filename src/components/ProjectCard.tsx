@@ -82,7 +82,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
         {showRealImage ? (
           <img
             src={project.image}
-            alt={`Screenshot of ${project.title}`}
+            alt={`Cover art for ${project.title}`}
             loading="lazy"
             onError={() => setImageFailed(true)}
             className="h-full w-full object-cover"
