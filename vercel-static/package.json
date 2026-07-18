@@ -1,0 +1,7 @@
+{
+  "name": "ridwaan-portfolio-static",
+  "private": true,
+  "scripts": {
+    "build": "rm -rf dist && mkdir -p dist && cp -R site/. dist/"
+  }
+}

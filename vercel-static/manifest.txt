@@ -1,0 +1,14 @@
+assets/index-BWzOOjJu.js
+assets/index-B_qbCXI-.css
+assets/profile-cutout-BQpRGaYl.png
+favicon.svg
+index.html
+project-images/dalxiis.png
+project-images/epharmacy.webp
+project-images/hargeisa-tax-system.webp
+project-images/hostel-management.webp
+project-images/python.png
+project-images/ridwaan-portfolio.png
+resume/Ridwaan-Apdirahman-Mohamed-CV.pdf
+robots.txt
+sitemap.xml
