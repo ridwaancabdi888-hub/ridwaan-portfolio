@@ -1,6 +1,9 @@
 name: Build static deploy package
 
 on:
+  pull_request:
+    branches:
+      - master
   push:
     branches:
       - prepare-vercel-static-deploy
@@ -16,8 +19,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: prepare-vercel-static-deploy
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -30,7 +31,15 @@ jobs:
           npm ci
           npm run build
 
+      - name: Upload production build
+        uses: actions/upload-artifact@v4
+        with:
+          name: ridwaan-portfolio-dist
+          path: dist
+          if-no-files-found: error
+
       - name: Prepare static deployment package
+        if: github.event_name == 'push'
         run: |
           rm -rf vercel-static
           mkdir -p vercel-static/site
@@ -54,6 +63,7 @@ jobs:
           EOF
 
       - name: Commit static package
+        if: github.event_name == 'push'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
