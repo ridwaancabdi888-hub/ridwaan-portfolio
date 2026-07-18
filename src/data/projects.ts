@@ -41,7 +41,7 @@ export const featuredProjects: LocalProject[] = [
     repo: "https://github.com/ridwaancabdi888-hub/Hargeisa-Property-Tax-System",
     category: "system",
     description:
-      "A full-stack municipal tax and property management platform containing regional dashboards, GIS property mapping, property registration, image uploads, tax management, analytics, role-based access control, activity auditing, data export and database backup and restore. The live portfolio link opens a safe interactive demo with sample data.",
+      "A full-stack municipal tax and property management platform containing regional dashboards, GIS property mapping, property registration, image uploads, tax management, analytics, role-based access control, activity auditing, data export and database backup and restore. The live portfolio link opens the secure sign-in screen first.",
     technologies: [
       "React 19",
       "TypeScript",
@@ -64,7 +64,7 @@ export const featuredProjects: LocalProject[] = [
     repo: "https://github.com/ridwaancabdi888-hub/university-hostel-management-system",
     category: "system",
     description:
-      "A university hostel management system for room inventory, student registration, room allocation, billing, invoices, payments, maintenance requests, visitor management, reports and role-based administration. The live portfolio link opens a safe interactive demo with sample data.",
+      "A university hostel management system for room inventory, student registration, room allocation, billing, invoices, payments, maintenance requests, visitor management, reports and role-based administration. The live portfolio link opens a dedicated login-only preview.",
     technologies: [
       "PHP",
       "Laravel 12",
@@ -174,9 +174,9 @@ export const repoLiveUrlByName: Record<string, string> = {
   dalxiis: "https://dalxiis-six.vercel.app/",
   "zaad-dahab-epharmacy": "https://zaad-dahab-epharmacy.vercel.app/",
   "university-hostel-management-system":
-    "https://university-hostel-management-demo.vercel.app/",
+    "https://ridwaan-portfolio.vercel.app/demos/university-hostel-login.html",
   "hargeisa-property-tax-system":
-    "https://hargeisa-property-tax-demo.vercel.app/",
+    "https://softwere-mangement-system.vercel.app/",
   "mobile-store": "https://ridwaan-mobile-store.vercel.app/",
   "ramad-construction-real-estate":
     "https://ramad-construction-real-estate.vercel.app/",
