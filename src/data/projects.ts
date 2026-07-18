@@ -16,11 +16,6 @@ export type LocalProject = {
   technologies: string[];
   status: "Major project" | "Work in progress";
   featured: boolean;
-  /**
-   * The three major systems currently use generated concept covers. Real
-   * website projects use current screenshots captured from their live demos.
-   * ProjectCard falls back to an inline icon when an image is unavailable.
-   */
   image?: string;
 };
 
@@ -35,8 +30,9 @@ export const projectCategories: { id: ProjectCategory; label: string }[] = [
 ];
 
 /**
- * Hand-curated, featured projects. These are shown first and are always
- * merged with (and de-duplicated against) the live GitHub repositories.
+ * Hand-curated projects. Featured systems are shown first; selected website
+ * projects use the same data model so their titles, descriptions, screenshots
+ * and verified live links remain accurate even when GitHub metadata is sparse.
  */
 export const featuredProjects: LocalProject[] = [
   {
@@ -106,9 +102,47 @@ export const featuredProjects: LocalProject[] = [
     featured: true,
     image: "/project-images/epharmacy.webp",
   },
+  {
+    id: "ridwaan-mobile-store",
+    title: "Ridwaan Mobile Store",
+    repo: "https://github.com/ridwaancabdi888-hub/Mobile-Store",
+    category: "mobile",
+    description:
+      "A polished mobile-first smartphone shopping PWA with customer authentication, product search and filters, cart, wishlist, rewards, checkout, order history, dark mode and an admin control center for inventory, orders, payments and user roles.",
+    technologies: [
+      "HTML5",
+      "CSS3",
+      "JavaScript",
+      "PWA",
+      "LocalStorage",
+      "Responsive Design",
+    ],
+    status: "Major project",
+    featured: false,
+    image: "/project-images/mobile-store.png",
+  },
+  {
+    id: "ramad-construction-real-estate",
+    title: "Ramad Construction & Real Estate",
+    repo: "https://github.com/ridwaancabdi888-hub/ramad-construction-real-estate",
+    category: "frontend",
+    description:
+      "A premium construction and real-estate website for Somaliland with property listings and filters, project showcases, before-and-after comparison, architectural and property services, consultation forms and responsive animated interactions.",
+    technologies: [
+      "HTML5",
+      "CSS3",
+      "JavaScript",
+      "GSAP",
+      "ScrollTrigger",
+      "Responsive Design",
+    ],
+    status: "Major project",
+    featured: false,
+    image: "/project-images/ramad-construction-real-estate.png",
+  },
 ];
 
-/** Repositories shown from the live GitHub API in addition to featured work. */
+/** Repositories shown from the live GitHub API in addition to curated work. */
 export const watchedRepoNames = [
   "ridwaan-portfolio",
   "full-stack",
@@ -117,14 +151,19 @@ export const watchedRepoNames = [
   "dalxiis",
   "Scroll-site",
   "RAMAD-CONSTRUCTION",
+  "Mobile-Store",
+  "ramad-construction-real-estate",
   "new",
 ];
 
-/** Current live-site screenshots used by non-featured website cards. */
+/** Current screenshots used by website project cards. */
 export const repoImageByName: Record<string, string> = {
   "ridwaan-portfolio": "/project-images/ridwaan-portfolio.png",
   python: "/project-images/python.png",
   dalxiis: "/project-images/dalxiis.png",
+  "mobile-store": "/project-images/mobile-store.png",
+  "ramad-construction-real-estate":
+    "/project-images/ramad-construction-real-estate.png",
 };
 
 /** Verified live demos. These take priority over GitHub's optional homepage field. */
@@ -137,6 +176,9 @@ export const repoLiveUrlByName: Record<string, string> = {
     "https://university-hostel-management-demo.vercel.app/",
   "hargeisa-property-tax-system":
     "https://hargeisa-property-tax-demo.vercel.app/",
+  "mobile-store": "https://ridwaan-mobile-store.vercel.app/",
+  "ramad-construction-real-estate":
+    "https://ramad-construction-real-estate.vercel.app/",
 };
 
 export const githubApiEndpoint =
