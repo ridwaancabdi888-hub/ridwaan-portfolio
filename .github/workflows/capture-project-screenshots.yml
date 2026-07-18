@@ -32,13 +32,13 @@ jobs:
 
       - name: Capture screenshots
         run: |
-          mkdir -p generated-screenshots
+          mkdir -p public/project-images
           cat > capture.mjs <<'EOF'
           import { chromium } from 'playwright';
 
           const sites = [
             ['ridwaan-portfolio', 'https://ridwaan-portfolio.vercel.app/'],
-            ['learn-python', 'https://learn-python-ridwaan.vercel.app/'],
+            ['python', 'https://learn-python-ridwaan.vercel.app/'],
             ['dalxiis', 'https://dalxiis-six.vercel.app/']
           ];
 
@@ -52,7 +52,7 @@ jobs:
             await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 });
             await page.waitForTimeout(3000);
             await page.screenshot({
-              path: `generated-screenshots/${name}.png`,
+              path: `public/project-images/${name}.png`,
               fullPage: false
             });
           }
@@ -61,10 +61,10 @@ jobs:
           EOF
           node capture.mjs
 
-      - name: Commit generated screenshots
+      - name: Commit project screenshots
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add generated-screenshots/*.png
-          git commit -m "Generate current project screenshots"
+          git add public/project-images/ridwaan-portfolio.png public/project-images/python.png public/project-images/dalxiis.png
+          git commit -m "Add current screenshots for website projects"
           git push origin generate-project-screenshots
