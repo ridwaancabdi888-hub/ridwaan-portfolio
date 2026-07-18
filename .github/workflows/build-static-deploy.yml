@@ -60,3 +60,5 @@ jobs:
           git add -f vercel-static
           git commit -m "Build static Vercel deployment package"
           git push origin prepare-vercel-static-deploy
+
+# Triggered after Vercel Git connection
