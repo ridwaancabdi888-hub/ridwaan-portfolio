@@ -3,6 +3,7 @@ import {
   featuredProjects,
   githubApiEndpoint,
   repoImageByName,
+  repoLiveUrlByName,
   watchedRepoNames,
   type LocalProject,
   type ProjectCategory,
@@ -91,11 +92,14 @@ function buildLocalOverrideMap() {
 }
 
 function localOverrideToDisplay(project: LocalProject): DisplayProject {
+  const repoName = repoNameFromUrl(project.repo).toLowerCase();
+
   return {
     id: project.id,
     title: project.title,
     description: project.description,
     repoUrl: project.repo,
+    liveUrl: repoLiveUrlByName[repoName],
     technologies: project.technologies,
     category: project.category,
     status: project.status,
@@ -107,7 +111,10 @@ function localOverrideToDisplay(project: LocalProject): DisplayProject {
 
 function toDisplayProject(repo: GitHubRepo, override?: LocalProject): DisplayProject {
   const meaningful = isMeaningfulRepo(repo);
+  const repoName = repo.name.toLowerCase();
+  const verifiedLiveUrl = repoLiveUrlByName[repoName];
   const hasRealHomepage = Boolean(repo.homepage && repo.homepage.trim().length > 0);
+  const liveUrl = verifiedLiveUrl ?? (hasRealHomepage ? repo.homepage! : undefined);
 
   if (override) {
     return {
@@ -115,7 +122,7 @@ function toDisplayProject(repo: GitHubRepo, override?: LocalProject): DisplayPro
       title: override.title,
       description: override.description,
       repoUrl: repo.html_url,
-      liveUrl: hasRealHomepage ? repo.homepage! : undefined,
+      liveUrl,
       technologies: override.technologies,
       language: repo.language,
       stars: repo.stargazers_count,
@@ -134,7 +141,7 @@ function toDisplayProject(repo: GitHubRepo, override?: LocalProject): DisplayPro
     description:
       repo.description?.trim() || "No description provided in this repository yet.",
     repoUrl: repo.html_url,
-    liveUrl: hasRealHomepage ? repo.homepage! : undefined,
+    liveUrl,
     technologies: repo.language ? [repo.language] : [],
     language: repo.language,
     stars: repo.stargazers_count,
@@ -143,7 +150,7 @@ function toDisplayProject(repo: GitHubRepo, override?: LocalProject): DisplayPro
     status: meaningful ? "Major project" : "Work in progress",
     featured: false,
     source: "github",
-    image: repoImageByName[repo.name.toLowerCase()],
+    image: repoImageByName[repoName],
   };
 }
 
