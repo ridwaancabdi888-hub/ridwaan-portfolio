@@ -119,7 +119,7 @@ export const featuredProjects: LocalProject[] = [
     ],
     status: "Major project",
     featured: false,
-    image: "/project-images/mobile-store.png",
+    image: "https://ridwaan-project-screenshots.vercel.app/mobile-store.jpg",
   },
   {
     id: "ramad-construction-real-estate",
@@ -138,7 +138,7 @@ export const featuredProjects: LocalProject[] = [
     ],
     status: "Major project",
     featured: false,
-    image: "/project-images/ramad-construction-real-estate.png",
+    image: "https://ridwaan-project-screenshots.vercel.app/ramad-construction.jpg",
   },
 ];
 
@@ -161,9 +161,10 @@ export const repoImageByName: Record<string, string> = {
   "ridwaan-portfolio": "/project-images/ridwaan-portfolio.png",
   python: "/project-images/python.png",
   dalxiis: "/project-images/dalxiis.png",
-  "mobile-store": "/project-images/mobile-store.png",
+  "mobile-store":
+    "https://ridwaan-project-screenshots.vercel.app/mobile-store.jpg",
   "ramad-construction-real-estate":
-    "/project-images/ramad-construction-real-estate.png",
+    "https://ridwaan-project-screenshots.vercel.app/ramad-construction.jpg",
 };
 
 /** Verified live demos. These take priority over GitHub's optional homepage field. */
