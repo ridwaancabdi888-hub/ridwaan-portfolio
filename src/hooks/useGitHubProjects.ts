@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   featuredProjects,
   githubApiEndpoint,
+  repoImageByName,
   watchedRepoNames,
   type LocalProject,
   type ProjectCategory,
@@ -54,7 +55,7 @@ function repoNameFromUrl(url: string) {
   return url.replace(/\/+$/, "").split("/").pop() ?? "";
 }
 
-/** A repo counts as "meaningful" once it has a real description or a
+/** A repo counts as meaningful once it has a real description or a
  * non-trivial amount of code, so empty/placeholder repos fall back to WIP. */
 function isMeaningfulRepo(repo: GitHubRepo) {
   const hasDescription = Boolean(repo.description && repo.description.trim().length > 0);
@@ -98,7 +99,7 @@ function localOverrideToDisplay(project: LocalProject): DisplayProject {
     technologies: project.technologies,
     category: project.category,
     status: project.status,
-    featured: true,
+    featured: project.featured,
     source: "local",
     image: project.image,
   };
@@ -121,7 +122,7 @@ function toDisplayProject(repo: GitHubRepo, override?: LocalProject): DisplayPro
       updatedAt: repo.updated_at,
       category: override.category,
       status: override.status,
-      featured: true,
+      featured: override.featured,
       source: "local",
       image: override.image,
     };
@@ -142,6 +143,7 @@ function toDisplayProject(repo: GitHubRepo, override?: LocalProject): DisplayPro
     status: meaningful ? "Major project" : "Work in progress",
     featured: false,
     source: "github",
+    image: repoImageByName[repo.name.toLowerCase()],
   };
 }
 

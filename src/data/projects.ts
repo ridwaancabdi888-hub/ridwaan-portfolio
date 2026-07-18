@@ -17,16 +17,9 @@ export type LocalProject = {
   status: "Major project" | "Work in progress";
   featured: boolean;
   /**
-   * No confirmed real screenshots exist for these repositories yet, so
-   * these currently point at generated "concept cover" art (see
-   * scripts/generate-project-covers.mjs) — each one says so directly on
-   * the image, and `ProjectCard`'s alt text calls it "cover art", never
-   * "screenshot". `ProjectCard` treats a missing/failed image load as
-   * "no cover available" and falls back to an inline icon instead.
-   *
-   * To replace with a real screenshot: overwrite the file at the same
-   * path (e.g. `public/project-images/hargeisa-tax-system.webp`) with
-   * an actual product screenshot — no code changes needed.
+   * The three major systems currently use generated concept covers. Real
+   * website projects use current screenshots captured from their live demos.
+   * ProjectCard falls back to an inline icon when an image is unavailable.
    */
   image?: string;
 };
@@ -43,10 +36,7 @@ export const projectCategories: { id: ProjectCategory; label: string }[] = [
 
 /**
  * Hand-curated, featured projects. These are shown first and are always
- * merged with (and de-duplicated against) the live GitHub repositories
- * fetched in `useGitHubProjects`. Descriptions, technologies and status
- * below reflect what has actually been confirmed — nothing here is
- * invented.
+ * merged with (and de-duplicated against) the live GitHub repositories.
  */
 export const featuredProjects: LocalProject[] = [
   {
@@ -118,15 +108,9 @@ export const featuredProjects: LocalProject[] = [
   },
 ];
 
-/**
- * Additional repositories to look for on the live GitHub API and surface
- * once fetched. These are intentionally left without invented
- * descriptions — `useGitHubProjects` / `GitHubProjects` decide whether
- * each one has enough real content (a non-empty description, or a size
- * above the "likely just a placeholder" threshold) to be listed as a
- * project, or whether it belongs under "Work in Progress".
- */
+/** Repositories shown from the live GitHub API in addition to featured work. */
 export const watchedRepoNames = [
+  "ridwaan-portfolio",
   "full-stack",
   "RAMAD-CONSTRUCTION1",
   "python",
@@ -135,6 +119,13 @@ export const watchedRepoNames = [
   "RAMAD-CONSTRUCTION",
   "new",
 ];
+
+/** Current live-site screenshots used by non-featured website cards. */
+export const repoImageByName: Record<string, string> = {
+  "ridwaan-portfolio": "/project-images/ridwaan-portfolio.png",
+  python: "/project-images/python.png",
+  dalxiis: "/project-images/dalxiis.png",
+};
 
 export const githubApiEndpoint =
   "https://api.github.com/users/ridwaancabdi888-hub/repos?sort=updated&per_page=100";
