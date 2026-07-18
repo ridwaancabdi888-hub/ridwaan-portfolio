@@ -70,6 +70,23 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
   const Icon = meta.icon;
   const showRealImage = Boolean(project.image) && !imageFailed;
 
+  const visual = showRealImage ? (
+    <img
+      src={project.image}
+      alt={`Screenshot of ${project.title}`}
+      loading="lazy"
+      onError={() => setImageFailed(true)}
+      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+    />
+  ) : (
+    <div className="flex h-full w-full flex-col items-center justify-center gap-2">
+      <Icon className="h-10 w-10 text-[var(--color-text-muted)]" aria-hidden="true" />
+      <span className="rounded-full border border-[var(--color-border)] bg-[var(--color-bg)]/70 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wide text-[var(--color-text-muted)]">
+        Generated thumbnail — no screenshot yet
+      </span>
+    </div>
+  );
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 24 }}
@@ -79,27 +96,30 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
       className="flex flex-col overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] transition-colors hover:border-[var(--color-border-hover)]"
     >
       <div className={`relative h-44 w-full overflow-hidden bg-gradient-to-br ${meta.gradient} bg-[var(--color-bg-elevated)]`}>
-        {showRealImage ? (
-          <img
-            src={project.image}
-            alt={`Cover art for ${project.title}`}
-            loading="lazy"
-            onError={() => setImageFailed(true)}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div className="flex h-full w-full flex-col items-center justify-center gap-2">
-            <Icon className="h-10 w-10 text-[var(--color-text-muted)]" aria-hidden="true" />
-            <span className="rounded-full border border-[var(--color-border)] bg-[var(--color-bg)]/70 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wide text-[var(--color-text-muted)]">
-              Generated thumbnail — no screenshot yet
+        {project.liveUrl ? (
+          <a
+            href={project.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Open live demo of ${project.title}`}
+            className="group block h-full w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-accent-cyan)]"
+          >
+            {visual}
+            <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-black/65 px-3 py-1.5 text-xs font-semibold text-white opacity-95 backdrop-blur transition group-hover:bg-black/80">
+              <Globe className="h-3.5 w-3.5" aria-hidden="true" />
+              Open Live Demo
+              <ExternalLink className="h-3 w-3" aria-hidden="true" />
             </span>
-          </div>
+          </a>
+        ) : (
+          visual
         )}
-        <span className="absolute left-3 top-3 rounded-full border border-[var(--color-border)] bg-[var(--color-bg)]/80 px-2.5 py-1 text-[11px] font-medium text-[var(--color-text-secondary)] backdrop-blur">
+
+        <span className="pointer-events-none absolute left-3 top-3 rounded-full border border-[var(--color-border)] bg-[var(--color-bg)]/80 px-2.5 py-1 text-[11px] font-medium text-[var(--color-text-secondary)] backdrop-blur">
           {meta.label}
         </span>
         {project.status === "Work in progress" ? (
-          <span className="absolute right-3 top-3 rounded-full bg-amber-500/15 px-2.5 py-1 text-[11px] font-medium text-amber-400">
+          <span className="pointer-events-none absolute right-3 top-3 rounded-full bg-amber-500/15 px-2.5 py-1 text-[11px] font-medium text-amber-400">
             Work in Progress
           </span>
         ) : null}
@@ -107,7 +127,18 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
 
       <div className="flex flex-1 flex-col p-5">
         <h3 className="text-base font-semibold text-[var(--color-text-primary)]">
-          {project.title}
+          {project.liveUrl ? (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-[var(--color-accent-cyan)]"
+            >
+              {project.title}
+            </a>
+          ) : (
+            project.title
+          )}
         </h3>
         <p className="mt-2 flex-1 text-sm leading-relaxed text-[var(--color-text-secondary)]">
           {project.description}
@@ -141,28 +172,28 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
           ) : null}
         </div>
 
-        <div className="mt-5 flex items-center gap-3 border-t border-[var(--color-border)] pt-4">
-          <a
-            href={project.repoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-primary)]"
-          >
-            <GithubIcon className="h-4 w-4" aria-hidden="true" />
-            Code
-          </a>
+        <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-[var(--color-border)] pt-4">
           {project.liveUrl ? (
             <a
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-accent-cyan)] transition-colors hover:text-[var(--color-accent-soft)]"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-[var(--color-accent)] px-3 py-2 text-sm font-semibold text-white transition hover:brightness-110"
             >
               <Globe className="h-4 w-4" aria-hidden="true" />
-              Live Demo
+              View Live Project
               <ExternalLink className="h-3 w-3" aria-hidden="true" />
             </a>
           ) : null}
+          <a
+            href={project.repoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-border)] px-3 py-2 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:border-[var(--color-border-hover)] hover:text-[var(--color-text-primary)]"
+          >
+            <GithubIcon className="h-4 w-4" aria-hidden="true" />
+            View Code
+          </a>
         </div>
       </div>
     </motion.article>
