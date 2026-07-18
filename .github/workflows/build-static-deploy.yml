@@ -1,0 +1,62 @@
+name: Build static deploy package
+
+on:
+  push:
+    branches:
+      - prepare-vercel-static-deploy
+    paths:
+      - .github/workflows/build-static-deploy.yml
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: prepare-vercel-static-deploy
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install and build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Prepare static deployment package
+        run: |
+          rm -rf vercel-static
+          mkdir -p vercel-static/site
+          cp -R dist/. vercel-static/site/
+          find vercel-static/site -type f -printf '%P\n' | sort > vercel-static/manifest.txt
+          cat > vercel-static/package.json <<'EOF'
+          {
+            "name": "ridwaan-portfolio-static",
+            "private": true,
+            "scripts": {
+              "build": "rm -rf dist && mkdir -p dist && cp -R site/. dist/"
+            }
+          }
+          EOF
+          cat > vercel-static/vercel.json <<'EOF'
+          {
+            "buildCommand": "npm run build",
+            "outputDirectory": "dist",
+            "framework": null
+          }
+          EOF
+
+      - name: Commit static package
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f vercel-static
+          git commit -m "Build static Vercel deployment package"
+          git push origin prepare-vercel-static-deploy
