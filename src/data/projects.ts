@@ -132,6 +132,7 @@ export const repoLiveUrlByName: Record<string, string> = {
   "ridwaan-portfolio": "https://ridwaan-portfolio.vercel.app/",
   python: "https://learn-python-ridwaan.vercel.app/",
   dalxiis: "https://dalxiis-six.vercel.app/",
+  "zaad-dahab-epharmacy": "https://zaad-dahab-epharmacy.vercel.app/",
 };
 
 export const githubApiEndpoint =
