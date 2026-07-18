@@ -127,5 +127,12 @@ export const repoImageByName: Record<string, string> = {
   dalxiis: "/project-images/dalxiis.png",
 };
 
+/** Verified live demos. These take priority over GitHub's optional homepage field. */
+export const repoLiveUrlByName: Record<string, string> = {
+  "ridwaan-portfolio": "https://ridwaan-portfolio.vercel.app/",
+  python: "https://learn-python-ridwaan.vercel.app/",
+  dalxiis: "https://dalxiis-six.vercel.app/",
+};
+
 export const githubApiEndpoint =
   "https://api.github.com/users/ridwaancabdi888-hub/repos?sort=updated&per_page=100";
