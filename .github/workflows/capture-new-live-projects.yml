@@ -1,0 +1,68 @@
+name: Capture new live project screenshots
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/capture-new-live-projects.yml
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Capture screenshots
+        run: |
+          mkdir -p public/project-images
+          cat > capture-new-projects.mjs <<'EOF'
+          import { chromium } from 'playwright';
+
+          const sites = [
+            ['mobile-store', 'https://ridwaan-mobile-store.vercel.app/', 4000],
+            ['ramad-construction-real-estate', 'https://ramad-construction-real-estate.vercel.app/', 8000]
+          ];
+
+          const browser = await chromium.launch({ headless: true });
+          const page = await browser.newPage({
+            viewport: { width: 1600, height: 900 },
+            deviceScaleFactor: 1
+          });
+
+          for (const [name, url, wait] of sites) {
+            await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 90000 });
+            await page.waitForTimeout(wait);
+            await page.screenshot({
+              path: `public/project-images/${name}.png`,
+              fullPage: false
+            });
+          }
+
+          await browser.close();
+          EOF
+          node capture-new-projects.mjs
+
+      - name: Commit screenshots
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/project-images/mobile-store.png public/project-images/ramad-construction-real-estate.png
+          git commit -m "Add screenshots for new live projects"
+          git push origin master
