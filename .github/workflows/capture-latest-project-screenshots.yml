@@ -1,0 +1,69 @@
+name: Capture latest project screenshots
+
+on:
+  push:
+    branches:
+      - add-latest-projects
+    paths:
+      - .github/workflows/capture-latest-project-screenshots.yml
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: add-latest-projects
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright
+        run: |
+          npm init -y
+          npm install playwright
+          npx playwright install --with-deps chromium
+
+      - name: Capture screenshots
+        run: |
+          mkdir -p public/project-images
+          cat > capture.mjs <<'EOF'
+          import { chromium } from 'playwright';
+
+          const sites = [
+            ['mobile-store', 'https://ridwaan-mobile-store.vercel.app/'],
+            ['ramad-construction-real-estate', 'https://ramad-construction-real-estate.vercel.app/']
+          ];
+
+          const browser = await chromium.launch({ headless: true });
+          const page = await browser.newPage({
+            viewport: { width: 1600, height: 900 },
+            deviceScaleFactor: 1
+          });
+
+          for (const [name, url] of sites) {
+            await page.goto(url, { waitUntil: 'networkidle', timeout: 90000 });
+            await page.waitForTimeout(name === 'ramad-construction-real-estate' ? 6500 : 3500);
+            await page.screenshot({
+              path: `public/project-images/${name}.png`,
+              fullPage: false
+            });
+          }
+
+          await browser.close();
+          EOF
+          node capture.mjs
+
+      - name: Commit screenshots
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/project-images/mobile-store.png public/project-images/ramad-construction-real-estate.png
+          git commit -m "Add screenshots for latest projects"
+          git push origin add-latest-projects
