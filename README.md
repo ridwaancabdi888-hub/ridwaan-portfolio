@@ -60,6 +60,8 @@ npm run preview
 | `npm run preview`       | Preview the production build locally                       |
 | `npm run lint`          | Run Oxlint                                                  |
 | `npm run generate:resume` | Regenerate `public/resume/Ridwaan-Apdirahman-Mohamed-CV.pdf` from `scripts/generate-resume.mjs` |
+| `npm run process:avatar` | Regenerate the background-removed profile image from `src/assets/images/avatar-original.png` |
+| `npm run generate:covers` | Regenerate the project cover images using `scripts/generate-project-covers.mjs` |
 
 ## Project structure
 
