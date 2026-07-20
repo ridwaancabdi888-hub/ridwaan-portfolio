@@ -1,17 +1,12 @@
 name: Capture AI and Muuqal screenshots
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - .github/workflows/capture-ai-muuqal-screenshots.yml
   pull_request:
     branches:
       - master
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   capture:
@@ -19,13 +14,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: master
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Install Playwright
         run: |
@@ -34,7 +27,7 @@ jobs:
 
       - name: Capture live project screenshots
         run: |
-          mkdir -p public/project-images
+          mkdir -p captured-screenshots
           cat > capture-projects.mjs <<'EOF'
           import { chromium } from 'playwright';
 
@@ -64,7 +57,7 @@ jobs:
             });
             await page.waitForTimeout(project.wait);
             await page.screenshot({
-              path: `public/project-images/${project.name}.png`,
+              path: `captured-screenshots/${project.name}.png`,
               fullPage: false,
             });
           }
@@ -73,10 +66,9 @@ jobs:
           EOF
           node capture-projects.mjs
 
-      - name: Commit screenshots
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/project-images/ai-interview-coach.png public/project-images/muuqal-construction-real-estate.png
-          git commit -m "Add screenshots for AI Interview Coach and Muuqal"
-          git push origin master
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-muuqal-screenshots
+          path: captured-screenshots
+          if-no-files-found: error
