@@ -103,6 +103,27 @@ export const featuredProjects: LocalProject[] = [
     image: "/project-images/epharmacy.webp",
   },
   {
+    id: "ai-interview-coach",
+    title: "AI Interview Coach",
+    repo: "https://github.com/ridwaancabdi888-hub/AI-Interview-Coach",
+    category: "full-stack",
+    description:
+      "A production-oriented interview practice platform for students and job seekers with written and voice mock interviews, role-specific AI questions, per-answer coaching, final performance reports, progress analytics, authentication, user profiles and administration foundations.",
+    technologies: [
+      "Next.js 15",
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS 4",
+      "Supabase",
+      "PostgreSQL",
+      "OpenAI API",
+      "Vercel",
+    ],
+    status: "Major project",
+    featured: true,
+    image: "/project-images/ai-interview-coach.png",
+  },
+  {
     id: "ridwaan-mobile-store",
     title: "Ridwaan Mobile Store",
     repo: "https://github.com/ridwaancabdi888-hub/Mobile-Store",
@@ -140,20 +161,40 @@ export const featuredProjects: LocalProject[] = [
     featured: false,
     image: "https://ridwaan-project-screenshots.vercel.app/ramad-construction.jpg",
   },
+  {
+    id: "muuqal-construction-real-estate",
+    title: "Muuqal Construction & Real Estate",
+    repo: "https://github.com/ridwaancabdi888-hub/muuqal-construction-real-estateqmuuqal-construction-real-estateqq",
+    category: "frontend",
+    description:
+      "A cinematic, single-page construction and real-estate experience with scroll-driven visual storytelling, property and service sections, premium transitions and a responsive presentation designed for mobile and desktop visitors.",
+    technologies: [
+      "HTML5",
+      "CSS3",
+      "JavaScript",
+      "Scroll Animations",
+      "3D Visual Experience",
+      "Responsive Design",
+    ],
+    status: "Major project",
+    featured: false,
+    image: "/project-images/muuqal-construction-real-estate.png",
+  },
 ];
 
-/** Repositories shown from the live GitHub API in addition to curated work. */
+/**
+ * Only repositories that represent finished portfolio projects and have a
+ * verified public live URL are shown dynamically. Empty placeholders and HTML
+ * practice repositories are intentionally excluded.
+ */
 export const watchedRepoNames = [
   "ridwaan-portfolio",
-  "full-stack",
-  "RAMAD-CONSTRUCTION1",
   "python",
   "dalxiis",
-  "Scroll-site",
-  "RAMAD-CONSTRUCTION",
   "Mobile-Store",
   "ramad-construction-real-estate",
-  "new",
+  "AI-Interview-Coach",
+  "muuqal-construction-real-estateqmuuqal-construction-real-estateqq",
 ];
 
 /** Current screenshots used by website project cards. */
@@ -165,6 +206,9 @@ export const repoImageByName: Record<string, string> = {
     "https://ridwaan-project-screenshots.vercel.app/mobile-store.jpg",
   "ramad-construction-real-estate":
     "https://ridwaan-project-screenshots.vercel.app/ramad-construction.jpg",
+  "ai-interview-coach": "/project-images/ai-interview-coach.png",
+  "muuqal-construction-real-estateqmuuqal-construction-real-estateqq":
+    "/project-images/muuqal-construction-real-estate.png",
 };
 
 /** Verified live demos. These take priority over GitHub's optional homepage field. */
@@ -177,9 +221,13 @@ export const repoLiveUrlByName: Record<string, string> = {
     "https://ridwaan-portfolio.vercel.app/demos/university-hostel-login.html",
   "hargeisa-property-tax-system":
     "https://softwere-mangement-system.vercel.app/",
+  "ai-interview-coach":
+    "https://ai-interview-coach-sigma-bay.vercel.app/",
   "mobile-store": "https://ridwaan-mobile-store.vercel.app/",
   "ramad-construction-real-estate":
     "https://ramad-construction-real-estate.vercel.app/",
+  "muuqal-construction-real-estateqmuuqal-construction-real-estateqq":
+    "https://muuqal-construction-real-estate.vercel.app/",
 };
 
 export const githubApiEndpoint =
