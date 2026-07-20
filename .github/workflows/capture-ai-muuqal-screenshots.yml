@@ -6,6 +6,9 @@ on:
       - master
     paths:
       - .github/workflows/capture-ai-muuqal-screenshots.yml
+  pull_request:
+    branches:
+      - master
 
 permissions:
   contents: write
