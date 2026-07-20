@@ -1,0 +1,79 @@
+name: Capture AI and Muuqal screenshots
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/capture-ai-muuqal-screenshots.yml
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Capture live project screenshots
+        run: |
+          mkdir -p public/project-images
+          cat > capture-projects.mjs <<'EOF'
+          import { chromium } from 'playwright';
+
+          const projects = [
+            {
+              name: 'ai-interview-coach',
+              url: 'https://ai-interview-coach-sigma-bay.vercel.app/',
+              wait: 5000,
+            },
+            {
+              name: 'muuqal-construction-real-estate',
+              url: 'https://muuqal-construction-real-estate.vercel.app/',
+              wait: 8000,
+            },
+          ];
+
+          const browser = await chromium.launch({ headless: true });
+          const page = await browser.newPage({
+            viewport: { width: 1600, height: 900 },
+            deviceScaleFactor: 1,
+          });
+
+          for (const project of projects) {
+            await page.goto(project.url, {
+              waitUntil: 'domcontentloaded',
+              timeout: 90000,
+            });
+            await page.waitForTimeout(project.wait);
+            await page.screenshot({
+              path: `public/project-images/${project.name}.png`,
+              fullPage: false,
+            });
+          }
+
+          await browser.close();
+          EOF
+          node capture-projects.mjs
+
+      - name: Commit screenshots
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/project-images/ai-interview-coach.png public/project-images/muuqal-construction-real-estate.png
+          git commit -m "Add screenshots for AI Interview Coach and Muuqal"
+          git push origin master
