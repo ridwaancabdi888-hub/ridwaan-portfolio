@@ -4,16 +4,20 @@ on:
   pull_request:
     branches:
       - master
+    paths:
+      - .trigger-ai-muuqal-screenshots
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   capture:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout pull request branch
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -27,7 +31,7 @@ jobs:
 
       - name: Capture live project screenshots
         run: |
-          mkdir -p captured-screenshots
+          mkdir -p public/project-images
           cat > capture-projects.mjs <<'EOF'
           import { chromium } from 'playwright';
 
@@ -57,7 +61,7 @@ jobs:
             });
             await page.waitForTimeout(project.wait);
             await page.screenshot({
-              path: `captured-screenshots/${project.name}.png`,
+              path: `public/project-images/${project.name}.png`,
               fullPage: false,
             });
           }
@@ -66,9 +70,11 @@ jobs:
           EOF
           node capture-projects.mjs
 
-      - name: Upload screenshots
-        uses: actions/upload-artifact@v4
-        with:
-          name: ai-muuqal-screenshots
-          path: captured-screenshots
-          if-no-files-found: error
+      - name: Commit screenshots to pull request branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -f .trigger-ai-muuqal-screenshots
+          git add public/project-images/ai-interview-coach.png public/project-images/muuqal-construction-real-estate.png
+          git commit -m "Add screenshots for AI Interview Coach and Muuqal"
+          git push origin HEAD:${{ github.head_ref }}
