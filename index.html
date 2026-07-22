@@ -10,11 +10,13 @@
       content="Portfolio of Ridwaan Apdirahman Mohamed, a Full-Stack Web Developer, System Developer, Prompt Engineer and Software Engineering student based in Hargeisa, Somaliland."
     />
     <meta name="author" content="Ridwaan Apdirahman Mohamed" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta
       name="keywords"
       content="Ridwaan Apdirahman Mohamed, Full-Stack Developer, System Developer, Prompt Engineer, React Developer, Hargeisa, Somaliland, Gollis University"
     />
     <meta name="theme-color" content="#05070d" />
+    <meta name="color-scheme" content="dark light" />
 
     <link rel="canonical" href="https://ridwaan-portfolio.vercel.app/" />
 
@@ -28,6 +30,7 @@
     <meta property="og:url" content="https://ridwaan-portfolio.vercel.app/" />
     <meta property="og:site_name" content="Ridwaan Apdirahman Mohamed" />
     <meta property="og:image" content="https://avatars.githubusercontent.com/u/284196008?v=4" />
+    <meta property="og:image:alt" content="Portrait of Ridwaan Apdirahman Mohamed" />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter card -->
@@ -38,6 +41,7 @@
       content="Portfolio of Ridwaan Apdirahman Mohamed, a Full-Stack Web Developer, System Developer, Prompt Engineer and Software Engineering student based in Hargeisa, Somaliland."
     />
     <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/284196008?v=4" />
+    <meta name="twitter:image:alt" content="Portrait of Ridwaan Apdirahman Mohamed" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
@@ -52,24 +56,49 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Ridwaan Apdirahman Mohamed",
-        "url": "https://ridwaan-portfolio.vercel.app/",
-        "image": "https://avatars.githubusercontent.com/u/284196008?v=4",
-        "jobTitle": "Full-Stack Web Developer, System Developer & Prompt Engineer",
-        "email": "mailto:rfeeraari8@gmail.com",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Hargeisa",
-          "addressCountry": "Somaliland"
-        },
-        "alumniOf": {
-          "@type": "CollegeOrUniversity",
-          "name": "Gollis University"
-        },
-        "sameAs": [
-          "https://github.com/ridwaancabdi888-hub",
-          "https://www.linkedin.com/in/ridwancabdi-9a7770341/"
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://ridwaan-portfolio.vercel.app/#website",
+            "url": "https://ridwaan-portfolio.vercel.app/",
+            "name": "Ridwaan Apdirahman Mohamed — Portfolio",
+            "description": "The professional portfolio of Ridwaan Apdirahman Mohamed, a full-stack developer and Software Engineering student in Hargeisa, Somaliland.",
+            "inLanguage": "en",
+            "mainEntity": {
+              "@id": "https://ridwaan-portfolio.vercel.app/#person"
+            }
+          },
+          {
+            "@type": "Person",
+            "@id": "https://ridwaan-portfolio.vercel.app/#person",
+            "name": "Ridwaan Apdirahman Mohamed",
+            "url": "https://ridwaan-portfolio.vercel.app/",
+            "image": "https://avatars.githubusercontent.com/u/284196008?v=4",
+            "jobTitle": "Full-Stack Web Developer, System Developer & Prompt Engineer",
+            "email": "mailto:rfeeraari8@gmail.com",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Hargeisa",
+              "addressCountry": "Somaliland"
+            },
+            "alumniOf": {
+              "@type": "CollegeOrUniversity",
+              "name": "Gollis University"
+            },
+            "knowsAbout": [
+              "Full-stack web development",
+              "System development",
+              "React",
+              "TypeScript",
+              "REST APIs",
+              "Database design",
+              "Prompt engineering"
+            ],
+            "sameAs": [
+              "https://github.com/ridwaancabdi888-hub",
+              "https://www.linkedin.com/in/ridwancabdi-9a7770341/"
+            ]
+          }
         ]
       }
     </script>

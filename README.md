@@ -214,3 +214,21 @@ vercel
 - Respects `prefers-reduced-motion` (disables the rotating hero title and shortens all transitions).
 - Dark/light theme is stored in `localStorage` and falls back to the OS preference on first visit.
 - GitHub project data is cached client-side to avoid redundant API calls; loading states use skeleton cards instead of a blank screen.
+
+## SEO and Google Search Console
+
+Production SEO endpoints:
+
+- Canonical website: https://ridwaan-portfolio.vercel.app/
+- Sitemap: https://ridwaan-portfolio.vercel.app/sitemap.xml
+- Robots file: https://ridwaan-portfolio.vercel.app/robots.txt
+
+To add the portfolio to Google Search Console:
+
+1. Add the URL-prefix property `https://ridwaan-portfolio.vercel.app/` in [Google Search Console](https://search.google.com/search-console).
+2. Choose HTML tag verification and copy the verification token.
+3. Add `<meta name="google-site-verification" content="YOUR_TOKEN" />` inside the `<head>` of `index.html`, deploy, then select **Verify**.
+4. Open **Sitemaps** and submit `sitemap.xml`.
+5. Inspect the homepage in **URL Inspection** and select **Request Indexing** after the verified deployment is live.
+
+Google controls crawling, indexing and rankings, so no ranking position is guaranteed.
