@@ -96,7 +96,7 @@ export const featuredProjects: LocalProject[] = [
     repo: "https://github.com/ridwaancabdi888-hub/ridwaan-mobile-store",
     category: "mobile",
     description:
-      "A responsive smartphone shopping web app with a mobile-app interface, live search and filters, product variants, wishlist, persistent cart, promo codes, rewards levels, multilingual support, dark mode, checkout simulation and local payment-method options.",
+      "A polished mobile-first smartphone shopping PWA with customer authentication, product search and filters, cart, wishlist, rewards, checkout, order history, dark mode and an Admin Control Center for inventory, orders, payments and user roles.",
     technologies: ["HTML5", "CSS3", "JavaScript", "PWA", "LocalStorage", "Responsive Design"],
     status: "Major project",
     featured: false,
