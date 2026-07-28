@@ -18,7 +18,7 @@ Visit the deployed portfolio: **[ridwaan-portfolio.vercel.app](https://ridwaan-p
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) 20 or newer
+- [Node.js](https://nodejs.org/) 20.19+ (20.x) or 22.12+
 - npm (included with Node.js)
 - Git
 
