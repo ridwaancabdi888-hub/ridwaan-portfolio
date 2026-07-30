@@ -1,12 +1,12 @@
-import { useMemo, useState } from "react";
-import { AlertTriangle, DatabaseZap } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import { AlertTriangle, ArrowLeft, ArrowRight, DatabaseZap } from "lucide-react";
 import { projectCategories, type ProjectCategory } from "../data/projects";
 import { useGitHubProjects } from "../hooks/useGitHubProjects";
 import ProjectCard from "./ProjectCard";
 
 function SkeletonCard() {
   return (
-    <div className="animate-pulse overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]">
+    <div className="w-[80vw] max-w-[760px] shrink-0 animate-pulse overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]">
       <div className="h-44 w-full bg-[var(--color-surface-hover)]" />
       <div className="space-y-3 p-5">
         <div className="h-4 w-3/4 rounded bg-[var(--color-surface-hover)]" />
@@ -24,30 +24,63 @@ function SkeletonCard() {
 export default function GitHubProjects() {
   const { projects, loading, error, usingCache } = useGitHubProjects();
   const [filter, setFilter] = useState<ProjectCategory>("all");
+  const railRef = useRef<HTMLDivElement>(null);
 
   const filtered = useMemo(() => {
     if (filter === "all") return projects;
     return projects.filter((project) => project.category === filter);
   }, [projects, filter]);
 
+  const moveRail = (direction: -1 | 1) => {
+    const rail = railRef.current;
+    if (!rail) return;
+    rail.scrollBy({
+      left: direction * Math.min(rail.clientWidth * 0.82, 760),
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div>
-      <div className="mb-8 flex flex-wrap items-center justify-center gap-2">
-        {projectCategories.map((category) => (
+      <div className="mb-8 flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+        <div className="flex flex-wrap items-center gap-2">
+          {projectCategories.map((category) => (
+            <button
+              key={category.id}
+              type="button"
+              onClick={() => setFilter(category.id)}
+              aria-pressed={filter === category.id}
+              className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                filter === category.id
+                  ? "border-[var(--color-signal)] bg-[var(--color-signal)] text-[#10130b]"
+                  : "border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-hover)] hover:text-[var(--color-text-primary)]"
+              }`}
+            >
+              {category.label}
+            </button>
+          ))}
+        </div>
+        <div className="hidden items-center gap-2 sm:flex">
+          <span className="mr-2 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
+            Drag or use arrows
+          </span>
           <button
-            key={category.id}
             type="button"
-            onClick={() => setFilter(category.id)}
-            aria-pressed={filter === category.id}
-            className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
-              filter === category.id
-                ? "border-[var(--color-accent)] bg-[var(--color-accent)]/10 text-[var(--color-accent-cyan)]"
-                : "border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-hover)] hover:text-[var(--color-text-primary)]"
-            }`}
+            onClick={() => moveRail(-1)}
+            aria-label="Previous projects"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] transition hover:border-[var(--color-accent-cyan)] hover:text-[var(--color-accent-cyan)]"
           >
-            {category.label}
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           </button>
-        ))}
+          <button
+            type="button"
+            onClick={() => moveRail(1)}
+            aria-label="Next projects"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-signal)] text-[#10130b] transition hover:brightness-105"
+          >
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </button>
+        </div>
       </div>
 
       {error ? (
@@ -66,8 +99,8 @@ export default function GitHubProjects() {
       ) : null}
 
       {loading && projects.length === 0 ? (
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, i) => (
+        <div className="flex gap-5 overflow-hidden">
+          {Array.from({ length: 3 }).map((_, i) => (
             <SkeletonCard key={i} />
           ))}
         </div>
@@ -76,7 +109,10 @@ export default function GitHubProjects() {
           No projects in this category yet.
         </p>
       ) : (
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div
+          ref={railRef}
+          className="project-rail -mx-5 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-6 sm:-mx-8 sm:px-8"
+        >
           {filtered.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} />
           ))}

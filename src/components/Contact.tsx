@@ -160,9 +160,23 @@ export default function Contact() {
 
         <div className="grid gap-10 lg:grid-cols-5 lg:gap-8">
           <div className="lg:col-span-2">
-            <div className="mb-6 flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
-              <MapPin className="h-4 w-4 text-[var(--color-accent-cyan)]" aria-hidden="true" />
-              {personalInfo.location}
+            <div className="relative mb-5 h-56 overflow-hidden rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface)]">
+              <iframe
+                title="Map showing Hargeisa, Somaliland"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=43.96%2C9.48%2C44.15%2C9.62&layer=mapnik&marker=9.56%2C44.065"
+                loading="lazy"
+                className="map-frame h-full w-full border-0"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+              <a
+                href="https://www.openstreetmap.org/?mlat=9.56&mlon=44.065#map=12/9.56/44.065"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute bottom-3 left-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/70 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur"
+              >
+                <MapPin className="h-3.5 w-3.5 text-[var(--color-accent-cyan)]" aria-hidden="true" />
+                {personalInfo.location}
+              </a>
             </div>
             <ul className="space-y-3">
               {contactMethods.map(({ label, value, href, icon: Icon }) => (
@@ -191,7 +205,7 @@ export default function Contact() {
           <form
             onSubmit={handleSubmit}
             noValidate
-            className="space-y-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 lg:col-span-3"
+            className="space-y-4 rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 lg:col-span-3"
           >
             <div>
               <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-[var(--color-text-primary)]">
@@ -204,7 +218,7 @@ export default function Contact() {
                 onChange={handleChange("name")}
                 aria-invalid={Boolean(errors.name)}
                 aria-describedby={errors.name ? "name-error" : undefined}
-                className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent)]"
+                className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
                 placeholder="Your name"
               />
               {errors.name ? (
@@ -223,7 +237,7 @@ export default function Contact() {
                 onChange={handleChange("email")}
                 aria-invalid={Boolean(errors.email)}
                 aria-describedby={errors.email ? "email-error" : undefined}
-                className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent)]"
+                className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
                 placeholder="you@example.com"
               />
               {errors.email ? (
@@ -242,7 +256,7 @@ export default function Contact() {
                 onChange={handleChange("phone")}
                 aria-invalid={Boolean(errors.phone)}
                 aria-describedby={errors.phone ? "phone-error" : undefined}
-                className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent)]"
+                className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
                 placeholder="+252 6X XXX XXXX"
               />
               {errors.phone ? (
@@ -261,7 +275,7 @@ export default function Contact() {
                 onChange={handleChange("subject")}
                 aria-invalid={Boolean(errors.subject)}
                 aria-describedby={errors.subject ? "subject-error" : undefined}
-                className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent)]"
+                className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
                 placeholder="Project opportunity"
               />
               {errors.subject ? (
@@ -280,7 +294,7 @@ export default function Contact() {
                 onChange={handleChange("message")}
                 aria-invalid={Boolean(errors.message)}
                 aria-describedby={errors.message ? "message-error" : undefined}
-                className="w-full resize-none rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent)]"
+                className="w-full resize-none rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
                 placeholder="Tell me a bit about the opportunity or project..."
               />
               {errors.message ? (
@@ -291,7 +305,7 @@ export default function Contact() {
             <button
               type="submit"
               disabled={status.state === "submitting"}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-accent)] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--color-accent-soft)] disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--color-signal)] px-5 py-3 text-sm font-bold text-[#10130b] transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {status.state === "submitting" ? (
                 <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
