@@ -114,18 +114,6 @@ export const featuredProjects: LocalProject[] = [
     featured: false,
     image: "https://ridwaan-project-screenshots.vercel.app/ramad-construction.jpg",
   },
-  {
-    id: "muuqal-construction-real-estate",
-    title: "Muuqal Construction & Real Estate",
-    repo: "https://github.com/ridwaancabdi888-hub/muuqal-construction-real-estateqmuuqal-construction-real-estateqq",
-    category: "frontend",
-    description:
-      "A cinematic, single-page construction and real-estate experience with scroll-driven visual storytelling, property and service sections, premium transitions and a responsive presentation designed for mobile and desktop visitors.",
-    technologies: ["HTML5", "CSS3", "JavaScript", "Scroll Animations", "3D Visual Experience", "Responsive Design"],
-    status: "Major project",
-    featured: false,
-    image: "/project-images/muuqal-construction-real-estate.png",
-  },
 ];
 
 export const watchedRepoNames = [
@@ -136,7 +124,6 @@ export const watchedRepoNames = [
   "ramad-construction-real-estate",
   "AI-Interview-Coach",
   "kireeye",
-  "muuqal-construction-real-estateqmuuqal-construction-real-estateqq",
 ];
 
 export const repoImageByName: Record<string, string> = {
@@ -147,7 +134,6 @@ export const repoImageByName: Record<string, string> = {
   "ramad-construction-real-estate": "https://ridwaan-project-screenshots.vercel.app/ramad-construction.jpg",
   "ai-interview-coach": "/project-images/ai-interview-coach.png",
   kireeye: "/project-images/kireeye.png",
-  "muuqal-construction-real-estateqmuuqal-construction-real-estateqq": "/project-images/muuqal-construction-real-estate.png",
 };
 
 export const repoLiveUrlByName: Record<string, string> = {
@@ -161,7 +147,6 @@ export const repoLiveUrlByName: Record<string, string> = {
   kireeye: "https://kireeye-x2oq-ruddy.vercel.app/",
   "ridwaan-mobile-store": "https://ridwaan-mobile-store.vercel.app/",
   "ramad-construction-real-estate": "https://ramad-construction-real-estate.vercel.app/",
-  "muuqal-construction-real-estateqmuuqal-construction-real-estateqq": "https://muuqal-construction-real-estate.vercel.app/",
 };
 
 export const githubApiEndpoint =
