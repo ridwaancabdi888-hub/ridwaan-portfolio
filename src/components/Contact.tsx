@@ -161,13 +161,32 @@ export default function Contact() {
         <div className="grid gap-10 lg:grid-cols-5 lg:gap-8">
           <div className="lg:col-span-2">
             <div className="relative mb-5 h-56 overflow-hidden rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface)]">
-              <iframe
-                title="Map showing Hargeisa, Somaliland"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=43.96%2C9.48%2C44.15%2C9.62&layer=mapnik&marker=9.56%2C44.065"
-                loading="lazy"
-                className="map-frame h-full w-full border-0"
-              />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+              <svg
+                viewBox="0 0 640 360"
+                className="map-illustration absolute inset-0 h-full w-full"
+                aria-hidden="true"
+              >
+                <path d="M-30 80 C120 38 170 150 330 96 S520 40 690 92" />
+                <path d="M-20 260 C110 220 180 304 300 246 S520 150 690 236" />
+                <path d="M88 -20 C110 100 80 186 158 390" />
+                <path d="M430 -20 C384 96 478 180 440 390" />
+                <path d="M210 -20 C246 84 190 170 260 390" />
+                <path d="M-20 176 C120 206 210 126 370 180 S540 270 680 170" />
+                <circle cx="160" cy="112" r="6" />
+                <circle cx="490" cy="104" r="5" />
+                <circle cx="540" cy="278" r="5" />
+                <circle cx="112" cy="278" r="5" />
+              </svg>
+              <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center">
+                <span className="absolute h-16 w-16 animate-ping rounded-full bg-[var(--color-signal)]/10" />
+                <span className="relative inline-flex h-12 w-12 items-center justify-center rounded-full border border-[var(--color-signal)]/35 bg-[var(--color-bg-elevated)] text-[var(--color-accent-cyan)] shadow-xl shadow-black/25">
+                  <MapPin className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <span className="mt-2 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)]/90 px-3 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--color-text-primary)] backdrop-blur">
+                  Hargeisa city
+                </span>
+              </div>
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/38 via-transparent to-transparent" />
               <a
                 href="https://www.openstreetmap.org/?mlat=9.56&mlon=44.065#map=12/9.56/44.065"
                 target="_blank"

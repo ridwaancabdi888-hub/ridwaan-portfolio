@@ -153,14 +153,26 @@ body {
     0 0 0 1px color-mix(in srgb, var(--color-signal) 22%, transparent);
 }
 
-.map-frame {
-  filter: grayscale(1) invert(0.91) contrast(0.9);
-  opacity: 0.78;
+.map-illustration {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--color-signal) 7%, transparent), transparent 58%),
+    var(--color-bg);
 }
 
-:root.light .map-frame {
-  filter: grayscale(0.9);
-  opacity: 0.9;
+.map-illustration path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-text-muted) 38%, transparent);
+  stroke-width: 2;
+}
+
+.map-illustration path:nth-child(even) {
+  stroke-width: 4;
+  stroke: color-mix(in srgb, var(--color-accent-cyan) 18%, transparent);
+}
+
+.map-illustration circle {
+  fill: var(--color-signal);
+  opacity: 0.45;
 }
 
 @media (max-width: 1023px) {
