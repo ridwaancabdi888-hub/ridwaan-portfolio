@@ -1,25 +1,26 @@
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   ArrowDownRight,
   ArrowUpRight,
   CheckCircle2,
+  Code2,
   Download,
   Mail,
-  MessageCircle,
   Sparkles,
 } from "lucide-react";
 import profileCutout from "../assets/images/profile-cutout.png";
 import { personalInfo } from "../data/personalInfo";
-import { GithubIcon, LinkedinIcon } from "./icons/BrandIcons";
-
-const ROTATE_INTERVAL_MS = 2800;
+import { GithubIcon, LinkedinIcon, WhatsAppIcon } from "./icons/BrandIcons";
 
 const socialLinks = [
   { label: "GitHub", href: personalInfo.githubUrl, icon: GithubIcon },
   { label: "LinkedIn", href: personalInfo.linkedinUrl, icon: LinkedinIcon },
   { label: "Email", href: `mailto:${personalInfo.email}`, icon: Mail },
-  { label: "WhatsApp", href: personalInfo.whatsappLink, icon: MessageCircle },
+  {
+    label: `WhatsApp ${personalInfo.whatsappNumber}`,
+    href: personalInfo.whatsappLink,
+    icon: WhatsAppIcon,
+  },
 ];
 
 function scrollTo(id: string) {
@@ -27,16 +28,6 @@ function scrollTo(id: string) {
 }
 
 export default function Hero() {
-  const [titleIndex, setTitleIndex] = useState(0);
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const interval = window.setInterval(() => {
-      setTitleIndex((previous) => (previous + 1) % personalInfo.rotatingTitles.length);
-    }, ROTATE_INTERVAL_MS);
-    return () => window.clearInterval(interval);
-  }, []);
-
   return (
     <section
       id="home"
@@ -75,20 +66,18 @@ export default function Hero() {
               <span className="block text-[var(--color-accent-cyan)]">digital systems.</span>
             </h1>
 
-            <div className="mt-6 flex min-h-8 items-center gap-2 text-base font-semibold text-[var(--color-text-secondary)] sm:text-lg">
-              <span className="text-[var(--color-text-muted)]">Currently:</span>
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={titleIndex}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.25 }}
-                  className="text-[var(--color-text-primary)]"
-                >
-                  {personalInfo.rotatingTitles[titleIndex]}
-                </motion.span>
-              </AnimatePresence>
+            <div className="mt-6 inline-flex max-w-full items-center gap-3 rounded-2xl border border-[var(--color-signal)]/30 bg-[var(--color-surface)]/90 px-4 py-3 shadow-[0_0_32px_rgba(217,255,87,0.11)] backdrop-blur-xl sm:gap-4 sm:px-5">
+              <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[var(--color-signal)]/25 bg-[var(--color-signal)]/10 text-[var(--color-accent-cyan)]">
+                <Code2 className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <span className="min-w-0">
+                <span className="block font-mono text-[9px] font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)] sm:text-[10px]">
+                  Currently:
+                </span>
+                <span className="mt-0.5 block text-sm font-black leading-tight text-[var(--color-text-primary)] sm:text-base">
+                  Full-Stack &amp; System Developer
+                </span>
+              </span>
             </div>
 
             <p className="mt-5 max-w-2xl text-base leading-7 text-[var(--color-text-secondary)]">

@@ -15,8 +15,8 @@ export const personalInfo = {
   studyPeriod: "2023–2027",
   educationLevel: "Form 4 completed",
   email: "rfeeraari8@gmail.com",
-  whatsappNumber: "+252 63 4199277",
-  whatsappLink: "https://wa.me/252634199277",
+  whatsappNumber: "+252 63 7024922",
+  whatsappLink: "https://wa.me/252637024922",
   whatsappPrefilledMessage:
     "Hello Ridwaan, I visited your portfolio and would like to discuss a project or professional opportunity with you.",
   githubUsername: "ridwaancabdi888-hub",
