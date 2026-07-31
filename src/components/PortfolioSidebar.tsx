@@ -39,7 +39,7 @@ export default function PortfolioSidebar() {
 
   return (
     <>
-      <aside className="portfolio-sidebar no-print sticky top-5 hidden h-[calc(100dvh-2.5rem)] w-[270px] shrink-0 flex-col rounded-[1.65rem] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-4 shadow-2xl shadow-black/25 lg:flex">
+      <aside className="portfolio-sidebar no-print fixed left-5 top-5 z-50 hidden h-[calc(100dvh-2.5rem)] w-[270px] shrink-0 flex-col rounded-[1.65rem] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-4 shadow-2xl shadow-black/25 lg:flex">
         <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
           <div className="relative mx-auto h-24 w-24 overflow-hidden rounded-2xl border border-[var(--color-border-hover)] bg-[var(--color-bg)]">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(217,255,87,0.22),transparent_68%)]" />
@@ -131,6 +131,8 @@ export default function PortfolioSidebar() {
           </div>
         </div>
       </aside>
+
+      <div className="hidden w-[270px] shrink-0 lg:block" aria-hidden="true" />
 
       <header className="no-print fixed inset-x-3 top-3 z-50 flex h-14 items-center justify-between rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)]/92 px-3 shadow-xl shadow-black/20 backdrop-blur-xl lg:hidden">
         <a
