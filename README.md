@@ -94,7 +94,7 @@ Almost everything text-based lives in `src/data/`:
 - **`skills.ts`** — skill categories and the items inside each.
 - **`services.ts`** — the "What I Do" cards.
 - **`education.ts`** — education timeline entries and the "Practical Experience" groups.
-- **`projects.ts`** — the 3 hand-curated featured projects, plus `watchedRepoNames` (extra repos to look for on GitHub) and the GitHub API endpoint.
+- **`projects.ts`** — hand-curated local projects, plus `watchedRepoNames` (extra repos to look for on GitHub), image and live URL mappings, and the GitHub API endpoint.
 
 Edit these files and the site updates automatically — no other code changes needed for content edits.
 
@@ -108,7 +108,7 @@ https://api.github.com/users/ridwaancabdi888-hub/repos?sort=updated&per_page=100
 
 - No token is required (public data only).
 - Results are cached in `localStorage` for 30 minutes to avoid refetching on every visit.
-- The 3 featured projects in `projects.ts` are matched against live repo data by name, so they always show real stars / last-updated / language, merged with the hand-written description and tech list.
+- Hand-curated projects in `projects.ts` are matched against live repo data by name, so they show real stars / last-updated / language, merged with the hand-written description and tech list.
 - Any other repo in `watchedRepoNames` is shown using the raw GitHub data.
 - A repo is only treated as a real project if it has a description or a non-trivial size — otherwise it's placed under the "Work in Progress" filter instead of being invented as a finished project.
 - If the GitHub API is unreachable, the section falls back to the local project data in `projects.ts` and shows an inline notice — it never shows a blank section or fake data.
@@ -128,15 +128,13 @@ To swap in a new photo:
 
 ## Replacing project images
 
-No project screenshots have been confirmed yet, so `ProjectCard` renders a generated abstract thumbnail (clearly labeled "Generated thumbnail — no screenshot yet") for every project.
+Projects can use a committed screenshot, an external screenshot URL, or the generated fallback thumbnail. The Amber & Oak and Saffron & Slate entries, for example, use committed screenshots in `public/project-images/`.
 
-To add a real screenshot:
+To add or replace a screenshot:
 
-1. Save the image at the exact path referenced in `src/data/projects.ts`, e.g.:
-   - `public/project-images/hargeisa-tax-system.webp`
-   - `public/project-images/hostel-management.webp`
-   - `public/project-images/epharmacy.webp`
-2. That's it — `ProjectCard` tries to load `project.image` first and only falls back to the generated thumbnail if the file is missing, so real screenshots are picked up automatically.
+1. Save the image in `public/project-images/`, or choose a stable external image URL.
+2. Set the matching `image` or `repoImageByName` value in `src/data/projects.ts`.
+3. Confirm that `ProjectCard` loads it. Missing or failed images fall back to the generated thumbnail automatically.
 
 ## Updating the CV
 
