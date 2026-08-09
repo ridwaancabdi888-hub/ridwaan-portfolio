@@ -114,6 +114,30 @@ export const featuredProjects: LocalProject[] = [
     featured: false,
     image: "https://ridwaan-project-screenshots.vercel.app/ramad-construction.jpg",
   },
+  {
+    id: "amber-oak-restaurant",
+    title: "Amber & Oak — Smart Restaurant & Table Ordering System",
+    repo: "https://github.com/ridwaancabdi888-hub/amber-oak-restaurant-system",
+    category: "full-stack",
+    description:
+      "A production-ready restaurant management platform with role-based administration, table floor planning, menu and stock management, POS ordering and atomic checkout, a live kitchen display, receipts, sales history, analytics, settings and an installable responsive PWA.",
+    technologies: ["Python 3.12", "Flask", "PostgreSQL", "SQLite", "Jinja2", "JavaScript", "Chart.js", "PWA", "Vercel"],
+    status: "Major project",
+    featured: false,
+    image: "/project-images/amber-oak-restaurant.png",
+  },
+  {
+    id: "saffron-slate-restaurant",
+    title: "Saffron & Slate Restaurant OS",
+    repo: "https://github.com/ridwaancabdi888-hub/saffron-slate-restaurant-system",
+    category: "full-stack",
+    description:
+      "A production-ready restaurant operations and point-of-sale system for administrators, cashiers and kitchen staff, combining a live dashboard, responsive table floor plan, menu and stock management, secure checkout, kitchen workflow, receipts, order history, settings and a mobile-ready PWA.",
+    technologies: ["Python 3.12", "Flask", "PostgreSQL", "SQLite", "Jinja2", "JavaScript", "PWA", "Vercel"],
+    status: "Major project",
+    featured: false,
+    image: "/project-images/saffron-slate-restaurant.png",
+  },
 ];
 
 export const watchedRepoNames = [
@@ -124,6 +148,8 @@ export const watchedRepoNames = [
   "ramad-construction-real-estate",
   "AI-Interview-Coach",
   "kireeye",
+  "amber-oak-restaurant-system",
+  "saffron-slate-restaurant-system",
 ];
 
 export const repoImageByName: Record<string, string> = {
@@ -134,6 +160,8 @@ export const repoImageByName: Record<string, string> = {
   "ramad-construction-real-estate": "https://ridwaan-project-screenshots.vercel.app/ramad-construction.jpg",
   "ai-interview-coach": "/project-images/ai-interview-coach.png",
   kireeye: "/project-images/kireeye.png",
+  "amber-oak-restaurant-system": "/project-images/amber-oak-restaurant.png",
+  "saffron-slate-restaurant-system": "/project-images/saffron-slate-restaurant.png",
 };
 
 export const repoLiveUrlByName: Record<string, string> = {
@@ -147,6 +175,8 @@ export const repoLiveUrlByName: Record<string, string> = {
   kireeye: "https://kireeye-x2oq-ruddy.vercel.app/",
   "ridwaan-mobile-store": "https://ridwaan-mobile-store.vercel.app/",
   "ramad-construction-real-estate": "https://ramad-construction-real-estate.vercel.app/",
+  "amber-oak-restaurant-system": "https://amber-oak-restaurant.vercel.app/",
+  "saffron-slate-restaurant-system": "https://saffron-slate-restaurant.vercel.app/",
 };
 
 export const githubApiEndpoint =
