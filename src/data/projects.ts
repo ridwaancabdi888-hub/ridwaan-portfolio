@@ -170,7 +170,7 @@ export const repoLiveUrlByName: Record<string, string> = {
   dalxiis: "https://dalxiis-six.vercel.app/",
   "zaad-dahab-epharmacy": "https://zaad-dahab-epharmacy.vercel.app/",
   "university-hostel-management-system": "https://university-hostel-management-system.vercel.app/",
-  "hargeisa-property-tax-system": "https://hargeisa-property-tax-demo.vercel.app/",
+  "hargeisa-property-tax-system": "https://softwere-mangement-system.vercel.app/",
   "ai-interview-coach": "https://ai-interview-coach-sigma-bay.vercel.app/",
   kireeye: "https://kireeye-x2oq-ruddy.vercel.app/",
   "ridwaan-mobile-store": "https://ridwaan-mobile-store.vercel.app/",
