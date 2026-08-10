@@ -11,6 +11,7 @@ import {
 
 const CACHE_KEY = "github-projects-cache-v1";
 const CACHE_TTL_MS = 1000 * 60 * 30;
+const HARGEISA_TAX_LIVE_URL = "https://softwere-mangement-system.vercel.app/";
 
 export type GitHubRepo = {
   id: number;
@@ -56,6 +57,12 @@ function repoNameFromUrl(url: string) {
   return url.replace(/\/+$/, "").split("/").pop() ?? "";
 }
 
+function verifiedLiveUrlFor(repoName: string) {
+  const key = repoName.toLowerCase();
+  if (key === "hargeisa-property-tax-system") return HARGEISA_TAX_LIVE_URL;
+  return repoLiveUrlByName[key];
+}
+
 /** A repo counts as meaningful once it has a real description or a
  * non-trivial amount of code, so empty/placeholder repos fall back to WIP. */
 function isMeaningfulRepo(repo: GitHubRepo) {
@@ -99,7 +106,7 @@ function localOverrideToDisplay(project: LocalProject): DisplayProject {
     title: project.title,
     description: project.description,
     repoUrl: project.repo,
-    liveUrl: repoLiveUrlByName[repoName],
+    liveUrl: verifiedLiveUrlFor(repoName),
     technologies: project.technologies,
     category: project.category,
     status: project.status,
@@ -112,7 +119,7 @@ function localOverrideToDisplay(project: LocalProject): DisplayProject {
 function toDisplayProject(repo: GitHubRepo, override?: LocalProject): DisplayProject {
   const meaningful = isMeaningfulRepo(repo);
   const repoName = repo.name.toLowerCase();
-  const verifiedLiveUrl = repoLiveUrlByName[repoName];
+  const verifiedLiveUrl = verifiedLiveUrlFor(repoName);
   const hasRealHomepage = Boolean(repo.homepage && repo.homepage.trim().length > 0);
   const liveUrl = verifiedLiveUrl ?? (hasRealHomepage ? repo.homepage! : undefined);
 
