@@ -43,6 +43,18 @@ export const featuredProjects: LocalProject[] = [
     image: "/project-images/hargeisa-tax-system.webp",
   },
   {
+    id: "hargaisa-tax-small-1",
+    title: "Hargeisa Property Tax Management System — Beginner Edition",
+    repo: "https://github.com/ridwaancabdi888-hub/hargaisa-tax-small-1",
+    category: "system",
+    description:
+      "A beginner-friendly property tax management system designed for a university presentation, with administrator login, dashboard statistics, property add/edit/delete/search workflows, tax payment recording, reports and Leaflet GIS mapping. Local mode uses Node.js, Express and MySQL through XAMPP, while the public Vercel deployment uses an isolated browser demo so the showcase works without a hosted database server.",
+    technologies: ["HTML5", "CSS3", "Vanilla JavaScript", "Node.js", "Express.js", "MySQL", "Leaflet.js", "Vercel"],
+    status: "Major project",
+    featured: false,
+    image: "/project-images/hargaisa-tax-small-1.png",
+  },
+  {
     id: "hostel-management",
     title: "University Hostel Management System",
     repo: "https://github.com/ridwaancabdi888-hub/university-hostel-management-system",
@@ -150,6 +162,7 @@ export const watchedRepoNames = [
   "kireeye",
   "amber-oak-restaurant-system",
   "saffron-slate-restaurant-system",
+  "hargaisa-tax-small-1",
 ];
 
 export const repoImageByName: Record<string, string> = {
@@ -162,6 +175,7 @@ export const repoImageByName: Record<string, string> = {
   kireeye: "/project-images/kireeye.png",
   "amber-oak-restaurant-system": "/project-images/amber-oak-restaurant.png",
   "saffron-slate-restaurant-system": "/project-images/saffron-slate-restaurant.png",
+  "hargaisa-tax-small-1": "/project-images/hargaisa-tax-small-1.png",
 };
 
 export const repoLiveUrlByName: Record<string, string> = {
@@ -171,6 +185,7 @@ export const repoLiveUrlByName: Record<string, string> = {
   "zaad-dahab-epharmacy": "https://zaad-dahab-epharmacy.vercel.app/",
   "university-hostel-management-system": "https://university-hostel-management-system.vercel.app/",
   "hargeisa-property-tax-system": "https://hargaisa-text-property-system.vercel.app/",
+  "hargaisa-tax-small-1": "https://hargaisa-tax-small-1.vercel.app/",
   "ai-interview-coach": "https://ai-interview-coach-sigma-bay.vercel.app/",
   kireeye: "https://kireeye-x2oq-ruddy.vercel.app/",
   "ridwaan-mobile-store": "https://ridwaan-mobile-store.vercel.app/",
