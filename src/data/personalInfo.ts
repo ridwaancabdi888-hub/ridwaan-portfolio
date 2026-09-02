@@ -23,7 +23,7 @@ export const personalInfo = {
   githubUrl: "https://github.com/ridwaancabdi888-hub",
   linkedinUsername: "ridwancabdi-9a7770341",
   linkedinUrl: "https://www.linkedin.com/in/ridwancabdi-9a7770341/",
-  avatarUrl: "https://avatars.githubusercontent.com/u/284196008?v=4",
+  avatarUrl: "https://ridwaan-portfolio.vercel.app/profile.png",
   siteUrl: "https://ridwaan-portfolio.vercel.app/",
   resumePdfPath: "/resume/Ridwaan-Apdirahman-Mohamed-CV.pdf",
 

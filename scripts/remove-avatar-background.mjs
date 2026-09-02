@@ -17,6 +17,7 @@ const OUT = join(__dirname, "..", "src", "assets", "images", "profile-cutout.png
 // between get a smooth alpha ramp for anti-aliased edges.
 const INNER_THRESHOLD = 45;
 const OUTER_THRESHOLD = 100;
+const MAX_OUTPUT_WIDTH = 1000;
 
 function sampleBackgroundColor(data, info) {
   const { width, height, channels } = info;
@@ -69,7 +70,21 @@ async function main() {
     const b = data[idx + 2];
 
     const dist = Math.sqrt((r - bg.r) ** 2 + (g - bg.g) ** 2 + (b - bg.b) ** 2);
-    const alpha = smoothstep(INNER_THRESHOLD, OUTER_THRESHOLD, dist);
+    const sampledAlpha = smoothstep(INNER_THRESHOLD, OUTER_THRESHOLD, dist);
+
+    // Studio backdrops are often blue gradients rather than a perfectly
+    // flat color. Key bright, strongly blue pixels as well as pixels close
+    // to the sampled background so the lower part of the gradient is also
+    // removed without affecting the dark navy suit.
+    const brightnessAlpha = 1 - smoothstep(105, 165, b);
+    const redDifferenceAlpha = 1 - smoothstep(45, 105, b - r);
+    const greenDifferenceAlpha = 1 - smoothstep(20, 65, b - g);
+    const blueBackdropAlpha = Math.max(
+      brightnessAlpha,
+      redDifferenceAlpha,
+      greenDifferenceAlpha,
+    );
+    const alpha = Math.min(sampledAlpha, blueBackdropAlpha);
 
     // Spill suppression: at partially-transparent edge pixels, pull the
     // color away from the backdrop hue so hair edges don't keep a blue
@@ -107,7 +122,8 @@ async function main() {
 
   await sharp(out, { raw: { width, height, channels } })
     .extract({ left, top, width: cropWidth, height: cropHeight })
-    .png()
+    .resize({ width: MAX_OUTPUT_WIDTH, withoutEnlargement: true })
+    .png({ compressionLevel: 9, palette: true, quality: 92 })
     .toFile(OUT);
 
   console.log(`Wrote transparent cutout (${cropWidth}x${cropHeight}) to ${OUT}`);
