@@ -113,18 +113,23 @@ https://api.github.com/users/ridwaancabdi888-hub/repos?sort=updated&per_page=100
 - A repo is only treated as a real project if it has a description or a non-trivial size — otherwise it's placed under the "Work in Progress" filter instead of being invented as a finished project.
 - If the GitHub API is unreachable, the section falls back to the local project data in `projects.ts` and shows an inline notice — it never shows a blank section or fake data.
 
-## Updating the hero photo
+## Updating the profile images
 
-The Hero section shows a background-removed cutout (`src/assets/images/profile-cutout.png`) with a neon-green glow, generated from `src/assets/images/avatar-original.png` by `scripts/remove-avatar-background.mjs`. It works by chroma-keying a solid-color backdrop, so it works best with a photo shot against a flat, even background (a passport/ID-style photo, for example).
+The portfolio uses two profile-image outputs for different purposes:
 
-To swap in a new photo:
+- `src/assets/images/profile-cutout.png` is the background-removed image shown in the Hero section. It is generated from `src/assets/images/avatar-original.png` by `scripts/remove-avatar-background.mjs`.
+- `public/profile.png` is the public portrait used by Open Graph and Twitter previews, structured data, and `personalInfo.avatarUrl`.
 
-1. Replace `src/assets/images/avatar-original.png` with the new photo.
-2. Run:
+To keep both versions in sync when changing the photo:
+
+1. Replace `src/assets/images/avatar-original.png` with the new source photo.
+2. Regenerate the Hero cutout:
    ```bash
    npm run process:avatar
    ```
-3. Check the regenerated `profile-cutout.png` — if the edges pick up background color, adjust `INNER_THRESHOLD` / `OUTER_THRESHOLD` at the top of the script and re-run.
+3. Check the regenerated `profile-cutout.png`. If the edges retain background color, adjust `INNER_THRESHOLD` / `OUTER_THRESHOLD` at the top of the script and run the command again.
+4. Replace `public/profile.png` with the public portrait, keeping the filename unchanged so the existing metadata URLs remain valid.
+5. Run `npm run build`, then verify the Hero image and the deployed `/profile.png` URL.
 
 ## Replacing project images
 
