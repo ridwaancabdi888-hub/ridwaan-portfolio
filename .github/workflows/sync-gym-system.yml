@@ -1,0 +1,108 @@
+name: Sync GYM System project
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - '.github/workflows/sync-gym-system.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Verify live links
+        shell: bash
+        run: |
+          set -euo pipefail
+          urls=(
+            'https://ridwaan-portfolio.vercel.app/'
+            'https://learn-python-ridwaan.vercel.app/'
+            'https://dalxiis-six.vercel.app/'
+            'https://zaad-dahab-epharmacy.vercel.app/'
+            'https://university-hostel-management-system.vercel.app/'
+            'https://hargaisa-text-property-system.vercel.app/'
+            'https://hargaisa-tax-small-1.vercel.app/'
+            'https://ai-interview-coach-sigma-bay.vercel.app/'
+            'https://kireeye-x2oq-ruddy.vercel.app/'
+            'https://ridwaan-mobile-store.vercel.app/'
+            'https://ramad-construction-real-estate.vercel.app/'
+            'https://amber-oak-restaurant.vercel.app/'
+            'https://saffron-slate-restaurant.vercel.app/'
+            'https://gym-system-beta.vercel.app/'
+          )
+          for url in "${urls[@]}"; do
+            code=$(curl -L -sS -o /dev/null -w '%{http_code}' --max-time 30 "$url")
+            echo "$code $url"
+            case "$code" in
+              2*|3*) ;;
+              *) echo "Broken/protected URL: $url ($code)" >&2; exit 1 ;;
+            esac
+          done
+
+      - name: Capture current GYM System screenshot
+        shell: bash
+        run: |
+          mkdir -p public/project-images
+          npx --yes playwright@1.55.0 install chromium
+          npx --yes playwright@1.55.0 screenshot --viewport-size=1600,900 --wait-for-timeout=5000 https://gym-system-beta.vercel.app/ public/project-images/gym-system.png
+          test -s public/project-images/gym-system.png
+
+      - name: Add GYM System project card and mappings
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('src/data/projects.ts')
+          s = p.read_text()
+
+          if 'id: "gym-system"' not in s:
+              anchor = '  {\n    id: "hargaisa-tax-small-1",'
+              card = '''  {\n    id: "gym-system",\n    title: "Gym SaaS — Multi-Gym Management System",\n    repo: "https://github.com/ridwaancabdi888-hub/GYM-System",\n    category: "system",\n    description:\n      "A multi-tenant commercial gym management SaaS with Super Admin, Gym Admin, Staff and Member roles; isolated per-gym data, membership plans and subscriptions, payments, attendance with QR check-in, staff permissions and activity logs, announcements, reports and member self-service. The production deployment uses a React/Vite frontend, Express serverless API and Supabase PostgreSQL database.",\n    technologies: ["React", "Vite", "Tailwind CSS", "Node.js", "Express.js", "PostgreSQL", "Supabase", "JWT", "bcrypt", "Vercel"],\n    status: "Major project",\n    featured: true,\n    image: "/project-images/gym-system.png",\n  },\n'''
+              if anchor not in s:
+                  raise SystemExit('featuredProjects anchor not found')
+              s = s.replace(anchor, card + anchor, 1)
+
+          if '  "GYM-System",' not in s:
+              anchor = '  "hargaisa-tax-small-1",\n];'
+              if anchor not in s:
+                  raise SystemExit('watchedRepoNames anchor not found')
+              s = s.replace(anchor, '  "hargaisa-tax-small-1",\n  "GYM-System",\n];', 1)
+
+          if '  "gym-system": "/project-images/gym-system.png",' not in s:
+              anchor = '  "hargaisa-tax-small-1": "/project-images/hargaisa-tax-small-1.png",\n};'
+              if anchor not in s:
+                  raise SystemExit('repoImageByName anchor not found')
+              s = s.replace(anchor, '  "hargaisa-tax-small-1": "/project-images/hargaisa-tax-small-1.png",\n  "gym-system": "/project-images/gym-system.png",\n};', 1)
+
+          if '  "gym-system": "https://gym-system-beta.vercel.app/",' not in s:
+              anchor = '  "saffron-slate-restaurant-system": "https://saffron-slate-restaurant.vercel.app/",\n};'
+              if anchor not in s:
+                  raise SystemExit('repoLiveUrlByName anchor not found')
+              s = s.replace(anchor, '  "saffron-slate-restaurant-system": "https://saffron-slate-restaurant.vercel.app/",\n  "gym-system": "https://gym-system-beta.vercel.app/",\n};', 1)
+
+          p.write_text(s)
+          PY
+
+      - name: Build portfolio
+        shell: bash
+        run: |
+          npm ci
+          npm run build
+
+      - name: Commit synced project and remove temporary workflow
+        shell: bash
+        run: |
+          rm -f .github/workflows/sync-gym-system.yml
+          git config user.name 'Portfolio Sync Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add src/data/projects.ts public/project-images/gym-system.png .github/workflows/sync-gym-system.yml
+          git commit -m 'feat: add GYM System to portfolio'
+          git push origin master
