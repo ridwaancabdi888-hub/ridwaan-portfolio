@@ -72,7 +72,7 @@ export const featuredProjects: LocalProject[] = [
     repo: "https://github.com/ridwaancabdi888-hub/university-hostel-management-system",
     category: "system",
     description:
-      "A university hostel management system for room inventory, student registration, room allocation, billing, invoices, payments, maintenance requests, visitor management, reports and role-based administration. The live portfolio link opens the production application backed by a secure Supabase PostgreSQL database.",
+      "A university hostel management system for room inventory, student registration, room allocation, billing, invoices, payments, maintenance requests, visitor management, reports and role-based administration.",
     technologies: ["PHP", "Laravel 12", "Blade", "Tailwind CSS", "Alpine.js", "Vite", "PostgreSQL", "Supabase", "Vercel", "PHPUnit"],
     status: "Major project",
     featured: true,
