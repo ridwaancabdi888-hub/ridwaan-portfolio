@@ -43,6 +43,18 @@ export const featuredProjects: LocalProject[] = [
     image: "/project-images/hargeisa-tax-system.webp",
   },
   {
+    id: "gym-system",
+    title: "Gym SaaS — Multi-Gym Management System",
+    repo: "https://github.com/ridwaancabdi888-hub/GYM-System",
+    category: "system",
+    description:
+      "A multi-tenant commercial gym management SaaS with Super Admin, Gym Admin, Staff and Member roles; isolated per-gym data, membership plans and subscriptions, payments, attendance with QR check-in, staff permissions and activity logs, announcements, reports and member self-service. The production deployment uses a React/Vite frontend, Express serverless API and Supabase PostgreSQL database.",
+    technologies: ["React", "Vite", "Tailwind CSS", "Node.js", "Express.js", "PostgreSQL", "Supabase", "JWT", "bcrypt", "Vercel"],
+    status: "Major project",
+    featured: true,
+    image: "/project-images/gym-system.png",
+  },
+  {
     id: "hargaisa-tax-small-1",
     title: "Hargeisa Property Tax Management System — Beginner Edition",
     repo: "https://github.com/ridwaancabdi888-hub/hargaisa-tax-small-1",
@@ -163,6 +175,7 @@ export const watchedRepoNames = [
   "amber-oak-restaurant-system",
   "saffron-slate-restaurant-system",
   "hargaisa-tax-small-1",
+  "GYM-System",
 ];
 
 export const repoImageByName: Record<string, string> = {
@@ -176,6 +189,7 @@ export const repoImageByName: Record<string, string> = {
   "amber-oak-restaurant-system": "/project-images/amber-oak-restaurant.png",
   "saffron-slate-restaurant-system": "/project-images/saffron-slate-restaurant.png",
   "hargaisa-tax-small-1": "/project-images/hargaisa-tax-small-1.png",
+  "gym-system": "/project-images/gym-system.png",
 };
 
 export const repoLiveUrlByName: Record<string, string> = {
@@ -183,7 +197,6 @@ export const repoLiveUrlByName: Record<string, string> = {
   python: "https://learn-python-ridwaan.vercel.app/",
   dalxiis: "https://dalxiis-six.vercel.app/",
   "zaad-dahab-epharmacy": "https://zaad-dahab-epharmacy.vercel.app/",
-  "university-hostel-management-system": "https://university-hostel-management-system.vercel.app/",
   "hargeisa-property-tax-system": "https://hargaisa-text-property-system.vercel.app/",
   "hargaisa-tax-small-1": "https://hargaisa-tax-small-1.vercel.app/",
   "ai-interview-coach": "https://ai-interview-coach-sigma-bay.vercel.app/",
@@ -192,6 +205,7 @@ export const repoLiveUrlByName: Record<string, string> = {
   "ramad-construction-real-estate": "https://ramad-construction-real-estate.vercel.app/",
   "amber-oak-restaurant-system": "https://amber-oak-restaurant.vercel.app/",
   "saffron-slate-restaurant-system": "https://saffron-slate-restaurant.vercel.app/",
+  "gym-system": "https://gym-system-beta.vercel.app/",
 };
 
 export const githubApiEndpoint =
