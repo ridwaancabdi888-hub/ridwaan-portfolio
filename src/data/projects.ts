@@ -55,6 +55,18 @@ export const featuredProjects: LocalProject[] = [
     image: "/project-images/gym-system.png",
   },
   {
+    id: "school-management-system",
+    title: "School Management System — Multi-Tenant SaaS",
+    repo: "https://github.com/ridwaancabdi888-hub/school-management-system",
+    category: "system",
+    description:
+      "A production multi-tenant school management SaaS where a Platform Super Admin manages schools and each School Admin operates an isolated tenant. It covers students, teachers, classes and subjects, attendance, fees and payments, exams and results, announcements, reports and account management, with JWT role-based access and server-side tenant isolation.",
+    technologies: ["HTML5", "CSS3", "JavaScript", "Node.js", "Express.js", "PostgreSQL", "Supabase", "Supabase Storage", "JWT", "Vercel"],
+    status: "Major project",
+    featured: true,
+    image: "https://image.thum.io/get/width/1600/crop/900/https://school-management-system-lyart-iota.vercel.app/",
+  },
+  {
     id: "hargaisa-tax-small-1",
     title: "Hargeisa Property Tax Management System — Beginner Edition",
     repo: "https://github.com/ridwaancabdi888-hub/hargaisa-tax-small-1",
@@ -176,6 +188,7 @@ export const watchedRepoNames = [
   "saffron-slate-restaurant-system",
   "hargaisa-tax-small-1",
   "GYM-System",
+  "school-management-system",
 ];
 
 export const repoImageByName: Record<string, string> = {
@@ -190,6 +203,7 @@ export const repoImageByName: Record<string, string> = {
   "saffron-slate-restaurant-system": "/project-images/saffron-slate-restaurant.png",
   "hargaisa-tax-small-1": "/project-images/hargaisa-tax-small-1.png",
   "gym-system": "/project-images/gym-system.png",
+  "school-management-system": "https://image.thum.io/get/width/1600/crop/900/https://school-management-system-lyart-iota.vercel.app/",
 };
 
 export const repoLiveUrlByName: Record<string, string> = {
@@ -206,6 +220,7 @@ export const repoLiveUrlByName: Record<string, string> = {
   "amber-oak-restaurant-system": "https://amber-oak-restaurant.vercel.app/",
   "saffron-slate-restaurant-system": "https://saffron-slate-restaurant.vercel.app/",
   "gym-system": "https://gym-system-beta.vercel.app/",
+  "school-management-system": "https://school-management-system-lyart-iota.vercel.app/",
 };
 
 export const githubApiEndpoint =
