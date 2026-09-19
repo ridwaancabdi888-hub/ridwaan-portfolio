@@ -9,8 +9,17 @@ export default function Services() {
         <SectionHeading
           eyebrow="What I Do"
           title="Services"
-          subtitle="Practical development work across the full stack — from interfaces to databases, plus structured prompt engineering for AI-assisted builds."
+          subtitle="Website and system development for businesses and organizations in Hargeisa, Somaliland and Somalia — from interfaces and REST APIs to databases, plus structured prompt engineering for AI-assisted builds."
         />
+
+        <p
+          lang="so"
+          className="-mt-6 mb-12 mx-auto max-w-2xl text-center text-sm leading-relaxed text-[var(--color-text-muted)] md:-mt-10 md:mb-16"
+        >
+          Waxaan dhisaa websites, nidaamyo maamul (management systems), APIs iyo database-yo
+          loogu talagalay ganacsiyada, iskuullada iyo hay&apos;adaha Hargeisa, Somaliland iyo
+          Soomaaliya.
+        </p>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => {

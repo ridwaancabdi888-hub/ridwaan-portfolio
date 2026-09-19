@@ -9,7 +9,7 @@ import {
   Sparkles,
   UserRound,
 } from "lucide-react";
-import profileCutout from "../assets/images/profile-cutout.png";
+import profileCutout from "../assets/images/profile-cutout.webp";
 import { personalInfo } from "../data/personalInfo";
 import { useActiveSection } from "../hooks/useActiveSection";
 import { GithubIcon, LinkedinIcon } from "./icons/BrandIcons";
@@ -46,13 +46,16 @@ export default function PortfolioSidebar() {
             <img
               src={profileCutout}
               alt={`Portrait of ${personalInfo.fullName}`}
+              width={96}
+              height={96}
+              decoding="async"
               className="relative h-full w-full object-contain object-bottom"
             />
           </div>
           <div className="mt-4 text-center">
-            <h2 className="text-base font-bold text-[var(--color-text-primary)]">
+            <p className="text-base font-bold text-[var(--color-text-primary)]">
               Ridwaan Mohamed
-            </h2>
+            </p>
             <p className="mt-1 text-xs text-[var(--color-text-secondary)]">
               Full-Stack Developer
             </p>

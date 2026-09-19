@@ -52,7 +52,7 @@ export const featuredProjects: LocalProject[] = [
     technologies: ["React", "Vite", "Tailwind CSS", "Node.js", "Express.js", "PostgreSQL", "Supabase", "JWT", "bcrypt", "Vercel"],
     status: "Major project",
     featured: true,
-    image: "/project-images/gym-system.png",
+    image: "/project-images/gym-system.webp",
   },
   {
     id: "school-management-system",
@@ -76,7 +76,6 @@ export const featuredProjects: LocalProject[] = [
     technologies: ["HTML5", "CSS3", "Vanilla JavaScript", "Node.js", "Express.js", "MySQL", "Leaflet.js", "Vercel"],
     status: "Major project",
     featured: false,
-    image: "/project-images/hargaisa-tax-small-1.png",
   },
   {
     id: "hostel-management",
@@ -112,7 +111,7 @@ export const featuredProjects: LocalProject[] = [
     technologies: ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS 4", "Supabase", "PostgreSQL", "OpenAI API", "Vercel"],
     status: "Major project",
     featured: true,
-    image: "/project-images/ai-interview-coach.png",
+    image: "/project-images/ai-interview-coach.webp",
   },
   {
     id: "kireeye",
@@ -124,7 +123,7 @@ export const featuredProjects: LocalProject[] = [
     technologies: ["Next.js 15", "TypeScript", "Responsive UI", "Supabase", "PostgreSQL", "PWA", "Vercel"],
     status: "Major project",
     featured: true,
-    image: "/project-images/kireeye.png",
+    image: "/project-images/kireeye.webp",
   },
   {
     id: "ridwaan-mobile-store",
@@ -136,7 +135,7 @@ export const featuredProjects: LocalProject[] = [
     technologies: ["HTML5", "CSS3", "JavaScript", "PWA", "LocalStorage", "Responsive Design"],
     status: "Major project",
     featured: false,
-    image: "/project-images/ridwaan-mobile-store.png",
+    image: "/project-images/ridwaan-mobile-store.webp",
   },
   {
     id: "ramad-construction-real-estate",
@@ -160,7 +159,7 @@ export const featuredProjects: LocalProject[] = [
     technologies: ["Python 3.12", "Flask", "PostgreSQL", "SQLite", "Jinja2", "JavaScript", "Chart.js", "PWA", "Vercel"],
     status: "Major project",
     featured: false,
-    image: "/project-images/amber-oak-restaurant.png",
+    image: "/project-images/amber-oak-restaurant.webp",
   },
   {
     id: "saffron-slate-restaurant",
@@ -172,7 +171,7 @@ export const featuredProjects: LocalProject[] = [
     technologies: ["Python 3.12", "Flask", "PostgreSQL", "SQLite", "Jinja2", "JavaScript", "PWA", "Vercel"],
     status: "Major project",
     featured: false,
-    image: "/project-images/saffron-slate-restaurant.png",
+    image: "/project-images/saffron-slate-restaurant.webp",
   },
 ];
 
@@ -192,17 +191,16 @@ export const watchedRepoNames = [
 ];
 
 export const repoImageByName: Record<string, string> = {
-  "ridwaan-portfolio": "/project-images/ridwaan-portfolio.png",
-  python: "/project-images/python.png",
-  dalxiis: "/project-images/dalxiis.png",
-  "ridwaan-mobile-store": "/project-images/ridwaan-mobile-store.png",
+  "ridwaan-portfolio": "/project-images/ridwaan-portfolio.webp",
+  python: "/project-images/python.webp",
+  dalxiis: "/project-images/dalxiis.webp",
+  "ridwaan-mobile-store": "/project-images/ridwaan-mobile-store.webp",
   "ramad-construction-real-estate": "https://ridwaan-project-screenshots.vercel.app/ramad-construction.jpg",
-  "ai-interview-coach": "/project-images/ai-interview-coach.png",
-  kireeye: "/project-images/kireeye.png",
-  "amber-oak-restaurant-system": "/project-images/amber-oak-restaurant.png",
-  "saffron-slate-restaurant-system": "/project-images/saffron-slate-restaurant.png",
-  "hargaisa-tax-small-1": "/project-images/hargaisa-tax-small-1.png",
-  "gym-system": "/project-images/gym-system.png",
+  "ai-interview-coach": "/project-images/ai-interview-coach.webp",
+  kireeye: "/project-images/kireeye.webp",
+  "amber-oak-restaurant-system": "/project-images/amber-oak-restaurant.webp",
+  "saffron-slate-restaurant-system": "/project-images/saffron-slate-restaurant.webp",
+  "gym-system": "/project-images/gym-system.webp",
   "school-management-system": "https://image.thum.io/get/width/1600/crop/900/https://school-management-system-lyart-iota.vercel.app/",
 };
 

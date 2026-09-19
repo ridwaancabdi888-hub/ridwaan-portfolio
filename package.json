@@ -5,12 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "node scripts/optimize-images.mjs && tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs",
     "lint": "oxlint",
     "preview": "vite preview",
     "generate:resume": "node scripts/generate-resume.mjs",
     "process:avatar": "node scripts/remove-avatar-background.mjs",
-    "generate:covers": "node scripts/generate-project-covers.mjs"
+    "generate:covers": "node scripts/generate-project-covers.mjs",
+    "predev": "node scripts/optimize-images.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.42.2",

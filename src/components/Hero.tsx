@@ -8,7 +8,7 @@ import {
   Mail,
   Sparkles,
 } from "lucide-react";
-import profileCutout from "../assets/images/profile-cutout.png";
+import profileCutout from "../assets/images/profile-cutout.webp";
 import { personalInfo } from "../data/personalInfo";
 import { GithubIcon, LinkedinIcon, WhatsAppIcon } from "./icons/BrandIcons";
 
@@ -58,12 +58,14 @@ export default function Hero() {
               </span>
             </div>
 
-            <p className="font-mono text-xs uppercase tracking-[0.24em] text-[var(--color-text-muted)]">
-              Hello, I&apos;m Ridwaan
-            </p>
-            <h1 className="mt-4 max-w-3xl text-[clamp(3.25rem,7vw,7.2rem)] font-black uppercase leading-[0.83] tracking-[-0.07em] text-[var(--color-text-primary)]">
-              Building
-              <span className="block text-[var(--color-accent-cyan)]">digital systems.</span>
+            <h1 className="max-w-3xl text-[var(--color-text-primary)]">
+              <span className="block font-mono text-xs font-normal uppercase leading-5 tracking-[0.24em] text-[var(--color-text-muted)]">
+                Ridwaan Apdirahman Mohamed — Full-Stack Web Developer in Hargeisa, Somaliland
+              </span>
+              <span className="mt-4 block text-[clamp(3.25rem,7vw,7.2rem)] font-black uppercase leading-[0.83] tracking-[-0.07em]">
+                Building
+                <span className="block text-[var(--color-accent-cyan)]">digital systems.</span>
+              </span>
             </h1>
 
             <div className="mt-6 inline-flex max-w-full items-center gap-3 rounded-2xl border border-[var(--color-signal)]/30 bg-[var(--color-surface)]/90 px-4 py-3 shadow-[0_0_32px_rgba(217,255,87,0.11)] backdrop-blur-xl sm:gap-4 sm:px-5">
