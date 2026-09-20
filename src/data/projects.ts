@@ -67,6 +67,30 @@ export const featuredProjects: LocalProject[] = [
     image: "https://image.thum.io/get/width/1600/crop/900/https://school-management-system-lyart-iota.vercel.app/",
   },
   {
+    id: "sandbox-system",
+    title: "SANDBOX Cafeteria Management System",
+    repo: "https://github.com/ridwaancabdi888-hub/SANDBOX-SYSTEM",
+    category: "system",
+    description:
+      "A production-oriented cafeteria POS and operations system with QR seat ordering, kitchen display, waiter hand-off, cashier POS and payments, thermal receipt printing architecture, ingredient-level inventory, role-based administration, realtime order updates and an installable PWA experience.",
+    technologies: ["Next.js 16", "TypeScript", "Tailwind CSS 4", "Supabase", "PostgreSQL", "Supabase Realtime", "PWA", "Vercel"],
+    status: "Major project",
+    featured: true,
+    image: "https://image.thum.io/get/width/1600/crop/900/https://sandbox-cafeteria.vercel.app/",
+  },
+  {
+    id: "maareynta-lacagta",
+    title: "Maareynta Lacagta — Multi-Branch Deposit Management",
+    repo: "https://github.com/ridwaancabdi888-hub/debosit-mony",
+    category: "full-stack",
+    description:
+      "A bilingual Somali/English multi-branch deposit management system with Super Admin and branch Admin roles, strict tenant isolation, customer and deposit tracking, due-date countdowns, paid-status workflows, broker commission accounting and exact integer-cent financial calculations backed by server-enforced access controls.",
+    technologies: ["Next.js 16", "TypeScript", "Tailwind CSS 4", "Supabase", "PostgreSQL", "Server Actions", "Vercel"],
+    status: "Major project",
+    featured: true,
+    image: "https://image.thum.io/get/width/1600/crop/900/https://maareynta-lacagta.vercel.app/",
+  },
+  {
     id: "hargaisa-tax-small-1",
     title: "Hargeisa Property Tax Management System — Beginner Edition",
     repo: "https://github.com/ridwaancabdi888-hub/hargaisa-tax-small-1",
@@ -188,6 +212,8 @@ export const watchedRepoNames = [
   "hargaisa-tax-small-1",
   "GYM-System",
   "school-management-system",
+  "SANDBOX-SYSTEM",
+  "debosit-mony",
 ];
 
 export const repoImageByName: Record<string, string> = {
@@ -202,6 +228,8 @@ export const repoImageByName: Record<string, string> = {
   "saffron-slate-restaurant-system": "/project-images/saffron-slate-restaurant.webp",
   "gym-system": "/project-images/gym-system.webp",
   "school-management-system": "https://image.thum.io/get/width/1600/crop/900/https://school-management-system-lyart-iota.vercel.app/",
+  "sandbox-system": "https://image.thum.io/get/width/1600/crop/900/https://sandbox-cafeteria.vercel.app/",
+  "debosit-mony": "https://image.thum.io/get/width/1600/crop/900/https://maareynta-lacagta.vercel.app/",
 };
 
 export const repoLiveUrlByName: Record<string, string> = {
@@ -219,6 +247,8 @@ export const repoLiveUrlByName: Record<string, string> = {
   "saffron-slate-restaurant-system": "https://saffron-slate-restaurant.vercel.app/",
   "gym-system": "https://gym-system-beta.vercel.app/",
   "school-management-system": "https://school-management-system-lyart-iota.vercel.app/",
+  "sandbox-system": "https://sandbox-cafeteria.vercel.app/",
+  "debosit-mony": "https://maareynta-lacagta.vercel.app/",
 };
 
 export const githubApiEndpoint =
