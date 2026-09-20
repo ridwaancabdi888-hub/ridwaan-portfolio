@@ -278,13 +278,13 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.45, delay: (index % 4) * 0.06 }}
-        className="project-card group flex w-[88vw] max-w-[760px] shrink-0 snap-center flex-col overflow-hidden rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] transition duration-300 hover:-translate-y-1 hover:border-[var(--color-border-hover)] sm:w-[80vw] lg:w-[68vw] xl:grid xl:grid-cols-[1.08fr_0.92fr]"
+        className="project-card group flex w-full max-w-[760px] shrink-0 snap-start flex-col overflow-hidden rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] transition duration-300 hover:-translate-y-1 hover:border-[var(--color-border-hover)] sm:w-[80vw] sm:snap-center lg:w-[68vw] xl:grid xl:grid-cols-[1.08fr_0.92fr]"
       >
         <button
           type="button"
           onClick={() => setModalOpen(true)}
           aria-label={`Open details for ${project.title}`}
-          className="relative min-h-64 overflow-hidden bg-[var(--color-bg)] text-left xl:min-h-[430px]"
+          className="relative min-h-52 overflow-hidden bg-[var(--color-bg)] text-left sm:min-h-64 xl:min-h-[430px]"
         >
           <ProjectVisual
             project={project}
@@ -317,7 +317,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             <h3 className="mt-4 text-2xl font-black tracking-tight text-[var(--color-text-primary)]">
               {project.title}
             </h3>
-            <p className="mt-3 line-clamp-5 text-sm leading-6 text-[var(--color-text-secondary)]">
+            <p className="mt-3 line-clamp-3 text-sm leading-6 text-[var(--color-text-secondary)] sm:line-clamp-5">
               {project.description}
             </p>
             <div className="mt-5 flex flex-wrap gap-1.5">
@@ -335,7 +335,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
           <button
             type="button"
             onClick={() => setModalOpen(true)}
-            className="mt-8 inline-flex w-full items-center justify-between rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-3 text-sm font-semibold text-[var(--color-text-primary)] transition hover:border-[var(--color-accent-cyan)]"
+            className="mt-6 inline-flex w-full items-center justify-between rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-3 text-sm font-semibold text-[var(--color-text-primary)] transition hover:border-[var(--color-accent-cyan)] sm:mt-8"
           >
             <span className="inline-flex items-center gap-2">
               <Code2 className="h-4 w-4 text-[var(--color-accent-cyan)]" aria-hidden="true" />
