@@ -185,6 +185,8 @@ function mergeRepos(repos: GitHubRepo[]): DisplayProject[] {
   const all = [...liveProjects, ...missingFeatured];
 
   return all.sort((a, b) => {
+    if (a.id === "gym-system" && b.id !== "gym-system") return -1;
+    if (b.id === "gym-system" && a.id !== "gym-system") return 1;
     if (a.featured !== b.featured) return a.featured ? -1 : 1;
     if (a.status !== b.status) return a.status === "Major project" ? -1 : 1;
     return (b.stars ?? 0) - (a.stars ?? 0);
@@ -192,7 +194,13 @@ function mergeRepos(repos: GitHubRepo[]): DisplayProject[] {
 }
 
 function localFallback(): DisplayProject[] {
-  return featuredProjects.map(localOverrideToDisplay);
+  return featuredProjects
+    .map(localOverrideToDisplay)
+    .sort((a, b) => {
+      if (a.id === "gym-system" && b.id !== "gym-system") return -1;
+      if (b.id === "gym-system" && a.id !== "gym-system") return 1;
+      return 0;
+    });
 }
 
 export function useGitHubProjects() {
