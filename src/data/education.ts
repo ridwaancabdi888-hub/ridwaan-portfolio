@@ -14,7 +14,7 @@ export const educationTimeline: EducationEntry[] = [
     degree: "Bachelor of Software Engineering",
     institution: "Gollis University",
     location: "Hargeisa, Somaliland",
-    period: "2023–2027",
+    period: "2024–2027",
     areas: [
       "Web Development",
       "Programming",
