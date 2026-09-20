@@ -49,7 +49,7 @@ export default function PortfolioSidebar() {
               width={96}
               height={96}
               decoding="async"
-              className="relative h-full w-full object-contain object-bottom"
+              className="relative h-full w-full scale-[0.88] object-contain object-bottom"
             />
           </div>
           <div className="mt-4 text-center">
