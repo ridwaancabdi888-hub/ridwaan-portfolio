@@ -148,12 +148,12 @@ export default function Hero() {
                   height={620}
                   loading="eager"
                   fetchPriority="high"
-                  className="absolute inset-x-0 bottom-0 mx-auto h-[88%] w-auto object-contain object-bottom"
+                  className="absolute inset-x-0 bottom-20 mx-auto h-[72%] w-auto object-contain object-bottom sm:bottom-16 sm:h-[76%]"
                   style={{
                     filter:
                       "drop-shadow(0 0 20px rgba(217,255,87,0.26)) drop-shadow(0 28px 50px rgba(0,0,0,0.5))",
-                    maskImage: "linear-gradient(to bottom, black 78%, transparent 99%)",
-                    WebkitMaskImage: "linear-gradient(to bottom, black 78%, transparent 99%)",
+                    maskImage: "linear-gradient(to bottom, black 88%, transparent 100%)",
+                    WebkitMaskImage: "linear-gradient(to bottom, black 88%, transparent 100%)",
                   }}
                 />
 
