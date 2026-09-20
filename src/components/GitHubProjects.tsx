@@ -109,14 +109,20 @@ export default function GitHubProjects() {
           No projects in this category yet.
         </p>
       ) : (
-        <div
-          ref={railRef}
-          className="project-rail -mx-5 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-6 sm:-mx-8 sm:px-8"
-        >
-          {filtered.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
-        </div>
+        <>
+          <p className="mb-4 flex items-center gap-2 text-xs font-medium text-[var(--color-text-muted)] sm:hidden">
+            <ArrowRight className="h-3.5 w-3.5 rotate-90 text-[var(--color-accent-cyan)]" aria-hidden="true" />
+            Scroll down to explore {filtered.length} projects
+          </p>
+          <div
+            ref={railRef}
+            className="project-rail flex flex-col gap-5 pb-6 sm:-mx-8 sm:flex-row sm:snap-x sm:snap-mandatory sm:overflow-x-auto sm:px-8"
+          >
+            {filtered.map((project, index) => (
+              <ProjectCard key={project.id} project={project} index={index} />
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
