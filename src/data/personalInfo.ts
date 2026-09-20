@@ -12,7 +12,7 @@ export const personalInfo = {
   location: "Hargeisa, Somaliland",
   university: "Gollis University",
   degree: "Bachelor of Software Engineering",
-  studyPeriod: "2023–2027",
+  studyPeriod: "2024–2027",
   educationLevel: "Form 4 completed",
   email: "rfeeraari8@gmail.com",
   whatsappNumber: "+252 63 7024922",
@@ -41,7 +41,7 @@ I build modern websites, database-driven management systems, REST APIs and pract
 I enjoy transforming real-world problems into organized, secure and user-friendly digital systems. My goal is to continue developing my technical skills, contribute to meaningful projects and build reliable software solutions for organizations and communities.`,
 
   aboutStats: [
-    { label: "Major full-stack projects", value: "3+" },
+    { label: "Completed & active projects", value: "14+" },
     { label: "Currently", value: "Software Engineering student" },
     { label: "Graduation target", value: "2027" },
   ],
@@ -50,7 +50,7 @@ I enjoy transforming real-world problems into organized, secure and user-friendl
     { label: "Location", value: "Hargeisa, Somaliland" },
     { label: "Education", value: "Bachelor of Software Engineering" },
     { label: "University", value: "Gollis University" },
-    { label: "Study period", value: "2023–2027" },
+    { label: "Study period", value: "2024–2027" },
     { label: "Skill level", value: "Advanced" },
     {
       label: "Specializations",
