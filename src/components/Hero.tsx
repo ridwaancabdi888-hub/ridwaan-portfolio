@@ -189,7 +189,7 @@ export default function Hero() {
             </div>
 
             <div className="absolute -right-4 top-1/3 hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)]/90 p-3 shadow-xl backdrop-blur-xl sm:block">
-              <p className="text-2xl font-black text-[var(--color-accent-cyan)]">9+</p>
+              <p className="text-2xl font-black text-[var(--color-accent-cyan)]">14+</p>
               <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)]">
                 Projects
               </p>
