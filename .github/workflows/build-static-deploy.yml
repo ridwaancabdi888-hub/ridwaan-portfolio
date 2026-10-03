@@ -6,9 +6,10 @@ on:
       - master
   push:
     branches:
+      - master
       - prepare-vercel-static-deploy
-    paths:
-      - .github/workflows/build-static-deploy.yml
+    paths-ignore:
+      - vercel-static/**
 
 permissions:
   contents: write
@@ -26,9 +27,10 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install and build
+      - name: Install, lint and build
         run: |
           npm ci
+          npm run lint
           npm run build
 
       - name: Upload production build
@@ -39,7 +41,7 @@ jobs:
           if-no-files-found: error
 
       - name: Prepare static deployment package
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/prepare-vercel-static-deploy'
         run: |
           rm -rf vercel-static
           mkdir -p vercel-static/site
@@ -63,7 +65,7 @@ jobs:
           EOF
 
       - name: Commit static package
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/prepare-vercel-static-deploy'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
