@@ -10,7 +10,8 @@ export type ProjectCategory =
 export type LocalProject = {
   id: string;
   title: string;
-  repo: string;
+  repo?: string;
+  liveUrl?: string;
   category: Exclude<ProjectCategory, "all">;
   description: string;
   technologies: string[];
@@ -22,7 +23,7 @@ export type LocalProject = {
 export const projectCategories: { id: ProjectCategory; label: string }[] = [
   { id: "all", label: "All Projects" },
   { id: "full-stack", label: "Full Stack" },
-  { id: "frontend", label: "Frontend" },
+  { id: "frontend", label: "Websites" },
   { id: "backend", label: "Backend" },
   { id: "mobile", label: "Mobile" },
   { id: "system", label: "System Development" },
@@ -196,6 +197,138 @@ export const featuredProjects: LocalProject[] = [
     status: "Major project",
     featured: true,
     image: "https://image.thum.io/get/width/1600/crop/900/https://maareynta-lacagta.vercel.app/",
+  },
+  {
+    id: "house-of-beauty-hargeisa",
+    title: "House of Beauty Hargeisa",
+    liveUrl: "https://houseofbeautyhargeisa.com/",
+    category: "frontend",
+    description:
+      "A polished beauty salon and spa website for House of Beauty Hargeisa, presenting services, contact information and a professional online presence for local and diaspora customers.",
+    technologies: ["Responsive Website", "SEO", "Vercel", "Custom Domain"],
+    status: "Major project",
+    featured: true,
+    image: "https://image.thum.io/get/width/1600/crop/900/https://houseofbeautyhargeisa.com/",
+  },
+  {
+    id: "jabane-online-demo",
+    title: "Jabane Online Website",
+    liveUrl: "https://jabane-online-demo.vercel.app/",
+    category: "frontend",
+    description:
+      "A responsive business website demo designed to give Jabane Online a clear, modern digital presence and make its information easier for customers to discover.",
+    technologies: ["Responsive Design", "Business Website", "Vercel"],
+    status: "Major project",
+    featured: false,
+    image: "https://image.thum.io/get/width/1600/crop/900/https://jabane-online-demo.vercel.app/",
+  },
+  {
+    id: "gobanimo-furniture-demo",
+    title: "Gobanimo Furniture Website",
+    liveUrl: "https://gobanimo-furniture-demo.vercel.app/",
+    category: "frontend",
+    description:
+      "A modern furniture business website demo that showcases products and helps customers explore the brand and contact the business online.",
+    technologies: ["Responsive Design", "Product Showcase", "Vercel"],
+    status: "Major project",
+    featured: false,
+    image: "https://image.thum.io/get/width/1600/crop/900/https://gobanimo-furniture-demo.vercel.app/",
+  },
+  {
+    id: "edepsan-hinna-demo",
+    title: "Edepsan Hinna Website",
+    liveUrl: "https://edepsan-hinna-demo.vercel.app/",
+    category: "frontend",
+    description:
+      "A mobile-friendly henna business website demo focused on services, visual presentation and fast customer contact.",
+    technologies: ["Responsive Design", "Beauty Website", "Vercel"],
+    status: "Major project",
+    featured: false,
+    image: "https://image.thum.io/get/width/1600/crop/900/https://edepsan-hinna-demo.vercel.app/",
+  },
+  {
+    id: "muna-hair-design-demo",
+    title: "Muna Hair Design Website",
+    liveUrl: "https://muna-hair-design-demo.vercel.app/",
+    category: "frontend",
+    description:
+      "A clean salon website demo showcasing hair-design services with a mobile-first layout and clear contact path.",
+    technologies: ["Responsive Design", "Salon Website", "Vercel"],
+    status: "Major project",
+    featured: false,
+    image: "https://image.thum.io/get/width/1600/crop/900/https://muna-hair-design-demo.vercel.app/",
+  },
+  {
+    id: "hadiya-hair-design-demo",
+    title: "Hadiya Hair Design Website",
+    liveUrl: "https://hadiya-hair-design-demo.vercel.app/",
+    category: "frontend",
+    description:
+      "A responsive hair and beauty website demo created to present services professionally and guide customers toward direct contact.",
+    technologies: ["Responsive Design", "Salon Website", "Vercel"],
+    status: "Major project",
+    featured: false,
+    image: "https://image.thum.io/get/width/1600/crop/900/https://hadiya-hair-design-demo.vercel.app/",
+  },
+  {
+    id: "hananei04-demo",
+    title: "Hananei04 Beauty Website",
+    liveUrl: "https://hananei04-demo.vercel.app/",
+    category: "frontend",
+    description:
+      "A contemporary beauty-business website demo with a polished visual identity, service presentation and mobile-friendly customer journey.",
+    technologies: ["Responsive Design", "Beauty Website", "Vercel"],
+    status: "Major project",
+    featured: false,
+    image: "https://image.thum.io/get/width/1600/crop/900/https://hananei04-demo.vercel.app/",
+  },
+  {
+    id: "sakiina-wellness-spa-demo",
+    title: "Sakiina Wellness Spa Website",
+    liveUrl: "https://sakiina-wellness-spa-demo.vercel.app/",
+    category: "frontend",
+    description:
+      "A calm, modern wellness and spa website demo that highlights treatments, brand atmosphere and simple customer contact.",
+    technologies: ["Responsive Design", "Wellness Website", "Vercel"],
+    status: "Major project",
+    featured: false,
+    image: "https://image.thum.io/get/width/1600/crop/900/https://sakiina-wellness-spa-demo.vercel.app/",
+  },
+  {
+    id: "ayuush-henna-demo",
+    title: "Ayuush Henna Website",
+    liveUrl: "https://ayuush-henna-demo.vercel.app/",
+    category: "frontend",
+    description:
+      "A visual henna-services website demo designed for mobile visitors and straightforward booking or inquiry contact.",
+    technologies: ["Responsive Design", "Henna Website", "Vercel"],
+    status: "Major project",
+    featured: false,
+    image: "https://image.thum.io/get/width/1600/crop/900/https://ayuush-henna-demo.vercel.app/",
+  },
+  {
+    id: "dear-dumar-boutique-demo",
+    title: "Dear Dumar Boutique Website",
+    liveUrl: "https://temporary-brisk-thunder-m9jr8p5.vercel.app/",
+    category: "frontend",
+    description:
+      "A boutique website demo with a stylish product-focused presentation, responsive layout and direct path for customer inquiries.",
+    technologies: ["Responsive Design", "Boutique Website", "Vercel"],
+    status: "Major project",
+    featured: false,
+    image: "https://image.thum.io/get/width/1600/crop/900/https://temporary-brisk-thunder-m9jr8p5.vercel.app/",
+  },
+  {
+    id: "hafiya-store-demo",
+    title: "Hafiya Store Website",
+    liveUrl: "https://hafiya-store-demo.vercel.app/",
+    category: "frontend",
+    description:
+      "A responsive retail store website demo that presents products clearly and helps customers reach the business quickly.",
+    technologies: ["Responsive Design", "Store Website", "Vercel"],
+    status: "Major project",
+    featured: false,
+    image: "https://image.thum.io/get/width/1600/crop/900/https://hafiya-store-demo.vercel.app/",
   },
 ];
 

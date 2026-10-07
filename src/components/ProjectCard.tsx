@@ -234,15 +234,17 @@ function ProjectModal({
                   <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
                 </a>
               ) : null}
-              <a
-                href={project.repoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] px-4 py-3 text-sm font-semibold text-[var(--color-text-primary)] transition hover:border-[var(--color-border-hover)]"
-              >
-                <GithubIcon className="h-4 w-4" aria-hidden="true" />
-                View source code
-              </a>
+              {project.repoUrl ? (
+                <a
+                  href={project.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] px-4 py-3 text-sm font-semibold text-[var(--color-text-primary)] transition hover:border-[var(--color-border-hover)]"
+                >
+                  <GithubIcon className="h-4 w-4" aria-hidden="true" />
+                  View source code
+                </a>
+              ) : null}
             </div>
           </aside>
         </div>

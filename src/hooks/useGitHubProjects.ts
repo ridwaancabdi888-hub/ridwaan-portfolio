@@ -33,7 +33,7 @@ export type DisplayProject = {
   id: string;
   title: string;
   description: string;
-  repoUrl: string;
+  repoUrl?: string;
   liveUrl?: string;
   technologies: string[];
   language?: string | null;
@@ -93,20 +93,22 @@ function inferCategory(repo: GitHubRepo): Exclude<ProjectCategory, "all"> {
 function buildLocalOverrideMap() {
   const map = new Map<string, LocalProject>();
   featuredProjects.forEach((project) => {
-    map.set(repoNameFromUrl(project.repo).toLowerCase(), project);
+    if (project.repo) {
+      map.set(repoNameFromUrl(project.repo).toLowerCase(), project);
+    }
   });
   return map;
 }
 
 function localOverrideToDisplay(project: LocalProject): DisplayProject {
-  const repoName = repoNameFromUrl(project.repo).toLowerCase();
+  const repoName = project.repo ? repoNameFromUrl(project.repo).toLowerCase() : project.id;
 
   return {
     id: project.id,
     title: project.title,
     description: project.description,
     repoUrl: project.repo,
-    liveUrl: verifiedLiveUrlFor(repoName),
+    liveUrl: project.liveUrl ?? verifiedLiveUrlFor(repoName),
     technologies: project.technologies,
     category: project.category,
     status: project.status,
@@ -179,7 +181,10 @@ function mergeRepos(repos: GitHubRepo[]): DisplayProject[] {
   }
 
   const missingFeatured = featuredProjects
-    .filter((p) => !usedOverrides.has(repoNameFromUrl(p.repo).toLowerCase()))
+    .filter((p) => {
+      const key = p.repo ? repoNameFromUrl(p.repo).toLowerCase() : p.id;
+      return !usedOverrides.has(key);
+    })
     .map(localOverrideToDisplay);
 
   const all = [...liveProjects, ...missingFeatured];

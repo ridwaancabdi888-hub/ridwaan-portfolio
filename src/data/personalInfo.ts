@@ -41,7 +41,7 @@ I build modern websites, database-driven management systems, REST APIs and pract
 I enjoy transforming real-world problems into organized, secure and user-friendly digital systems. My goal is to continue developing my technical skills, contribute to meaningful projects and build reliable software solutions for organizations and communities.`,
 
   aboutStats: [
-    { label: "Completed & active projects", value: "14+" },
+    { label: "Completed & active projects", value: "25+" },
     { label: "Currently", value: "Software Engineering student" },
     { label: "Graduation target", value: "2027" },
   ],
