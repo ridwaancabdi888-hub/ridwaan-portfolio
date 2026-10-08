@@ -201,14 +201,14 @@ export const featuredProjects: LocalProject[] = [
   {
     id: "house-of-beauty-hargeisa",
     title: "House of Beauty Hargeisa",
-    liveUrl: "https://houseofbeautyhargeisa.com/",
+    liveUrl: "https://house-ofbeauty.com/",
     category: "frontend",
     description:
       "A polished beauty salon and spa website for House of Beauty Hargeisa, presenting services, contact information and a professional online presence for local and diaspora customers.",
     technologies: ["Responsive Website", "SEO", "Vercel", "Custom Domain"],
     status: "Major project",
     featured: true,
-    image: "https://image.thum.io/get/width/1600/crop/900/https://houseofbeautyhargeisa.com/",
+    image: "https://image.thum.io/get/width/1600/crop/900/https://house-ofbeauty.com/",
   },
   {
     id: "jabane-online-demo",
