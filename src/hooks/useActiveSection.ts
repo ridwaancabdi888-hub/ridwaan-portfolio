@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+const ACTIVE_SECTION_EVENT = "portfolio:active-section";
+
 export function useActiveSection(sectionIds: string[]) {
   const [activeId, setActiveId] = useState<string>(sectionIds[0] ?? "");
 
@@ -10,24 +12,42 @@ export function useActiveSection(sectionIds: string[]) {
 
     if (elements.length === 0) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+    let frameId = 0;
 
-        if (visible.length > 0) {
-          setActiveId(visible[0].target.id);
+    const updateFromScroll = () => {
+      cancelAnimationFrame(frameId);
+      frameId = requestAnimationFrame(() => {
+        const activationLine = window.innerHeight * 0.32;
+        let current = elements[0].id;
+
+        for (const element of elements) {
+          if (element.getBoundingClientRect().top <= activationLine) {
+            current = element.id;
+          } else {
+            break;
+          }
         }
-      },
-      {
-        rootMargin: "-15% 0px -55% 0px",
-        threshold: [0.1, 0.25, 0.5, 0.75, 1],
-      },
-    );
 
-    elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+        setActiveId(current);
+      });
+    };
+
+    const updateFromNavigation = (event: Event) => {
+      const id = (event as CustomEvent<string>).detail;
+      if (id && sectionIds.includes(id)) setActiveId(id);
+    };
+
+    window.addEventListener("scroll", updateFromScroll, { passive: true });
+    window.addEventListener("resize", updateFromScroll);
+    window.addEventListener(ACTIVE_SECTION_EVENT, updateFromNavigation);
+    updateFromScroll();
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.removeEventListener("scroll", updateFromScroll);
+      window.removeEventListener("resize", updateFromScroll);
+      window.removeEventListener(ACTIVE_SECTION_EVENT, updateFromNavigation);
+    };
   }, [sectionIds]);
 
   return activeId;

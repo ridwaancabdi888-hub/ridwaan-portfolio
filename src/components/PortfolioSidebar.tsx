@@ -30,6 +30,7 @@ const sectionIds = navigation.map((item) => item.id);
 
 function scrollToSection(id: string, event: React.MouseEvent<HTMLAnchorElement>) {
   event.preventDefault();
+  window.dispatchEvent(new CustomEvent("portfolio:active-section", { detail: id }));
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
   window.history.pushState(null, "", `#${id}`);
 }
