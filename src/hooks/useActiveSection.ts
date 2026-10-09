@@ -12,40 +12,49 @@ export function useActiveSection(sectionIds: string[]) {
 
     if (elements.length === 0) return;
 
-    let frameId = 0;
+    const visibleRatios = new Map<string, number>();
+    let navigationLockUntil = 0;
+    let navigationTimer = 0;
 
-    const updateFromScroll = () => {
-      cancelAnimationFrame(frameId);
-      frameId = requestAnimationFrame(() => {
-        const activationLine = window.innerHeight * 0.32;
-        let current = elements[0].id;
+    const updateFromVisibleSections = () => {
+      if (performance.now() < navigationLockUntil) return;
 
-        for (const element of elements) {
-          if (element.getBoundingClientRect().top <= activationLine) {
-            current = element.id;
-          } else {
-            break;
-          }
-        }
+      const visible = [...visibleRatios.entries()]
+        .filter(([, ratio]) => ratio > 0)
+        .sort((a, b) => b[1] - a[1]);
 
-        setActiveId(current);
-      });
+      if (visible[0]) setActiveId(visible[0][0]);
     };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          visibleRatios.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
+        });
+        updateFromVisibleSections();
+      },
+      {
+        rootMargin: "-12% 0px -60% 0px",
+        threshold: [0, 0.05, 0.1, 0.2, 0.35, 0.5, 0.75, 1],
+      },
+    );
 
     const updateFromNavigation = (event: Event) => {
       const id = (event as CustomEvent<string>).detail;
-      if (id && sectionIds.includes(id)) setActiveId(id);
+      if (id && sectionIds.includes(id)) {
+        navigationLockUntil = performance.now() + 900;
+        setActiveId(id);
+        window.clearTimeout(navigationTimer);
+        navigationTimer = window.setTimeout(updateFromVisibleSections, 950);
+      }
     };
 
-    window.addEventListener("scroll", updateFromScroll, { passive: true });
-    window.addEventListener("resize", updateFromScroll);
     window.addEventListener(ACTIVE_SECTION_EVENT, updateFromNavigation);
-    updateFromScroll();
+    elements.forEach((element) => observer.observe(element));
 
     return () => {
-      cancelAnimationFrame(frameId);
-      window.removeEventListener("scroll", updateFromScroll);
-      window.removeEventListener("resize", updateFromScroll);
+      observer.disconnect();
+      window.clearTimeout(navigationTimer);
       window.removeEventListener(ACTIVE_SECTION_EVENT, updateFromNavigation);
     };
   }, [sectionIds]);
