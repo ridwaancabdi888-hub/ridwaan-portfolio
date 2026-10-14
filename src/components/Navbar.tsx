@@ -1,7 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { personalInfo } from "../data/personalInfo";
 import { useActiveSection } from "../hooks/useActiveSection";
+import {
+  getFocusableElements,
+  getWrappedFocusTarget,
+} from "../utils/focusTrap.mjs";
 import ThemeToggle from "./ThemeToggle";
 
 const navItems = [
@@ -18,6 +22,8 @@ const navItems = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
   const activeId = useActiveSection(navItems.map((item) => item.id));
 
   useEffect(() => {
@@ -28,9 +34,43 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
+    if (!menuOpen) return;
+
+    const menuButton = menuButtonRef.current;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const focusFrame = window.requestAnimationFrame(() => {
+      const menu = mobileMenuRef.current;
+      if (menu) getFocusableElements(menu)[0]?.focus();
+    });
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setMenuOpen(false);
+        return;
+      }
+
+      if (event.key !== "Tab" || !mobileMenuRef.current) return;
+      const focusable = getFocusableElements(mobileMenuRef.current);
+      const target = getWrappedFocusTarget(
+        focusable,
+        document.activeElement,
+        event.shiftKey,
+      );
+      if (target) {
+        event.preventDefault();
+        target.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.body.style.overflow = "";
+      window.cancelAnimationFrame(focusFrame);
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      menuButton?.focus();
     };
   }, [menuOpen]);
 
@@ -92,6 +132,7 @@ export default function Navbar() {
         <div className="flex items-center gap-2 lg:hidden">
           <ThemeToggle />
           <button
+            ref={menuButtonRef}
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
             aria-expanded={menuOpen}
@@ -106,6 +147,7 @@ export default function Navbar() {
 
       {menuOpen ? (
         <div
+          ref={mobileMenuRef}
           id="mobile-menu"
           className="border-t border-[var(--color-border)] bg-[var(--color-bg)]/98 backdrop-blur-lg lg:hidden"
         >
