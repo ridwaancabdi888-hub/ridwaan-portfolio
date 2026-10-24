@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -17,6 +17,10 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { DisplayProject } from "../hooks/useGitHubProjects";
+import {
+  getFocusableElements,
+  getWrappedFocusTarget,
+} from "../utils/focusTrap.mjs";
 import { GithubIcon } from "./icons/BrandIcons";
 
 const categoryMeta: Record<
@@ -111,19 +115,23 @@ function ProjectModal({
   imageFailed,
   onImageError,
   onClose,
+  dialogRef,
 }: {
   project: DisplayProject;
   imageFailed: boolean;
   onImageError: () => void;
   onClose: () => void;
+  dialogRef: RefObject<HTMLDivElement | null>;
 }) {
   const meta = categoryMeta[project.category] ?? categoryMeta.frontend;
   const formattedDate = formatDate(project.updatedAt);
 
   return createPortal(
     <motion.div
+      ref={dialogRef}
       className="fixed inset-0 z-[120] flex items-center justify-center bg-black/82 p-3 backdrop-blur-md sm:p-6"
       role="dialog"
+      tabIndex={-1}
       aria-modal="true"
       aria-labelledby={`project-title-${project.id}`}
       initial={{ opacity: 0 }}
@@ -151,7 +159,6 @@ function ProjectModal({
           <button
             type="button"
             onClick={onClose}
-            autoFocus
             aria-label="Close project details"
             className="absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-black/55 text-white backdrop-blur transition hover:rotate-90 hover:bg-black/80"
           >
@@ -257,19 +264,51 @@ function ProjectModal({
 export default function ProjectCard({ project, index }: ProjectCardProps) {
   const [imageFailed, setImageFailed] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
   const meta = categoryMeta[project.category] ?? categoryMeta.frontend;
+
+  const openModal = () => {
+    openerRef.current = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+    setModalOpen(true);
+  };
 
   useEffect(() => {
     if (!modalOpen) return;
     const previousOverflow = document.body.style.overflow;
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setModalOpen(false);
+    const focusFrame = window.requestAnimationFrame(() => {
+      const dialog = dialogRef.current;
+      if (!dialog) return;
+      (getFocusableElements(dialog)[0] ?? dialog).focus();
+    });
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setModalOpen(false);
+        return;
+      }
+
+      if (event.key !== "Tab" || !dialogRef.current) return;
+      const focusable = getFocusableElements(dialogRef.current);
+      const target = getWrappedFocusTarget(
+        focusable,
+        document.activeElement,
+        event.shiftKey,
+      );
+      if (target) {
+        event.preventDefault();
+        target.focus();
+      }
     };
     document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", closeOnEscape);
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
+      window.cancelAnimationFrame(focusFrame);
       document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", closeOnEscape);
+      document.removeEventListener("keydown", handleKeyDown);
+      if (openerRef.current?.isConnected) openerRef.current.focus();
     };
   }, [modalOpen]);
 
@@ -284,7 +323,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
       >
         <button
           type="button"
-          onClick={() => setModalOpen(true)}
+          onClick={openModal}
           aria-label={`Open details for ${project.title}`}
           className="relative min-h-52 overflow-hidden bg-[var(--color-bg)] text-left sm:min-h-64 xl:min-h-[430px]"
         >
@@ -336,7 +375,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
 
           <button
             type="button"
-            onClick={() => setModalOpen(true)}
+            onClick={openModal}
             className="mt-6 inline-flex w-full items-center justify-between rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-3 text-sm font-semibold text-[var(--color-text-primary)] transition hover:border-[var(--color-accent-cyan)] sm:mt-8"
           >
             <span className="inline-flex items-center gap-2">
@@ -355,6 +394,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             imageFailed={imageFailed}
             onImageError={() => setImageFailed(true)}
             onClose={() => setModalOpen(false)}
+            dialogRef={dialogRef}
           />
         ) : null}
       </AnimatePresence>

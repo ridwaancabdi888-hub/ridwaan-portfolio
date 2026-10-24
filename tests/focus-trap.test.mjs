@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { getWrappedFocusTarget } from "../src/utils/focusTrap.mjs";
+import {
+  getFocusableElements,
+  getWrappedFocusTarget,
+} from "../src/utils/focusTrap.mjs";
 
 const first = { id: "first" };
 const middle = { id: "middle" };
@@ -28,4 +31,24 @@ test("ordinary movement inside the trap remains browser-controlled", () => {
 
 test("an empty focus trap has no target", () => {
   assert.equal(getWrappedFocusTarget([], null, false), null);
+});
+
+test("focusable elements exclude hidden and aria-hidden controls", () => {
+  const visible = {
+    hasAttribute: () => false,
+    getAttribute: () => null,
+  };
+  const hidden = {
+    hasAttribute: (name) => name === "hidden",
+    getAttribute: () => null,
+  };
+  const ariaHidden = {
+    hasAttribute: () => false,
+    getAttribute: (name) => (name === "aria-hidden" ? "true" : null),
+  };
+  const container = {
+    querySelectorAll: () => [visible, hidden, ariaHidden],
+  };
+
+  assert.deepEqual(getFocusableElements(container), [visible]);
 });
