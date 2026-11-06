@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { flushSync } from "react-dom";
 import {
   AlertCircle,
   CheckCircle2,
@@ -11,16 +12,16 @@ import {
 import { personalInfo } from "../data/personalInfo";
 import { GithubIcon, LinkedinIcon } from "./icons/BrandIcons";
 import SectionHeading from "./SectionHeading";
+import {
+  getFirstInvalidField,
+  reconcileFieldError,
+  validateContactForm,
+  type ContactErrors,
+  type ContactValues,
+} from "../utils/contactForm.mjs";
 
-type FormValues = {
-  name: string;
-  email: string;
-  phone: string;
-  subject: string;
-  message: string;
-};
-
-type FormErrors = Partial<Record<keyof FormValues, string>>;
+type FormValues = ContactValues;
+type FormErrors = ContactErrors;
 
 type SubmitStatus =
   | { state: "idle" }
@@ -29,33 +30,11 @@ type SubmitStatus =
   | { state: "success" }
   | { state: "error"; message: string };
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const PHONE_REGEX = /^[0-9+\-\s()]{7,20}$/;
 const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT;
 const CALLMEBOT_PHONE = import.meta.env.VITE_CALLMEBOT_PHONE;
 const CALLMEBOT_APIKEY = import.meta.env.VITE_CALLMEBOT_APIKEY;
 
 const initialValues: FormValues = { name: "", email: "", phone: "", subject: "", message: "" };
-
-function validate(values: FormValues): FormErrors {
-  const errors: FormErrors = {};
-  if (!values.name.trim() || values.name.trim().length < 2) {
-    errors.name = "Please enter your full name.";
-  }
-  if (!values.email.trim() || !EMAIL_REGEX.test(values.email.trim())) {
-    errors.email = "Please enter a valid email address.";
-  }
-  if (values.phone.trim() && !PHONE_REGEX.test(values.phone.trim())) {
-    errors.phone = "Please enter a valid phone number.";
-  }
-  if (!values.subject.trim() || values.subject.trim().length < 3) {
-    errors.subject = "Please enter a subject.";
-  }
-  if (!values.message.trim() || values.message.trim().length < 10) {
-    errors.message = "Message should be at least 10 characters.";
-  }
-  return errors;
-}
 
 /**
  * Best-effort WhatsApp notification via CallMeBot (https://www.callmebot.com).
@@ -107,14 +86,28 @@ export default function Contact() {
   const handleChange = (field: keyof FormValues) => (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    setValues((prev) => ({ ...prev, [field]: event.target.value }));
+    const { value } = event.target;
+    setValues((prev) => ({ ...prev, [field]: value }));
+    // Clear a flagged error as soon as the visitor has fixed it, instead of
+    // leaving stale red text on screen until the next submit.
+    setErrors((prev) => reconcileFieldError(prev, field, value));
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const validationErrors = validate(values);
-    setErrors(validationErrors);
-    if (Object.keys(validationErrors).length > 0) return;
+    const form = event.currentTarget;
+    const validationErrors = validateContactForm(values);
+    // Commit the errors synchronously so aria-invalid/aria-describedby are in
+    // the DOM before focus moves and the screen reader announces the field.
+    flushSync(() => setErrors(validationErrors));
+    const firstInvalid = getFirstInvalidField(validationErrors);
+    if (firstInvalid) {
+      // Move keyboard and screen-reader users to the first problem instead of
+      // leaving them on the submit button with no feedback.
+      const control = form.elements.namedItem(firstInvalid);
+      if (control instanceof HTMLElement) control.focus();
+      return;
+    }
 
     if (FORMSPREE_ENDPOINT) {
       setStatus({ state: "submitting" });
@@ -232,16 +225,19 @@ export default function Contact() {
               </label>
               <input
                 id="name"
+                name="name"
+                autoComplete="name"
+                aria-required="true"
                 type="text"
                 value={values.name}
                 onChange={handleChange("name")}
                 aria-invalid={Boolean(errors.name)}
                 aria-describedby={errors.name ? "name-error" : undefined}
-                className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
+                className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-base text-[var(--color-text-primary)] sm:text-sm outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
                 placeholder="Your name"
               />
               {errors.name ? (
-                <p id="name-error" className="mt-1 text-xs text-red-400">{errors.name}</p>
+                <p id="name-error" className="mt-1 text-xs text-red-400 [.light_&]:text-red-700">{errors.name}</p>
               ) : null}
             </div>
 
@@ -251,16 +247,22 @@ export default function Contact() {
               </label>
               <input
                 id="email"
+                name="email"
+                autoComplete="email"
+                inputMode="email"
+                autoCapitalize="none"
+                spellCheck={false}
+                aria-required="true"
                 type="email"
                 value={values.email}
                 onChange={handleChange("email")}
                 aria-invalid={Boolean(errors.email)}
                 aria-describedby={errors.email ? "email-error" : undefined}
-                className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
+                className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-base text-[var(--color-text-primary)] sm:text-sm outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
                 placeholder="you@example.com"
               />
               {errors.email ? (
-                <p id="email-error" className="mt-1 text-xs text-red-400">{errors.email}</p>
+                <p id="email-error" className="mt-1 text-xs text-red-400 [.light_&]:text-red-700">{errors.email}</p>
               ) : null}
             </div>
 
@@ -270,16 +272,19 @@ export default function Contact() {
               </label>
               <input
                 id="phone"
+                name="phone"
+                autoComplete="tel"
+                inputMode="tel"
                 type="tel"
                 value={values.phone}
                 onChange={handleChange("phone")}
                 aria-invalid={Boolean(errors.phone)}
                 aria-describedby={errors.phone ? "phone-error" : undefined}
-                className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
+                className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-base text-[var(--color-text-primary)] sm:text-sm outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
                 placeholder="+252 6X XXX XXXX"
               />
               {errors.phone ? (
-                <p id="phone-error" className="mt-1 text-xs text-red-400">{errors.phone}</p>
+                <p id="phone-error" className="mt-1 text-xs text-red-400 [.light_&]:text-red-700">{errors.phone}</p>
               ) : null}
             </div>
 
@@ -289,16 +294,18 @@ export default function Contact() {
               </label>
               <input
                 id="subject"
+                name="subject"
+                aria-required="true"
                 type="text"
                 value={values.subject}
                 onChange={handleChange("subject")}
                 aria-invalid={Boolean(errors.subject)}
                 aria-describedby={errors.subject ? "subject-error" : undefined}
-                className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
+                className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-base text-[var(--color-text-primary)] sm:text-sm outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
                 placeholder="Project opportunity"
               />
               {errors.subject ? (
-                <p id="subject-error" className="mt-1 text-xs text-red-400">{errors.subject}</p>
+                <p id="subject-error" className="mt-1 text-xs text-red-400 [.light_&]:text-red-700">{errors.subject}</p>
               ) : null}
             </div>
 
@@ -308,16 +315,18 @@ export default function Contact() {
               </label>
               <textarea
                 id="message"
+                name="message"
+                aria-required="true"
                 rows={5}
                 value={values.message}
                 onChange={handleChange("message")}
                 aria-invalid={Boolean(errors.message)}
                 aria-describedby={errors.message ? "message-error" : undefined}
-                className="w-full resize-none rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
+                className="w-full resize-none rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-base text-[var(--color-text-primary)] sm:text-sm outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
                 placeholder="Tell me a bit about the opportunity or project..."
               />
               {errors.message ? (
-                <p id="message-error" className="mt-1 text-xs text-red-400">{errors.message}</p>
+                <p id="message-error" className="mt-1 text-xs text-red-400 [.light_&]:text-red-700">{errors.message}</p>
               ) : null}
             </div>
 
@@ -347,7 +356,7 @@ export default function Contact() {
               </p>
             ) : null}
             {status.state === "error" ? (
-              <p role="alert" className="flex items-center gap-2 text-sm text-red-400">
+              <p role="alert" className="flex items-center gap-2 text-sm text-red-400 [.light_&]:text-red-700">
                 <AlertCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
                 {status.message}
               </p>
