@@ -9,18 +9,15 @@ import {
   Send,
 } from "lucide-react";
 import { personalInfo } from "../data/personalInfo";
+import {
+  firstInvalidContactField,
+  validateContactForm,
+  type ContactField,
+  type ContactFormErrors,
+  type ContactFormValues,
+} from "../utils/contactForm.mjs";
 import { GithubIcon, LinkedinIcon } from "./icons/BrandIcons";
 import SectionHeading from "./SectionHeading";
-
-type FormValues = {
-  name: string;
-  email: string;
-  phone: string;
-  subject: string;
-  message: string;
-};
-
-type FormErrors = Partial<Record<keyof FormValues, string>>;
 
 type SubmitStatus =
   | { state: "idle" }
@@ -29,33 +26,11 @@ type SubmitStatus =
   | { state: "success" }
   | { state: "error"; message: string };
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const PHONE_REGEX = /^[0-9+\-\s()]{7,20}$/;
 const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT;
 const CALLMEBOT_PHONE = import.meta.env.VITE_CALLMEBOT_PHONE;
 const CALLMEBOT_APIKEY = import.meta.env.VITE_CALLMEBOT_APIKEY;
 
-const initialValues: FormValues = { name: "", email: "", phone: "", subject: "", message: "" };
-
-function validate(values: FormValues): FormErrors {
-  const errors: FormErrors = {};
-  if (!values.name.trim() || values.name.trim().length < 2) {
-    errors.name = "Please enter your full name.";
-  }
-  if (!values.email.trim() || !EMAIL_REGEX.test(values.email.trim())) {
-    errors.email = "Please enter a valid email address.";
-  }
-  if (values.phone.trim() && !PHONE_REGEX.test(values.phone.trim())) {
-    errors.phone = "Please enter a valid phone number.";
-  }
-  if (!values.subject.trim() || values.subject.trim().length < 3) {
-    errors.subject = "Please enter a subject.";
-  }
-  if (!values.message.trim() || values.message.trim().length < 10) {
-    errors.message = "Message should be at least 10 characters.";
-  }
-  return errors;
-}
+const initialValues: ContactFormValues = { name: "", email: "", phone: "", subject: "", message: "" };
 
 /**
  * Best-effort WhatsApp notification via CallMeBot (https://www.callmebot.com).
@@ -65,7 +40,7 @@ function validate(values: FormValues): FormErrors {
  * Fired in "no-cors" mode: the request goes out but the response can't be
  * read, so failures here never block the primary Formspree/mailto delivery.
  */
-function notifyWhatsApp(values: FormValues) {
+function notifyWhatsApp(values: ContactFormValues) {
   if (!CALLMEBOT_PHONE || !CALLMEBOT_APIKEY) return;
 
   const summary = [
@@ -100,21 +75,32 @@ const contactMethods = [
 ];
 
 export default function Contact() {
-  const [values, setValues] = useState<FormValues>(initialValues);
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [values, setValues] = useState<ContactFormValues>(initialValues);
+  const [errors, setErrors] = useState<ContactFormErrors>({});
   const [status, setStatus] = useState<SubmitStatus>({ state: "idle" });
 
-  const handleChange = (field: keyof FormValues) => (
+  const handleChange = (field: ContactField) => (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setValues((prev) => ({ ...prev, [field]: event.target.value }));
+    setErrors((prev) => {
+      if (!prev[field]) return prev;
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+    setStatus((prev) => (prev.state === "idle" || prev.state === "submitting" ? prev : { state: "idle" }));
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const validationErrors = validate(values);
+    const validationErrors = validateContactForm(values);
     setErrors(validationErrors);
-    if (Object.keys(validationErrors).length > 0) return;
+    const firstInvalidField = firstInvalidContactField(validationErrors);
+    if (firstInvalidField) {
+      window.requestAnimationFrame(() => document.getElementById(firstInvalidField)?.focus());
+      return;
+    }
 
     if (FORMSPREE_ENDPOINT) {
       setStatus({ state: "submitting" });
@@ -232,7 +218,10 @@ export default function Contact() {
               </label>
               <input
                 id="name"
+                name="name"
                 type="text"
+                autoComplete="name"
+                required
                 value={values.name}
                 onChange={handleChange("name")}
                 aria-invalid={Boolean(errors.name)}
@@ -251,7 +240,10 @@ export default function Contact() {
               </label>
               <input
                 id="email"
+                name="email"
                 type="email"
+                autoComplete="email"
+                required
                 value={values.email}
                 onChange={handleChange("email")}
                 aria-invalid={Boolean(errors.email)}
@@ -270,7 +262,9 @@ export default function Contact() {
               </label>
               <input
                 id="phone"
+                name="phone"
                 type="tel"
+                autoComplete="tel"
                 value={values.phone}
                 onChange={handleChange("phone")}
                 aria-invalid={Boolean(errors.phone)}
@@ -289,7 +283,9 @@ export default function Contact() {
               </label>
               <input
                 id="subject"
+                name="subject"
                 type="text"
+                required
                 value={values.subject}
                 onChange={handleChange("subject")}
                 aria-invalid={Boolean(errors.subject)}
@@ -308,7 +304,9 @@ export default function Contact() {
               </label>
               <textarea
                 id="message"
+                name="message"
                 rows={5}
+                required
                 value={values.message}
                 onChange={handleChange("message")}
                 aria-invalid={Boolean(errors.message)}
