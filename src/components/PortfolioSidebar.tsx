@@ -12,6 +12,7 @@ import {
 import profileCutout from "../assets/images/profile-cutout.webp";
 import { personalInfo } from "../data/personalInfo";
 import { useActiveSection } from "../hooks/useActiveSection";
+import { getMotionSafeScrollBehavior } from "../utils/motionPreference.mjs";
 import { GithubIcon, LinkedinIcon } from "./icons/BrandIcons";
 import ThemeToggle from "./ThemeToggle";
 
@@ -31,7 +32,10 @@ const sectionIds = navigation.map((item) => item.id);
 function scrollToSection(id: string, event: React.MouseEvent<HTMLAnchorElement>) {
   event.preventDefault();
   window.dispatchEvent(new CustomEvent("portfolio:active-section", { detail: id }));
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  document.getElementById(id)?.scrollIntoView({
+    behavior: getMotionSafeScrollBehavior(),
+    block: "start",
+  });
   window.history.pushState(null, "", `#${id}`);
 }
 

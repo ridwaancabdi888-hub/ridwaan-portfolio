@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import profileCutout from "../assets/images/profile-cutout.webp";
 import { personalInfo } from "../data/personalInfo";
+import { getMotionSafeScrollBehavior } from "../utils/motionPreference.mjs";
 import { GithubIcon, LinkedinIcon, WhatsAppIcon } from "./icons/BrandIcons";
 
 const socialLinks = [
@@ -24,7 +25,10 @@ const socialLinks = [
 ];
 
 function scrollTo(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  document.getElementById(id)?.scrollIntoView({
+    behavior: getMotionSafeScrollBehavior(),
+    block: "start",
+  });
 }
 
 export default function Hero() {

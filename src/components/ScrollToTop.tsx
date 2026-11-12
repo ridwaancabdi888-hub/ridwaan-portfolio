@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { getMotionSafeScrollBehavior } from "../utils/motionPreference.mjs";
 
 export default function ScrollToTop() {
   const [visible, setVisible] = useState(false);
@@ -13,7 +14,7 @@ export default function ScrollToTop() {
   }, []);
 
   const handleClick = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: getMotionSafeScrollBehavior() });
   };
 
   return (

@@ -6,6 +6,7 @@ import {
   getFocusableElements,
   getWrappedFocusTarget,
 } from "../utils/focusTrap.mjs";
+import { getMotionSafeScrollBehavior } from "../utils/motionPreference.mjs";
 import ThemeToggle from "./ThemeToggle";
 
 const navItems = [
@@ -77,7 +78,10 @@ export default function Navbar() {
   const handleLinkClick = (id: string, event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     setMenuOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById(id)?.scrollIntoView({
+      behavior: getMotionSafeScrollBehavior(),
+      block: "start",
+    });
     window.history.pushState(null, "", `#${id}`);
   };
 
