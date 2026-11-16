@@ -1,7 +1,8 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AlertTriangle, ArrowLeft, ArrowRight, DatabaseZap } from "lucide-react";
 import { projectCategories, type ProjectCategory } from "../data/projects";
 import { useGitHubProjects } from "../hooks/useGitHubProjects";
+import { getMotionSafeScrollBehavior } from "../utils/motionPreference.mjs";
 import ProjectCard from "./ProjectCard";
 
 function SkeletonCard() {
@@ -24,6 +25,8 @@ function SkeletonCard() {
 export default function GitHubProjects() {
   const { projects, loading, error, usingCache } = useGitHubProjects();
   const [filter, setFilter] = useState<ProjectCategory>("all");
+  const [canMovePrevious, setCanMovePrevious] = useState(false);
+  const [canMoveNext, setCanMoveNext] = useState(false);
   const railRef = useRef<HTMLDivElement>(null);
 
   const filtered = useMemo(() => {
@@ -31,19 +34,46 @@ export default function GitHubProjects() {
     return projects.filter((project) => project.category === filter);
   }, [projects, filter]);
 
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+
+    const updateControls = () => {
+      const maximumScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
+      setCanMovePrevious(rail.scrollLeft > 2);
+      setCanMoveNext(rail.scrollLeft < maximumScroll - 2);
+    };
+
+    const frame = window.requestAnimationFrame(() => {
+      rail.scrollTo({ left: 0, behavior: "auto" });
+      updateControls();
+    });
+    const resizeObserver = typeof ResizeObserver === "undefined"
+      ? null
+      : new ResizeObserver(updateControls);
+    resizeObserver?.observe(rail);
+    rail.addEventListener("scroll", updateControls, { passive: true });
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      resizeObserver?.disconnect();
+      rail.removeEventListener("scroll", updateControls);
+    };
+  }, [filtered]);
+
   const moveRail = (direction: -1 | 1) => {
     const rail = railRef.current;
     if (!rail) return;
     rail.scrollBy({
       left: direction * Math.min(rail.clientWidth * 0.82, 760),
-      behavior: "smooth",
+      behavior: getMotionSafeScrollBehavior(),
     });
   };
 
   return (
     <div>
       <div className="mb-8 flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filter projects by category">
           {projectCategories.map((category) => (
             <button
               key={category.id}
@@ -67,16 +97,18 @@ export default function GitHubProjects() {
           <button
             type="button"
             onClick={() => moveRail(-1)}
+            disabled={!canMovePrevious}
             aria-label="Previous projects"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] transition hover:border-[var(--color-accent-cyan)] hover:text-[var(--color-accent-cyan)]"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] transition hover:border-[var(--color-accent-cyan)] hover:text-[var(--color-accent-cyan)] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           </button>
           <button
             type="button"
             onClick={() => moveRail(1)}
+            disabled={!canMoveNext}
             aria-label="Next projects"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-signal)] text-[#10130b] transition hover:brightness-105"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-signal)] text-[#10130b] transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </button>
@@ -110,12 +142,17 @@ export default function GitHubProjects() {
         </p>
       ) : (
         <>
+          <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+            {filtered.length} project{filtered.length === 1 ? "" : "s"} shown for {projectCategories.find((category) => category.id === filter)?.label ?? "selected category"}.
+          </p>
           <p className="mb-4 flex items-center gap-2 text-xs font-medium text-[var(--color-text-muted)] sm:hidden">
             <ArrowRight className="h-3.5 w-3.5 rotate-90 text-[var(--color-accent-cyan)]" aria-hidden="true" />
             Scroll down to explore {filtered.length} projects
           </p>
           <div
             ref={railRef}
+            role="region"
+            aria-label="Project gallery"
             className="project-rail flex flex-col gap-5 pb-6 sm:-mx-8 sm:flex-row sm:snap-x sm:snap-mandatory sm:overflow-x-auto sm:px-8"
           >
             {filtered.map((project, index) => (
