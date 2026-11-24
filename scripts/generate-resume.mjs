@@ -48,7 +48,7 @@ doc
   .font("Helvetica")
   .fontSize(11)
   .fillColor(ACCENT)
-  .text("Software Engineer · Full-Stack Developer · Business Systems · AI Integration");
+  .text("Full-Stack Web Developer · System Developer · Prompt Engineer · Software Engineering Student");
 
 doc.moveDown(0.4);
 doc
@@ -66,32 +66,27 @@ doc
   .fontSize(9.5)
   .fillColor(TEXT)
   .text(
-    "Software engineer and full-stack developer who designs, builds and deploys business management systems, web applications and AI-integrated products. Shipped production systems for real-estate, hospitality, retail and municipal use cases — covering database design, secure APIs, role-based access, row-level security and responsive, bilingual (Somali/English) interfaces. Currently completing a Bachelor of Software Engineering at Gollis University.",
+    "Advanced Full-Stack Web Developer, System Developer, Prompt Engineer and Software Engineering student with practical experience building responsive interfaces, REST APIs, database-driven applications and complete management systems. Experienced in organizing software requirements, designing systems and using AI coding tools through structured prompt engineering. Interested in web development, mobile applications, networking, GIS and modern software technologies.",
     { lineGap: 2, align: "justify" },
   );
 
 heading("Education");
 doc.font("Helvetica-Bold").fontSize(10).fillColor(TEXT).text("Bachelor of Software Engineering", { continued: true });
-doc.font("Helvetica").fontSize(9.5).fillColor(MUTED).text("   —   Gollis University   (2024–2027)");
+doc.font("Helvetica").fontSize(9.5).fillColor(MUTED).text("   —   Gollis University   (2023–2027)");
 doc.font("Helvetica-Bold").fontSize(10).fillColor(TEXT).text("Form 4 Completed");
 
 heading("Core Skills");
 const coreSkills = [
-  "TypeScript", "JavaScript", "React", "Next.js", "Node.js", "Express.js", "Python / Flask", "PHP / Laravel",
-  "PostgreSQL", "Supabase", "MySQL", "MongoDB", "Tailwind CSS", "OpenAI API", "Flutter", "Three.js",
-  "REST APIs", "RBAC & RLS", "Playwright / Vitest", "Git & GitHub", "Vercel",
+  "Full-Stack Web Development", "System Development", "Prompt Engineering", "React", "TypeScript",
+  "JavaScript", "Tailwind CSS", "Node.js", "Express.js", "PHP", "Laravel", "MySQL", "MariaDB",
+  "MongoDB", "Flutter", "REST APIs", "Git and GitHub",
 ];
 doc.font("Helvetica").fontSize(9.5).fillColor(TEXT).text(coreSkills.join("   •   "), { lineGap: 3 });
 
 heading("Selected Projects");
-bullet("Riyaad Real Estate Management System — properties, sales, rentals, CRM, RBAC (Next.js, Supabase, PostgreSQL)");
-bullet("SANDBOX Cafeteria System — QR ordering, kitchen display, POS, realtime (Next.js, Supabase)");
-bullet("AI Interview Coach — AI questions and coaching, voice mode (Next.js, OpenAI API, Supabase)");
-bullet("Hargeisa Municipal Tax & Property System — GIS, analytics, audit log (React, Express, MySQL)");
-bullet("Kaafiye Spare Parts — inventory, POS and service records PWA (Next.js, Supabase)");
-bullet("Riyaad Real Estate 3D Website — interactive Three.js showroom, WordPress back office");
-bullet("GYM & School Management SaaS — multi-tenant platforms (Node.js, Express, PostgreSQL)");
-doc.font("Helvetica").fontSize(9).fillColor(MUTED).text("Live demos and source: ridwaan-portfolio.vercel.app", { lineGap: 1 });
+bullet("Hargeisa Municipal Tax & Property Management System — React, Node.js, Express.js, MySQL, GIS mapping");
+bullet("University Hostel Management System — PHP, Laravel 12, Blade, Tailwind CSS, MySQL");
+bullet("Zaad/e-Dahab E-Pharmacy — Flutter, Node.js, Express.js, MongoDB, React");
 
 const colTop = doc.y + 8;
 const colWidth = pageWidth / 2 - 10;
@@ -107,7 +102,7 @@ doc.y = colTop;
 doc.x = doc.page.margins.left + colWidth + 20;
 heading("Professional Interests");
 [
-  "Business Management Systems", "Full-Stack Development", "AI Integration", "Mobile Development",
+  "Full-Stack Web Development", "System Development", "Prompt Engineering", "Mobile Development",
   "Database Systems", "Networking", "GIS and Mapping", "Artificial Intelligence",
 ].forEach((interest) => {
   doc.font("Helvetica").fontSize(9.5).fillColor(TEXT).text(interest, { width: colWidth });

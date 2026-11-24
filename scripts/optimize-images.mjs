@@ -12,6 +12,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const projectDir = join(root, "public", "project-images");
 const cutoutPng = join(root, "src", "assets", "images", "profile-cutout.png");
 const cutoutWebp = join(root, "src", "assets", "images", "profile-cutout.webp");
+const ogOut = join(root, "public", "og-image.jpg");
 
 const upToDate = (src, out) => existsSync(out) && statSync(out).mtimeMs >= statSync(src).mtimeMs;
 
@@ -36,4 +37,20 @@ if (!upToDate(cutoutPng, cutoutWebp)) {
   }
 }
 
-console.log("optimize-images: WebP screenshots and hero cutout ready");
+if (!upToDate(cutoutPng, ogOut)) {
+  const W = 1200;
+  const H = 630;
+  const background = Buffer.from(`<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">
+  <defs><radialGradient id="g" cx="50%" cy="55%" r="55%"><stop offset="0" stop-color="#d9ff57" stop-opacity=".24"/><stop offset="1" stop-color="#d9ff57" stop-opacity="0"/></radialGradient></defs>
+  <rect width="100%" height="100%" fill="#05070d"/><rect width="100%" height="100%" fill="url(#g)"/>
+  <rect x="24" y="24" width="${W - 48}" height="${H - 48}" rx="28" fill="none" stroke="#263244" stroke-width="2"/>
+</svg>`);
+  const portrait = await sharp(cutoutPng).resize({ height: 580 }).toBuffer();
+  const { width: pw } = await sharp(portrait).metadata();
+  await sharp(background)
+    .composite([{ input: portrait, left: Math.round((W - pw) / 2), top: H - 580 - 26 }])
+    .jpeg({ quality: 84, mozjpeg: true })
+    .toFile(ogOut);
+}
+
+console.log("optimize-images: WebP screenshots, hero cutout and og-image.jpg ready");

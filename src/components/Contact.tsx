@@ -17,7 +17,7 @@ import {
   type ContactFormValues,
 } from "../utils/contactForm.mjs";
 import { GithubIcon, LinkedinIcon } from "./icons/BrandIcons";
-import Reveal from "./Reveal";
+import SectionHeading from "./SectionHeading";
 
 type SubmitStatus =
   | { state: "idle" }
@@ -135,126 +135,173 @@ export default function Contact() {
     setStatus({ state: "mailto-opened" });
   };
 
-  const fieldClass =
-    "w-full rounded-xl border border-[var(--border)] bg-[var(--bg)] px-3.5 py-2.5 text-sm text-[var(--text)] outline-none transition-colors placeholder:text-[var(--text-3)] focus:border-[var(--accent)]";
-  const labelClass = "mb-1.5 block text-sm font-medium text-[var(--text)]";
-  const errorClass = "mt-1 text-xs text-red-500";
-
   return (
-    <section id="contact" className="section no-print" aria-labelledby="contact-title">
-      <div className="container-page grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-        <Reveal>
-          <p className="eyebrow">Contact</p>
-          <h2 id="contact-title" className="font-display mt-4 text-3xl font-semibold text-[var(--text)] sm:text-4xl md:text-[2.75rem] md:leading-[1.1]">
-            Have a system or product in mind? Let's build it.
-          </h2>
-          <p className="mt-4 text-base leading-relaxed text-[var(--text-2)] md:text-lg">
-            I'm open to full-time and junior engineering roles, internships, freelance systems and collaboration. The
-            fastest way to reach me is WhatsApp or email.
-          </p>
-          <p className="mt-4 inline-flex items-center gap-2 text-sm text-[var(--text-3)]">
-            <MapPin className="h-4 w-4 text-[var(--accent)]" aria-hidden="true" /> {personalInfo.location}
-          </p>
-          <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-            {contactMethods.map(({ label, value, href, icon: Icon }) => (
-              <li key={label}>
-                <a
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="card card-hover flex items-center gap-3 p-4"
-                >
-                  <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
-                    <Icon className="h-4 w-4" aria-hidden="true" />
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block text-xs text-[var(--text-3)]">{label}</span>
-                    <span className="block truncate text-sm font-medium text-[var(--text)]">{value}</span>
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </Reveal>
+    <section id="contact" className="no-print scroll-mt-20 py-20 sm:py-28">
+      <div className="container-page">
+        <SectionHeading
+          eyebrow="Contact"
+          title="Let's work together"
+          subtitle="Have an internship, junior role, freelance project or collaboration in mind? Send a message or reach out directly."
+        />
 
-        <Reveal delay={0.06}>
-          <form onSubmit={handleSubmit} noValidate className="card space-y-4 p-6 sm:p-8" aria-label="Contact form">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label htmlFor="name" className={labelClass}>Full name</label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  autoComplete="name"
-                  required
-                  value={values.name}
-                  onChange={handleChange("name")}
-                  aria-invalid={Boolean(errors.name)}
-                  aria-describedby={errors.name ? "name-error" : undefined}
-                  className={fieldClass}
-                  placeholder="Your name"
-                />
-                {errors.name ? <p id="name-error" className={errorClass}>{errors.name}</p> : null}
+        <div className="grid gap-10 lg:grid-cols-5 lg:gap-8">
+          <div className="lg:col-span-2">
+            <div className="relative mb-5 h-56 overflow-hidden rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface)]">
+              <svg
+                viewBox="0 0 640 360"
+                className="map-illustration absolute inset-0 h-full w-full"
+                aria-hidden="true"
+              >
+                <path d="M-30 80 C120 38 170 150 330 96 S520 40 690 92" />
+                <path d="M-20 260 C110 220 180 304 300 246 S520 150 690 236" />
+                <path d="M88 -20 C110 100 80 186 158 390" />
+                <path d="M430 -20 C384 96 478 180 440 390" />
+                <path d="M210 -20 C246 84 190 170 260 390" />
+                <path d="M-20 176 C120 206 210 126 370 180 S540 270 680 170" />
+                <circle cx="160" cy="112" r="6" />
+                <circle cx="490" cy="104" r="5" />
+                <circle cx="540" cy="278" r="5" />
+                <circle cx="112" cy="278" r="5" />
+              </svg>
+              <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center">
+                <span className="absolute h-16 w-16 animate-ping rounded-full bg-[var(--color-signal)]/10" />
+                <span className="relative inline-flex h-12 w-12 items-center justify-center rounded-full border border-[var(--color-signal)]/35 bg-[var(--color-bg-elevated)] text-[var(--color-accent-cyan)] shadow-xl shadow-black/25">
+                  <MapPin className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <span className="mt-2 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)]/90 px-3 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--color-text-primary)] backdrop-blur">
+                  Hargeisa city
+                </span>
               </div>
-              <div>
-                <label htmlFor="email" className={labelClass}>Email</label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={values.email}
-                  onChange={handleChange("email")}
-                  aria-invalid={Boolean(errors.email)}
-                  aria-describedby={errors.email ? "email-error" : undefined}
-                  className={fieldClass}
-                  placeholder="you@company.com"
-                />
-                {errors.email ? <p id="email-error" className={errorClass}>{errors.email}</p> : null}
-              </div>
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/38 via-transparent to-transparent" />
+              <a
+                href="https://www.openstreetmap.org/?mlat=9.56&mlon=44.065#map=12/9.56/44.065"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute bottom-3 left-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/70 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur"
+              >
+                <MapPin className="h-3.5 w-3.5 text-[var(--color-accent-cyan)]" aria-hidden="true" />
+                {personalInfo.location}
+              </a>
             </div>
+            <ul className="space-y-3">
+              {contactMethods.map(({ label, value, href, icon: Icon }) => (
+                <li key={label}>
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 transition-colors hover:border-[var(--color-border-hover)]"
+                  >
+                    <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[var(--color-accent)]/10 text-[var(--color-accent-cyan)]">
+                      <Icon className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                    <span>
+                      <span className="block text-xs text-[var(--color-text-muted)]">{label}</span>
+                      <span className="block text-sm font-medium text-[var(--color-text-primary)]">
+                        {value}
+                      </span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label htmlFor="phone" className={labelClass}>
-                  Phone / WhatsApp <span className="font-normal text-[var(--text-3)]">(optional)</span>
-                </label>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  autoComplete="tel"
-                  value={values.phone}
-                  onChange={handleChange("phone")}
-                  aria-invalid={Boolean(errors.phone)}
-                  aria-describedby={errors.phone ? "phone-error" : undefined}
-                  className={fieldClass}
-                  placeholder="+252 6X XXX XXXX"
-                />
-                {errors.phone ? <p id="phone-error" className={errorClass}>{errors.phone}</p> : null}
-              </div>
-              <div>
-                <label htmlFor="subject" className={labelClass}>Subject</label>
-                <input
-                  id="subject"
-                  name="subject"
-                  type="text"
-                  required
-                  value={values.subject}
-                  onChange={handleChange("subject")}
-                  aria-invalid={Boolean(errors.subject)}
-                  aria-describedby={errors.subject ? "subject-error" : undefined}
-                  className={fieldClass}
-                  placeholder="Project or role"
-                />
-                {errors.subject ? <p id="subject-error" className={errorClass}>{errors.subject}</p> : null}
-              </div>
+          <form
+            onSubmit={handleSubmit}
+            noValidate
+            className="space-y-4 rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 lg:col-span-3"
+          >
+            <div>
+              <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-[var(--color-text-primary)]">
+                Full name
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                autoComplete="name"
+                required
+                value={values.name}
+                onChange={handleChange("name")}
+                aria-invalid={Boolean(errors.name)}
+                aria-describedby={errors.name ? "name-error" : undefined}
+                className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
+                placeholder="Your name"
+              />
+              {errors.name ? (
+                <p id="name-error" className="mt-1 text-xs text-red-400">{errors.name}</p>
+              ) : null}
             </div>
 
             <div>
-              <label htmlFor="message" className={labelClass}>Message</label>
+              <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-[var(--color-text-primary)]">
+                Email
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={values.email}
+                onChange={handleChange("email")}
+                aria-invalid={Boolean(errors.email)}
+                aria-describedby={errors.email ? "email-error" : undefined}
+                className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
+                placeholder="you@example.com"
+              />
+              {errors.email ? (
+                <p id="email-error" className="mt-1 text-xs text-red-400">{errors.email}</p>
+              ) : null}
+            </div>
+
+            <div>
+              <label htmlFor="phone" className="mb-1.5 block text-sm font-medium text-[var(--color-text-primary)]">
+                Phone / WhatsApp number <span className="text-[var(--color-text-muted)]">(optional)</span>
+              </label>
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                autoComplete="tel"
+                value={values.phone}
+                onChange={handleChange("phone")}
+                aria-invalid={Boolean(errors.phone)}
+                aria-describedby={errors.phone ? "phone-error" : undefined}
+                className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
+                placeholder="+252 6X XXX XXXX"
+              />
+              {errors.phone ? (
+                <p id="phone-error" className="mt-1 text-xs text-red-400">{errors.phone}</p>
+              ) : null}
+            </div>
+
+            <div>
+              <label htmlFor="subject" className="mb-1.5 block text-sm font-medium text-[var(--color-text-primary)]">
+                Subject
+              </label>
+              <input
+                id="subject"
+                name="subject"
+                type="text"
+                required
+                value={values.subject}
+                onChange={handleChange("subject")}
+                aria-invalid={Boolean(errors.subject)}
+                aria-describedby={errors.subject ? "subject-error" : undefined}
+                className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
+                placeholder="Project opportunity"
+              />
+              {errors.subject ? (
+                <p id="subject-error" className="mt-1 text-xs text-red-400">{errors.subject}</p>
+              ) : null}
+            </div>
+
+            <div>
+              <label htmlFor="message" className="mb-1.5 block text-sm font-medium text-[var(--color-text-primary)]">
+                Message
+              </label>
               <textarea
                 id="message"
                 name="message"
@@ -264,47 +311,54 @@ export default function Contact() {
                 onChange={handleChange("message")}
                 aria-invalid={Boolean(errors.message)}
                 aria-describedby={errors.message ? "message-error" : undefined}
-                className={`${fieldClass} resize-none`}
-                placeholder="Tell me about the system, product or opportunity…"
+                className="w-full resize-none rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3.5 py-2.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-[var(--color-accent-cyan)]"
+                placeholder="Tell me a bit about the opportunity or project..."
               />
-              {errors.message ? <p id="message-error" className={errorClass}>{errors.message}</p> : null}
+              {errors.message ? (
+                <p id="message-error" className="mt-1 text-xs text-red-400">{errors.message}</p>
+              ) : null}
             </div>
 
-            <button type="submit" disabled={status.state === "submitting"} className="btn btn-primary w-full disabled:cursor-not-allowed disabled:opacity-60">
+            <button
+              type="submit"
+              disabled={status.state === "submitting"}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--color-signal)] px-5 py-3 text-sm font-bold text-[#10130b] transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
+            >
               {status.state === "submitting" ? (
                 <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
               ) : (
                 <Send className="h-4 w-4" aria-hidden="true" />
               )}
-              Send message
+              Send Message
             </button>
 
             {status.state === "mailto-opened" ? (
-              <p role="status" className="flex items-center gap-2 text-sm text-[var(--accent)]">
+              <p role="status" className="flex items-center gap-2 text-sm text-[var(--color-accent-cyan)]">
                 <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true" />
                 Your email app should now be open with this message ready to send.
               </p>
             ) : null}
             {status.state === "success" ? (
-              <p role="status" className="flex items-center gap-2 text-sm text-[var(--accent)]">
+              <p role="status" className="flex items-center gap-2 text-sm text-emerald-400">
                 <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true" />
                 Message sent successfully. Thank you — I'll get back to you soon.
               </p>
             ) : null}
             {status.state === "error" ? (
-              <p role="alert" className="flex items-center gap-2 text-sm text-red-500">
+              <p role="alert" className="flex items-center gap-2 text-sm text-red-400">
                 <AlertCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
                 {status.message}
               </p>
             ) : null}
 
             {!FORMSPREE_ENDPOINT ? (
-              <p className="text-xs text-[var(--text-3)]">
-                Sending opens your email app with the message ready — nothing is stored by this site.
+              <p className="text-xs text-[var(--color-text-muted)]">
+                This form opens your email client to send the message directly — no
+                third-party backend is connected yet.
               </p>
             ) : null}
           </form>
-        </Reveal>
+        </div>
       </div>
     </section>
   );

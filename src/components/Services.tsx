@@ -1,32 +1,51 @@
+import { motion } from "framer-motion";
 import { services } from "../data/services";
-import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
 
 export default function Services() {
   return (
-    <section id="services" className="section" aria-labelledby="services-title">
+    <section id="services" className="no-print scroll-mt-20 py-20 sm:py-28">
       <div className="container-page">
         <SectionHeading
-          id="services-title"
-          eyebrow="Services"
-          title="What I build."
-          subtitle="From a single landing page to a multi-tenant platform — scoped, designed, built, tested and deployed."
+          eyebrow="What I Do"
+          title="Services"
+          subtitle="Website and system development for businesses and organizations in Hargeisa, Somaliland and Somalia — from interfaces and REST APIs to databases, plus structured prompt engineering for AI-assisted builds."
         />
-        <Reveal>
-        <ul className="grid gap-px overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--border)] md:grid-cols-2 lg:grid-cols-3">
-          {services.map((service) => {
+
+        <p
+          lang="so"
+          className="-mt-6 mb-12 mx-auto max-w-2xl text-center text-sm leading-relaxed text-[var(--color-text-muted)] md:-mt-10 md:mb-16"
+        >
+          Waxaan dhisaa websites, nidaamyo maamul (management systems), APIs iyo database-yo
+          loogu talagalay ganacsiyada, iskuullada iyo hay&apos;adaha Hargeisa, Somaliland iyo
+          Soomaaliya.
+        </p>
+
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {services.map((service, index) => {
             const Icon = service.icon;
             return (
-              <li key={service.id} className="flex flex-col bg-[var(--bg)] p-7 transition-colors hover:bg-[var(--bg-soft)]">
-                <Icon className="h-6 w-6 text-[var(--accent)]" aria-hidden="true" />
-                <h3 className="mt-6 text-lg font-semibold text-[var(--text)]">{service.title}</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-[var(--text-2)]">{service.description}</p>
-                <p className="mt-6 font-mono text-[11px] uppercase tracking-wider text-[var(--text-3)]">{service.examples}</p>
-              </li>
+              <motion.div
+                key={service.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.45, delay: (index % 3) * 0.08 }}
+                className="group rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 transition-colors hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-hover)]"
+              >
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--color-accent)]/10 text-[var(--color-accent-cyan)] transition-transform group-hover:scale-105">
+                  <Icon className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <h3 className="mt-4 text-lg font-semibold text-[var(--color-text-primary)]">
+                  {service.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-secondary)]">
+                  {service.description}
+                </p>
+              </motion.div>
             );
           })}
-        </ul>
-        </Reveal>
+        </div>
       </div>
     </section>
   );

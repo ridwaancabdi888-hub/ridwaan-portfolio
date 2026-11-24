@@ -1,27 +1,39 @@
-import type { ReactNode } from "react";
-import Reveal from "./Reveal";
+import { motion } from "framer-motion";
 
 type SectionHeadingProps = {
   eyebrow: string;
-  title: ReactNode;
-  subtitle?: ReactNode;
-  action?: ReactNode;
-  id?: string;
+  title: string;
+  subtitle?: string;
+  align?: "center" | "left";
 };
 
-export default function SectionHeading({ eyebrow, title, subtitle, action, id }: SectionHeadingProps) {
+export default function SectionHeading({
+  eyebrow,
+  title,
+  subtitle,
+  align = "center",
+}: SectionHeadingProps) {
+  const isCenter = align === "center";
+
   return (
-    <Reveal className="mb-12 flex flex-col gap-6 md:mb-16 md:flex-row md:items-end md:justify-between">
-      <div className="max-w-2xl">
-        <p className="eyebrow">{eyebrow}</p>
-        <h2 id={id} className="font-display mt-4 text-3xl font-semibold text-[var(--text)] sm:text-4xl md:text-[2.75rem] md:leading-[1.1]">
-          {title}
-        </h2>
-        {subtitle ? (
-          <p className="mt-4 text-base leading-relaxed text-[var(--text-2)] md:text-lg">{subtitle}</p>
-        ) : null}
-      </div>
-      {action ? <div className="shrink-0">{action}</div> : null}
-    </Reveal>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.5 }}
+      className={`mb-12 md:mb-16 ${isCenter ? "text-center mx-auto max-w-2xl" : "text-left"}`}
+    >
+      <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1 text-xs font-medium uppercase tracking-widest text-[var(--color-accent-cyan)]">
+        {eyebrow}
+      </span>
+      <h2 className="mt-4 text-3xl font-bold tracking-tight text-[var(--color-text-primary)] sm:text-4xl">
+        {title}
+      </h2>
+      {subtitle ? (
+        <p className="mt-4 text-base leading-relaxed text-[var(--color-text-secondary)]">
+          {subtitle}
+        </p>
+      ) : null}
+    </motion.div>
   );
 }

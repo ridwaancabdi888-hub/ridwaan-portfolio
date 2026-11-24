@@ -1,51 +1,45 @@
-import { Blocks, Bot, Database, Layout, ShieldCheck, Smartphone } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
-import { skillGroups } from "../data/skills";
-import Reveal from "./Reveal";
+import { motion } from "framer-motion";
+import { Gauge } from "lucide-react";
+import { overallSkillLevel, skillCategories } from "../data/skills";
 import SectionHeading from "./SectionHeading";
-
-const icons: Record<string, LucideIcon> = {
-  frontend: Layout,
-  backend: Blocks,
-  data: Database,
-  ai: Bot,
-  "mobile-3d": Smartphone,
-  quality: ShieldCheck,
-};
 
 export default function Skills() {
   return (
-    <section id="skills" className="section" aria-labelledby="skills-title">
+    <section id="skills" className="no-print scroll-mt-20 py-20 sm:py-28">
       <div className="container-page">
-        <SectionHeading
-          id="skills-title"
-          eyebrow="Technical skills"
-          title="A full-stack toolkit, proven in production."
-          subtitle="Every skill below is used in at least one shipped project on this page."
-        />
-        <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {skillGroups.map((group, index) => {
-            const Icon = icons[group.id] ?? Blocks;
-            return (
-              <Reveal as="li" key={group.id} delay={index * 0.04} className="card card-hover p-6">
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
-                    <Icon className="h-5 w-5" aria-hidden="true" />
+        <SectionHeading eyebrow="Skills" title="Technologies I work with" />
+
+        <div className="mx-auto mb-10 flex w-fit items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 text-sm text-[var(--color-text-secondary)]">
+          <Gauge className="h-4 w-4 text-[var(--color-accent-cyan)]" aria-hidden="true" />
+          Overall skill level: <span className="font-semibold text-[var(--color-text-primary)]">{overallSkillLevel}</span>
+        </div>
+
+        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          {skillCategories.map((category, index) => (
+            <motion.div
+              key={category.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.45, delay: (index % 3) * 0.06 }}
+              className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5"
+            >
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-[var(--color-accent-cyan)]">
+                {category.title}
+              </h3>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {category.skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3 py-1 text-xs font-medium text-[var(--color-text-secondary)] transition-colors hover:border-[var(--color-accent)]/50 hover:text-[var(--color-text-primary)]"
+                  >
+                    {skill}
                   </span>
-                  <div>
-                    <h3 className="text-base font-semibold text-[var(--text)]">{group.title}</h3>
-                    <p className="text-xs text-[var(--text-3)]">{group.description}</p>
-                  </div>
-                </div>
-                <ul className="mt-5 flex flex-wrap gap-1.5" aria-label={`${group.title} skills`}>
-                  {group.skills.map((skill) => (
-                    <li key={skill} className="chip">{skill}</li>
-                  ))}
-                </ul>
-              </Reveal>
-            );
-          })}
-        </ul>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );

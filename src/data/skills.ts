@@ -1,49 +1,132 @@
-/**
- * Skills grouped by discipline. Each one is used in at least one project in
- * src/data/projects.ts (or in the project's repository), so the list stays honest.
- */
-export type SkillGroup = {
+export type SkillCategory = {
   id: string;
   title: string;
-  description: string;
   skills: string[];
 };
 
-export const skillGroups: SkillGroup[] = [
+export const overallSkillLevel = "Advanced";
+
+export const skillCategories: SkillCategory[] = [
   {
     id: "frontend",
-    title: "Frontend",
-    description: "Responsive, accessible interfaces and installable PWAs.",
-    skills: ["React 19", "Next.js", "TypeScript", "JavaScript", "Tailwind CSS", "shadcn/ui", "Vite", "HTML5 & CSS3", "Framer Motion", "GSAP", "PWA"],
+    title: "Frontend Development",
+    skills: [
+      "HTML5",
+      "CSS3",
+      "JavaScript",
+      "TypeScript",
+      "React",
+      "Tailwind CSS",
+      "Bootstrap",
+      "Responsive Web Design",
+      "Accessibility",
+      "Vite",
+    ],
   },
   {
     id: "backend",
-    title: "Backend & APIs",
-    description: "Secure REST APIs, authentication and business logic.",
-    skills: ["Node.js", "Express.js", "Next.js Route Handlers", "Python", "Flask", "PHP", "Laravel", "REST APIs", "JWT & sessions", "Role-based access control", "Zod validation"],
+    title: "Backend Development",
+    skills: [
+      "Node.js",
+      "Express.js",
+      "PHP",
+      "Laravel",
+      "REST APIs",
+      "Authentication",
+      "Authorization",
+      "JWT",
+      "Role-Based Access Control",
+      "File Uploads",
+      "Server-side validation",
+    ],
   },
   {
-    id: "data",
-    title: "Databases",
-    description: "Relational schema design, security and reporting.",
-    skills: ["PostgreSQL", "Supabase", "Row Level Security", "MySQL / MariaDB", "MongoDB", "SQLite", "SQLAlchemy", "Schema design", "Migrations", "Backup & restore"],
+    id: "database",
+    title: "Database Development",
+    skills: [
+      "MySQL",
+      "MariaDB",
+      "MongoDB",
+      "Mongoose",
+      "SQL",
+      "Database Design",
+      "Data Relationships",
+      "Backup and Restore",
+    ],
   },
   {
-    id: "ai",
-    title: "AI & Integration",
-    description: "AI features in products, and AI agents in the workflow.",
-    skills: ["OpenAI API", "Prompt engineering", "AI coding agents (Claude Code, Codex)", "Realtime (Supabase)", "Mobile-money integration design", "Maps & GIS (Leaflet)"],
+    id: "mobile",
+    title: "Mobile Development",
+    skills: [
+      "Flutter",
+      "Dart",
+      "Material Design",
+      "REST API Integration",
+      "Mobile-money integration concepts",
+    ],
   },
   {
-    id: "mobile-3d",
-    title: "Mobile & 3D",
-    description: "Cross-platform apps and interactive 3D on the web.",
-    skills: ["Flutter", "Dart", "Three.js", "GLB model optimization", "WordPress theme & plugin development"],
+    id: "prompt-engineering",
+    title: "Prompt Engineering",
+    skills: [
+      "AI coding prompts",
+      "System-development prompts",
+      "Structured prompt design",
+      "Debugging prompts",
+      "Documentation prompts",
+      "Requirement-analysis prompts",
+      "Task decomposition",
+      "AI-assisted development workflows",
+    ],
   },
   {
-    id: "quality",
-    title: "Quality & Delivery",
-    description: "Testing, version control and production deployment.",
-    skills: ["Git & GitHub", "Vercel", "Playwright", "Vitest", "PHPUnit", "Node test runner", "Accessibility (WCAG)", "SEO & structured data"],
+    id: "testing",
+    title: "Testing",
+    skills: [
+      "Jest",
+      "PHPUnit",
+      "Vitest",
+      "Playwright",
+      "API Testing",
+      "Integration Testing",
+      "Component Testing",
+    ],
+  },
+  {
+    id: "tools",
+    title: "Development Tools",
+    skills: [
+      "Git",
+      "GitHub",
+      "Visual Studio Code",
+      "Claude Code",
+      "Codex",
+      "npm",
+      "Composer",
+      "Postman",
+      "Swagger/OpenAPI",
+      "Docker",
+      "Vercel",
+      "Netlify",
+      "GitHub Pages",
+    ],
+  },
+  {
+    id: "additional",
+    title: "Additional Knowledge",
+    skills: [
+      "Python",
+      "Java",
+      "C++",
+      "QGIS",
+      "GIS",
+      "Garmin GPS data",
+      "Cisco Networking",
+      "VLAN",
+      "OSPF",
+      "Software Documentation",
+      "Microsoft Word",
+      "Microsoft PowerPoint",
+    ],
   },
 ];
