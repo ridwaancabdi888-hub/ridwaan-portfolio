@@ -12,7 +12,8 @@
     "generate:resume": "node scripts/generate-resume.mjs",
     "process:avatar": "node scripts/remove-avatar-background.mjs",
     "generate:covers": "node scripts/generate-project-covers.mjs",
-    "predev": "node scripts/optimize-images.mjs"
+    "predev": "node scripts/optimize-images.mjs",
+    "generate:brand": "node scripts/generate-brand-assets.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.42.2",

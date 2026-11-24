@@ -1,31 +1,37 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { personalInfo } from "../data/personalInfo";
 import { useActiveSection } from "../hooks/useActiveSection";
-import {
-  getFocusableElements,
-  getWrappedFocusTarget,
-} from "../utils/focusTrap.mjs";
+import { getFocusableElements, getWrappedFocusTarget } from "../utils/focusTrap.mjs";
 import { getMotionSafeScrollBehavior } from "../utils/motionPreference.mjs";
 import ThemeToggle from "./ThemeToggle";
 
-const navItems = [
-  { id: "home", label: "Home" },
+const navLinks = [
   { id: "about", label: "About" },
-  { id: "services", label: "Services" },
   { id: "skills", label: "Skills" },
-  { id: "projects", label: "Projects" },
-  { id: "education", label: "Education" },
-  { id: "resume", label: "Resume" },
+  { id: "work", label: "Work" },
+  { id: "services", label: "Services" },
+  { id: "journey", label: "Journey" },
   { id: "contact", label: "Contact" },
 ];
 
+const sectionIds = ["top", ...navLinks.map((l) => l.id), "projects", "github"];
+const ACTIVE_SECTION_EVENT = "portfolio:active-section";
+
+/** Maps sub-sections to the nav item that should light up for them. */
+function navIdFor(sectionId: string) {
+  if (sectionId === "projects") return "work";
+  if (sectionId === "github") return "journey";
+  return sectionId;
+}
+
 export default function Navbar() {
+  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const menuButtonRef = useRef<HTMLButtonElement>(null);
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
-  const activeId = useActiveSection(navItems.map((item) => item.id));
+  const activeId = navIdFor(useActiveSection(sectionIds));
+  const panelRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -35,146 +41,155 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (!menuOpen) return;
-
-    const menuButton = menuButtonRef.current;
+    if (!open) return;
+    const panel = panelRef.current;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    window.requestAnimationFrame(() => getFocusableElements(panel ?? document)[0]?.focus());
 
-    const focusFrame = window.requestAnimationFrame(() => {
-      const menu = mobileMenuRef.current;
-      if (menu) getFocusableElements(menu)[0]?.focus();
-    });
-
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        event.preventDefault();
-        setMenuOpen(false);
+        setOpen(false);
+        toggleRef.current?.focus();
         return;
       }
-
-      if (event.key !== "Tab" || !mobileMenuRef.current) return;
-      const focusable = getFocusableElements(mobileMenuRef.current);
-      const target = getWrappedFocusTarget(
-        focusable,
-        document.activeElement,
-        event.shiftKey,
-      );
-      if (target) {
-        event.preventDefault();
-        target.focus();
+      if (event.key === "Tab" && panel) {
+        const target = getWrappedFocusTarget(getFocusableElements(panel), document.activeElement, event.shiftKey);
+        if (target) {
+          event.preventDefault();
+          target.focus();
+        }
       }
     };
-
-    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", onKeyDown);
     return () => {
-      window.cancelAnimationFrame(focusFrame);
-      document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = previousOverflow;
-      menuButton?.focus();
+      document.removeEventListener("keydown", onKeyDown);
     };
-  }, [menuOpen]);
+  }, [open]);
 
-  const handleLinkClick = (id: string, event: React.MouseEvent<HTMLAnchorElement>) => {
+  const go = (id: string) => (event: MouseEvent<HTMLAnchorElement>) => {
+    const target = document.getElementById(id);
+    if (!target) return;
     event.preventDefault();
-    setMenuOpen(false);
-    document.getElementById(id)?.scrollIntoView({
-      behavior: getMotionSafeScrollBehavior(),
-      block: "start",
-    });
-    window.history.pushState(null, "", `#${id}`);
+    const scroll = () => {
+      window.dispatchEvent(new CustomEvent(ACTIVE_SECTION_EVENT, { detail: id }));
+      target.scrollIntoView({ behavior: getMotionSafeScrollBehavior(), block: "start" });
+      window.history.replaceState(null, "", `#${id}`);
+    };
+    if (open) {
+      // Release the mobile menu's body scroll lock first, otherwise the scroll is cancelled.
+      document.body.style.overflow = "";
+      setOpen(false);
+      window.setTimeout(scroll, 30);
+    } else {
+      scroll();
+    }
   };
 
   return (
     <header
-      className={`no-print fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        scrolled
-          ? "border-b border-[var(--color-border)] bg-[var(--color-bg)]/85 backdrop-blur-lg"
-          : "border-b border-transparent bg-transparent"
+      className={`no-print fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-300 ${
+        scrolled || open
+          ? "border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--bg)_82%,transparent)] backdrop-blur-xl"
+          : "border-b border-transparent"
       }`}
     >
-      <nav className="container-page flex h-16 items-center justify-between" aria-label="Primary">
-        <a
-          href="#home"
-          onClick={(e) => handleLinkClick("home", e)}
-          className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-bold text-gradient"
-          aria-label={`${personalInfo.fullName} — home`}
-        >
-          {personalInfo.initials}
+      <nav aria-label="Primary" className="container-page flex h-16 items-center justify-between gap-4">
+        <a href="#top" onClick={go("top")} className="group flex items-center gap-2.5" aria-label={`${personalInfo.fullName} — back to top`}>
+          <span className="font-display inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--text)] text-sm font-bold text-[var(--bg)]">
+            {personalInfo.initials}
+          </span>
+          <span className="hidden text-sm font-semibold tracking-tight text-[var(--text)] sm:block">
+            {personalInfo.shortName}
+          </span>
         </a>
 
         <ul className="hidden items-center gap-1 lg:flex">
-          {navItems.map((item) => (
-            <li key={item.id}>
-              <a
-                href={`#${item.id}`}
-                onClick={(e) => handleLinkClick(item.id, e)}
-                aria-current={activeId === item.id ? "page" : undefined}
-                className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                  activeId === item.id
-                    ? "text-[var(--color-text-primary)]"
-                    : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
-                }`}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
+          {navLinks.map((link) => {
+            const active = activeId === link.id;
+            return (
+              <li key={link.id}>
+                <a
+                  href={`#${link.id}`}
+                  onClick={go(link.id)}
+                  aria-current={active ? "location" : undefined}
+                  className={`relative rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                    active ? "text-[var(--text)]" : "text-[var(--text-2)] hover:text-[var(--text)]"
+                  }`}
+                >
+                  {link.label}
+                  {active ? (
+                    <motion.span
+                      layoutId="nav-active"
+                      className="absolute inset-x-3 -bottom-[1px] h-[2px] rounded-full bg-[var(--accent)]"
+                      transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                    />
+                  ) : null}
+                </a>
+              </li>
+            );
+          })}
         </ul>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="flex items-center gap-2">
           <ThemeToggle />
-          <a
-            href="#contact"
-            onClick={(e) => handleLinkClick("contact", e)}
-            className="rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[var(--color-accent-soft)]"
-          >
-            Let's talk
+          <a href="#contact" onClick={go("contact")} className="btn btn-primary btn-sm hidden sm:inline-flex">
+            Hire me
           </a>
-        </div>
-
-        <div className="flex items-center gap-2 lg:hidden">
-          <ThemeToggle />
           <button
-            ref={menuButtonRef}
+            ref={toggleRef}
             type="button"
-            onClick={() => setMenuOpen((open) => !open)}
-            aria-expanded={menuOpen}
+            className="icon-btn lg:hidden"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
             aria-controls="mobile-menu"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)]"
+            onClick={() => setOpen((v) => !v)}
           >
-            {menuOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
+            {open ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
           </button>
         </div>
       </nav>
 
-      {menuOpen ? (
-        <div
-          ref={mobileMenuRef}
-          id="mobile-menu"
-          className="border-t border-[var(--color-border)] bg-[var(--color-bg)]/98 backdrop-blur-lg lg:hidden"
-        >
-          <ul className="container-page flex flex-col gap-1 py-4">
-            {navItems.map((item) => (
-              <li key={item.id}>
-                <a
-                  href={`#${item.id}`}
-                  onClick={(e) => handleLinkClick(item.id, e)}
-                  aria-current={activeId === item.id ? "page" : undefined}
-                  className={`block rounded-md px-3 py-3 text-base font-medium transition-colors ${
-                    activeId === item.id
-                      ? "bg-[var(--color-surface)] text-[var(--color-text-primary)]"
-                      : "text-[var(--color-text-secondary)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text-primary)]"
-                  }`}
-                >
-                  {item.label}
+      <AnimatePresence>
+        {open ? (
+          <motion.div
+            id="mobile-menu"
+            ref={panelRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site navigation"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            className="border-t border-[var(--border)] bg-[var(--bg)] lg:hidden"
+            style={{ height: "calc(100dvh - 4rem)" }}
+          >
+            <ul className="container-page flex flex-col gap-1 py-6">
+              {navLinks.map((link) => (
+                <li key={link.id}>
+                  <a
+                    href={`#${link.id}`}
+                    onClick={go(link.id)}
+                    aria-current={activeId === link.id ? "location" : undefined}
+                    className={`font-display flex items-center justify-between rounded-xl px-3 py-3.5 text-2xl font-semibold ${
+                      activeId === link.id ? "text-[var(--accent)]" : "text-[var(--text)]"
+                    }`}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+              <li className="mt-6 px-3">
+                <a href="#contact" onClick={go("contact")} className="btn btn-primary w-full">
+                  Start a project
                 </a>
               </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+            </ul>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </header>
   );
 }

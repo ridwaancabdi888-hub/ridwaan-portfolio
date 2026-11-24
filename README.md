@@ -1,6 +1,6 @@
 # Ridwaan Apdirahman Mohamed — Portfolio
 
-A production-ready personal portfolio built with React, TypeScript, Vite and Tailwind CSS. It presents Ridwaan Apdirahman Mohamed as a Full-Stack Web Developer, System Developer and Prompt Engineer, and pulls project data live from GitHub.
+A production-ready personal portfolio built with React, TypeScript, Vite and Tailwind CSS. It presents Ridwaan Apdirahman Mohamed as a Software Engineer and Full-Stack Developer — business management systems, web applications, AI integration and database design — with a curated, verified project catalogue.
 
 ## Tech stack
 
@@ -61,6 +61,7 @@ npm run preview
 | `npm run lint`          | Run Oxlint                                                  |
 | `npm run generate:resume` | Regenerate `public/resume/Ridwaan-Apdirahman-Mohamed-CV.pdf` from `scripts/generate-resume.mjs` |
 | `npm run process:avatar` | Regenerate the background-removed profile image from `src/assets/images/avatar-original.png` |
+| `npm run generate:brand` | Regenerate `public/favicon.svg`, `public/apple-touch-icon.png` and `public/og-image.jpg` |
 | `npm run generate:covers` | Regenerate the project cover images using `scripts/generate-project-covers.mjs` |
 
 ## Project structure
@@ -68,8 +69,9 @@ npm run preview
 ```
 src/
   components/       UI sections and shared components
-  data/             Editable content: personalInfo, skills, projects, services, education
-  hooks/            useGitHubProjects, useTheme, useActiveSection
+  data/             Editable content: personalInfo, skills, projects, services, journey
+  components/projects/  Featured projects, filterable gallery and the project details dialog
+  hooks/            useTheme, useActiveSection
   assets/           Hero profile photo (source + background-removed cutout)
   App.tsx           Composes every section
   main.tsx          React entry point
@@ -90,28 +92,24 @@ scripts/
 
 Almost everything text-based lives in `src/data/`:
 
-- **`personalInfo.ts`** — name, titles, bio, contact links, availability text, stats.
-- **`skills.ts`** — skill categories and the items inside each.
-- **`services.ts`** — the "What I Do" cards.
-- **`education.ts`** — education timeline entries and the "Practical Experience" groups.
-- **`projects.ts`** — hand-curated local projects, plus `watchedRepoNames` (extra repos to look for on GitHub), image and live URL mappings, and the GitHub API endpoint.
+- **`personalInfo.ts`** — name, title, focus areas, bio, contact links and availability text.
+- **`skills.ts`** — skill groups (only skills used in a listed project).
+- **`services.ts`** — the "What I build" cards.
+- **`journey.ts`** — the experience & development timeline (dates from repository history) and education.
+- **`projects.ts`** — the curated project catalogue, categories and derived stats.
 
 Edit these files and the site updates automatically — no other code changes needed for content edits.
 
-## How the GitHub projects integration works
+## Project catalogue rules
 
-`src/hooks/useGitHubProjects.ts` fetches:
+`src/data/projects.ts` is the single source of truth for projects. Each entry has a category list (used by the filters), a status (`Live`, `In development`, `Completed`), features, technologies and optional links:
 
-```
-https://api.github.com/users/ridwaancabdi888-hub/repos?sort=updated&per_page=100
-```
+- `liveUrl` — only for deployments that were opened and verified to work.
+- `repoUrl` — only for **public** GitHub repositories. Private repos get no Source button; `tests/project-data.test.mjs` enforces this.
+- `links` — several live sites grouped into one collection card.
+- `image` — a real screenshot in `public/projects/` (1200×750 WebP). The tests check that every referenced image exists.
 
-- No token is required (public data only).
-- Results are cached in `localStorage` for 30 minutes to avoid refetching on every visit.
-- Hand-curated projects in `projects.ts` are matched against live repo data by name, so they show real stars / last-updated / language, merged with the hand-written description and tech list.
-- Any other repo in `watchedRepoNames` is shown using the raw GitHub data.
-- A repo is only treated as a real project if it has a description or a non-trivial size — otherwise it's placed under the "Work in Progress" filter instead of being invented as a finished project.
-- If the GitHub API is unreachable, the section falls back to the local project data in `projects.ts` and shows an inline notice — it never shows a blank section or fake data.
+The hero and GitHub-activity numbers are computed from this file. The public repository count is fetched live from the GitHub API (cached for an hour, with a graceful fallback).
 
 ## Updating the profile images
 
@@ -133,28 +131,23 @@ To keep both versions in sync when changing the photo:
 
 ## Replacing project images
 
-Projects can use a committed screenshot, an external screenshot URL, or the generated fallback thumbnail. The Amber & Oak and Saffron & Slate entries, for example, use committed screenshots in `public/project-images/`.
-
-To add or replace a screenshot:
-
-1. Save the image in `public/project-images/`, or choose a stable external image URL.
-2. Set the matching `image` or `repoImageByName` value in `src/data/projects.ts`.
-3. Confirm that `ProjectCard` loads it. Missing or failed images fall back to the generated thumbnail automatically.
+1. Capture a 1440×900 screenshot of the live site.
+2. Convert it to a 1200×750 WebP in `public/projects/` (for example with `sharp`).
+3. Point the project's `image` field at it. Missing images fall back to a typographic cover automatically.
 
 ## Updating the CV
 
-The CV shown in the **Resume** section and linked from every "Download CV" button is generated by `scripts/generate-resume.mjs` into `public/resume/Ridwaan-Apdirahman-Mohamed-CV.pdf`.
+The CV linked from every "Download CV" button is generated by `scripts/generate-resume.mjs` into `public/resume/Ridwaan-Apdirahman-Mohamed-CV.pdf`.
 
 To update it:
 
-1. Edit the content inside `scripts/generate-resume.mjs` (and/or `src/components/Resume.tsx` for the on-page version — keep both in sync).
+1. Edit the content inside `scripts/generate-resume.mjs`.
 2. Regenerate the PDF:
    ```bash
    npm run generate:resume
    ```
 3. Commit the updated PDF in `public/resume/`.
 
-The on-page Resume section also has a **Print CV** button that opens the browser print dialog with only the CV content visible (everything else is hidden via print styles).
 
 ## Contact form
 

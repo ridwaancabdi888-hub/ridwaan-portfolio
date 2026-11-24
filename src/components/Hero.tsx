@@ -1,205 +1,137 @@
 import { motion } from "framer-motion";
-import {
-  ArrowDownRight,
-  ArrowUpRight,
-  CheckCircle2,
-  Code2,
-  Download,
-  Mail,
-  Sparkles,
-} from "lucide-react";
+import { ArrowRight, Download, MapPin } from "lucide-react";
+import type { MouseEvent } from "react";
 import profileCutout from "../assets/images/profile-cutout.webp";
 import { personalInfo } from "../data/personalInfo";
+import { projectStats } from "../data/projects";
 import { getMotionSafeScrollBehavior } from "../utils/motionPreference.mjs";
 import { GithubIcon, LinkedinIcon, WhatsAppIcon } from "./icons/BrandIcons";
 
-const socialLinks = [
-  { label: "GitHub", href: personalInfo.githubUrl, icon: GithubIcon },
-  { label: "LinkedIn", href: personalInfo.linkedinUrl, icon: LinkedinIcon },
-  { label: "Email", href: `mailto:${personalInfo.email}`, icon: Mail },
-  {
-    label: `WhatsApp ${personalInfo.whatsappNumber}`,
-    href: personalInfo.whatsappLink,
-    icon: WhatsAppIcon,
-  },
+const fadeUp = (delay: number) => ({
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, ease: [0.2, 0.7, 0.2, 1] as const, delay },
+});
+
+const stats = [
+  { value: projectStats.total, label: "Projects shipped" },
+  { value: projectStats.liveDeployments, label: "Live deployments" },
+  { value: projectStats.businessSystems, label: "Business systems" },
+  { value: projectStats.technologies, label: "Technologies used" },
 ];
 
-function scrollTo(id: string) {
-  document.getElementById(id)?.scrollIntoView({
-    behavior: getMotionSafeScrollBehavior(),
-    block: "start",
-  });
-}
-
 export default function Hero() {
+  const scrollTo = (id: string) => (event: MouseEvent<HTMLAnchorElement>) => {
+    const target = document.getElementById(id);
+    if (!target) return;
+    event.preventDefault();
+    target.scrollIntoView({ behavior: getMotionSafeScrollBehavior(), block: "start" });
+  };
+
   return (
-    <section
-      id="home"
-      className="no-print flex min-h-[calc(100dvh-5.5rem)] items-center overflow-hidden py-12 sm:py-16 lg:min-h-[calc(100dvh-5.5rem)] lg:py-10"
-      aria-label="Introduction"
-    >
-      <div className="pointer-events-none absolute inset-0 bg-grid opacity-60" aria-hidden="true" />
-      <div className="pointer-events-none absolute -right-24 top-0 h-96 w-96 rounded-full bg-[var(--color-signal)]/10 blur-[110px]" />
+    <section id="top" className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-24">
+      <div className="page-glow" aria-hidden="true" />
+      <div className="container-page relative grid items-center gap-14 lg:grid-cols-[1.25fr_0.75fr] lg:gap-10">
+        <div>
+          <motion.p {...fadeUp(0)} className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-xs font-medium text-[var(--text-2)]">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--accent)] opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--accent)]" />
+            </span>
+            {personalInfo.availability}
+          </motion.p>
 
-      <div className="container-page relative">
-        <div className="grid items-center gap-10 xl:grid-cols-[1.08fr_0.92fr] xl:gap-6">
-          <motion.div
-            initial={{ opacity: 0, y: 22 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55 }}
-          >
-            <div className="mb-7 flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-semibold text-[var(--color-text-secondary)]">
-                <Sparkles className="h-3.5 w-3.5 text-[var(--color-accent-cyan)]" aria-hidden="true" />
-                PORTFOLIO / 2026
-              </span>
-              <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/8 px-3 py-1.5 text-xs font-medium text-emerald-400">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-70" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-                </span>
-                Available for work
-              </span>
-            </div>
+          <motion.h1 {...fadeUp(0.06)} className="mt-7">
+            <span className="block text-base font-medium text-[var(--text-2)] md:text-lg">
+              {personalInfo.fullName} — {personalInfo.title}
+            </span>
+            <span className="font-display mt-3 block text-[2.6rem] font-semibold leading-[1.04] text-[var(--text)] sm:text-6xl lg:text-[4.4rem]">
+              I engineer <span className="text-[var(--accent)]">business systems</span>, web applications and AI-powered tools.
+            </span>
+          </motion.h1>
 
-            <h1 className="max-w-3xl text-[var(--color-text-primary)]">
-              <span className="block font-mono text-xs font-normal uppercase leading-5 tracking-[0.24em] text-[var(--color-text-muted)]">
-                Ridwaan Apdirahman Mohamed — Full-Stack Web Developer in Hargeisa, Somaliland
-              </span>
-              <span className="mt-4 block text-[clamp(3.25rem,7vw,7.2rem)] font-black uppercase leading-[0.83] tracking-[-0.07em]">
-                Building
-                <span className="block text-[var(--color-accent-cyan)]">digital systems.</span>
-              </span>
-            </h1>
+          <motion.p {...fadeUp(0.12)} className="mt-6 max-w-2xl text-base leading-relaxed text-[var(--text-2)] md:text-lg">
+            {personalInfo.heroDescription}
+          </motion.p>
 
-            <div className="mt-6 inline-flex max-w-full items-center gap-3 rounded-2xl border border-[var(--color-signal)]/30 bg-[var(--color-surface)]/90 px-4 py-3 shadow-[0_0_32px_rgba(217,255,87,0.11)] backdrop-blur-xl sm:gap-4 sm:px-5">
-              <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[var(--color-signal)]/25 bg-[var(--color-signal)]/10 text-[var(--color-accent-cyan)]">
-                <Code2 className="h-5 w-5" aria-hidden="true" />
-              </span>
-              <span className="min-w-0">
-                <span className="block font-mono text-[9px] font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)] sm:text-[10px]">
-                  Currently:
-                </span>
-                <span className="mt-0.5 block text-sm font-black leading-tight text-[var(--color-text-primary)] sm:text-base">
-                  Full-Stack &amp; System Developer
-                </span>
-              </span>
-            </div>
+          <motion.ul {...fadeUp(0.16)} className="mt-6 flex flex-wrap gap-2" aria-label="Focus areas">
+            {personalInfo.focusAreas.map((area) => (
+              <li key={area} className="chip">{area}</li>
+            ))}
+          </motion.ul>
 
-            <p className="mt-5 max-w-2xl text-base leading-7 text-[var(--color-text-secondary)]">
-              {personalInfo.heroDescription}
-            </p>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              <button
-                type="button"
-                onClick={() => scrollTo("projects")}
-                className="inline-flex items-center gap-2 rounded-xl bg-[var(--color-signal)] px-5 py-3 text-sm font-bold text-[#10130b] transition hover:-translate-y-0.5 hover:brightness-105"
-              >
-                Explore my work
-                <ArrowDownRight className="h-4 w-4" aria-hidden="true" />
-              </button>
-              <a
-                href={personalInfo.resumePdfPath}
-                download
-                className="inline-flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-5 py-3 text-sm font-semibold text-[var(--color-text-primary)] transition hover:-translate-y-0.5 hover:border-[var(--color-border-hover)]"
-              >
-                <Download className="h-4 w-4" aria-hidden="true" />
-                Download CV
+          <motion.div {...fadeUp(0.2)} className="mt-9 flex flex-wrap items-center gap-3">
+            <a href="#work" onClick={scrollTo("work")} className="btn btn-primary">
+              View my work <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </a>
+            <a href={personalInfo.resumePdfPath} download className="btn btn-secondary">
+              <Download className="h-4 w-4" aria-hidden="true" /> Download CV
+            </a>
+            <div className="ml-1 flex items-center gap-2">
+              <a href={personalInfo.githubUrl} target="_blank" rel="noopener noreferrer" className="icon-btn" aria-label="GitHub profile (opens in a new tab)">
+                <GithubIcon className="h-4 w-4" aria-hidden="true" />
               </a>
-            </div>
-
-            <ul className="mt-8 flex items-center gap-2">
-              {socialLinks.map(({ label, href, icon: Icon }) => (
-                <li key={label}>
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={label}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] transition hover:border-[var(--color-accent-cyan)] hover:text-[var(--color-accent-cyan)]"
-                  >
-                    <Icon className="h-4 w-4" aria-hidden="true" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.94 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.12 }}
-            className="relative mx-auto w-full max-w-[520px]"
-          >
-            <div className="relative overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-2xl shadow-black/35">
-              <div className="relative min-h-[500px] overflow-hidden rounded-[1.55rem] border border-[var(--color-border)] bg-[var(--color-bg)] sm:min-h-[580px]">
-                <div className="absolute inset-0 bg-[linear-gradient(145deg,rgba(217,255,87,0.09),transparent_44%),radial-gradient(circle_at_50%_42%,rgba(217,255,87,0.16),transparent_38%)]" />
-                <div className="absolute inset-x-0 top-0 flex items-center justify-between p-5">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-muted)]">
-                    Developer profile
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/5 px-2.5 py-1 font-mono text-[10px] text-[var(--color-accent-cyan)]">
-                    <CheckCircle2 className="h-3 w-3" aria-hidden="true" />
-                    Verified
-                  </span>
-                </div>
-
-                <img
-                  src={profileCutout}
-                  alt={`Portrait of ${personalInfo.fullName}`}
-                  width={520}
-                  height={620}
-                  loading="eager"
-                  fetchPriority="high"
-                  className="absolute inset-x-0 bottom-20 mx-auto h-[72%] w-auto object-contain object-bottom sm:bottom-16 sm:h-[76%]"
-                  style={{
-                    filter:
-                      "drop-shadow(0 0 20px rgba(217,255,87,0.26)) drop-shadow(0 28px 50px rgba(0,0,0,0.5))",
-                    maskImage: "linear-gradient(to bottom, black 88%, transparent 100%)",
-                    WebkitMaskImage: "linear-gradient(to bottom, black 88%, transparent 100%)",
-                  }}
-                />
-
-                <div className="absolute bottom-4 left-4 right-4 rounded-2xl border border-white/10 bg-black/62 p-4 backdrop-blur-xl">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-accent-cyan)]">
-                    Based in Hargeisa
-                  </p>
-                  <div className="mt-2 flex items-end justify-between gap-4">
-                    <div>
-                      <p className="text-xl font-bold text-white">Ridwaan Mohamed</p>
-                      <p className="mt-1 text-xs text-white/60">Software Engineering · Gollis University</p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => scrollTo("contact")}
-                      aria-label="Go to contact section"
-                      className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--color-signal)] text-[#10130b] transition hover:rotate-6"
-                    >
-                      <ArrowUpRight className="h-5 w-5" aria-hidden="true" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="absolute -left-5 top-24 hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)]/90 p-3 shadow-xl backdrop-blur-xl sm:block">
-              <p className="font-mono text-[9px] uppercase tracking-wider text-[var(--color-text-muted)]">
-                Focus
-              </p>
-              <p className="mt-1 text-sm font-bold text-[var(--color-text-primary)]">
-                Full-stack systems
-              </p>
-            </div>
-
-            <div className="absolute -right-4 top-1/3 hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)]/90 p-3 shadow-xl backdrop-blur-xl sm:block">
-              <p className="text-2xl font-black text-[var(--color-accent-cyan)]">25+</p>
-              <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)]">
-                Projects
-              </p>
+              <a href={personalInfo.linkedinUrl} target="_blank" rel="noopener noreferrer" className="icon-btn" aria-label="LinkedIn profile (opens in a new tab)">
+                <LinkedinIcon className="h-4 w-4" aria-hidden="true" />
+              </a>
+              <a
+                href={`${personalInfo.whatsappLink}?text=${encodeURIComponent(personalInfo.whatsappPrefilledMessage)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="icon-btn"
+                aria-label="Message on WhatsApp (opens in a new tab)"
+              >
+                <WhatsAppIcon className="h-4 w-4" aria-hidden="true" />
+              </a>
             </div>
           </motion.div>
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: [0.2, 0.7, 0.2, 1], delay: 0.1 }}
+          className="relative mx-auto w-full max-w-[360px] lg:max-w-none"
+        >
+          <div className="card relative aspect-[4/5] overflow-hidden rounded-[1.75rem]">
+            <div
+              className="absolute inset-0"
+              aria-hidden="true"
+              style={{
+                background:
+                  "radial-gradient(80% 60% at 50% 100%, color-mix(in srgb, var(--accent) 28%, transparent), transparent 70%), linear-gradient(180deg, var(--surface-2), var(--surface))",
+              }}
+            />
+            <img
+              src={profileCutout}
+              alt={`Portrait of ${personalInfo.fullName}`}
+              width={720}
+              height={900}
+              fetchPriority="high"
+              className="absolute inset-x-0 bottom-0 mx-auto h-[94%] w-auto object-contain object-bottom"
+            />
+            <div className="absolute inset-x-3 bottom-3 flex items-center justify-between rounded-2xl border border-[var(--border)] bg-[color-mix(in_srgb,var(--surface)_80%,transparent)] px-4 py-3 backdrop-blur-md">
+              <div>
+                <p className="text-sm font-semibold text-[var(--text)]">{personalInfo.shortName}</p>
+                <p className="text-xs text-[var(--text-2)]">{personalInfo.title}</p>
+              </div>
+              <span className="inline-flex items-center gap-1 text-xs text-[var(--text-2)]">
+                <MapPin className="h-3.5 w-3.5 text-[var(--accent)]" aria-hidden="true" /> Hargeisa
+              </span>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="container-page relative mt-16 md:mt-20">
+        <dl className="grid grid-cols-2 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--border)] sm:grid-cols-4 [&>div]:bg-[var(--bg)]" style={{ gap: "1px" }}>
+          {stats.map((stat) => (
+            <div key={stat.label} className="px-5 py-6 md:px-7">
+              <dt className="text-xs font-medium uppercase tracking-wider text-[var(--text-3)]">{stat.label}</dt>
+              <dd className="font-display mt-2 text-3xl font-semibold text-[var(--text)] md:text-4xl">{stat.value}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
   );

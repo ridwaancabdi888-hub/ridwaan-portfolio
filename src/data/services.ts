@@ -1,61 +1,61 @@
-import {
-  Code2,
-  Server,
-  LayoutGrid,
-  Database,
-  Boxes,
-  Bot,
-} from "lucide-react";
+import { Bot, Building2, Database, Globe, LayoutDashboard, ShoppingBag } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 export type Service = {
   id: string;
   title: string;
   description: string;
+  examples: string;
   icon: LucideIcon;
 };
 
 export const services: Service[] = [
   {
-    id: "fullstack",
-    title: "Full-Stack Web Development",
+    id: "business-systems",
+    title: "Business management systems",
     description:
-      "Building complete responsive applications with frontend interfaces, backend APIs, authentication and databases.",
-    icon: Boxes,
+      "Inventory, POS, CRM, rentals, memberships and finance — with roles, audit logs and reports built in.",
+    examples: "Riyaad Real Estate · SANDBOX · Kaafiye",
+    icon: LayoutDashboard,
   },
   {
-    id: "system-development",
-    title: "System Development",
+    id: "web-apps",
+    title: "Full-stack web applications",
     description:
-      "Designing management systems for universities, businesses, pharmacies, municipalities and other organizations.",
-    icon: Server,
+      "Multi-tenant SaaS and custom web apps, from database schema to API to a polished, responsive UI.",
+    examples: "GYM SaaS · School SaaS · Hargeisa Tax",
+    icon: Globe,
   },
   {
-    id: "frontend",
-    title: "Frontend Development",
+    id: "ai",
+    title: "AI integration",
     description:
-      "Creating responsive and accessible user interfaces using React, TypeScript, JavaScript and Tailwind CSS.",
-    icon: LayoutGrid,
+      "AI features inside real products — question generation, feedback and analysis via LLM APIs, kept server-side and secure.",
+    examples: "AI Interview Coach",
+    icon: Bot,
   },
   {
-    id: "backend-api",
-    title: "Backend and API Development",
+    id: "databases",
+    title: "Database design & development",
     description:
-      "Creating REST APIs, authentication, role-based permissions, database operations and server-side business logic.",
-    icon: Code2,
-  },
-  {
-    id: "database",
-    title: "Database Development",
-    description:
-      "Designing and working with MySQL, MariaDB, MongoDB and structured application data.",
+      "Relational models, migrations, row-level security, backups and reporting on PostgreSQL, MySQL and MongoDB.",
+    examples: "Supabase · PostgreSQL · MySQL",
     icon: Database,
   },
   {
-    id: "prompt-engineering",
-    title: "Prompt Engineering",
+    id: "commerce",
+    title: "E-commerce & online stores",
     description:
-      "Writing structured and detailed prompts for AI coding assistants, software planning, debugging, documentation, automation and project development.",
-    icon: Bot,
+      "Catalogues, carts and WhatsApp or mobile-money ordering flows designed for Somali-speaking customers.",
+    examples: "Beersan · Ridwaan Mobile Store",
+    icon: ShoppingBag,
+  },
+  {
+    id: "websites",
+    title: "Business & real-estate websites",
+    description:
+      "Fast, bilingual, SEO-ready company websites — including interactive 3D property showrooms.",
+    examples: "Riyaad 3D · House of Beauty · Kaafi Travel",
+    icon: Building2,
   },
 ];
